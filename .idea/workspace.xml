@@ -19,7 +19,11 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="" />
+    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/example-copies/PythonPluginAirflowNetworkOpeningControlByHumidity.idf" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/plugin-example-copies/PythonPluginAirflowNetworkOpeningControlByHumidity.idf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/example-copies/PythonPluginAirflowNetworkOpeningControlByHumidity.py" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/plugin-example-copies/PythonPluginAirflowNetworkOpeningControlByHumidity.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -55,7 +59,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620763997914</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Added Python API example files">
+      <created>1620764238171</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1620764238171</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -72,5 +83,11 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Added Python API example files" />
     <option name="LAST_COMMIT_MESSAGE" value="Added Python API example files" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="-1368" y="259" key="Vcs.Push.Dialog.v2" timestamp="1620764245789">
+      <screen x="-1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="-1368" y="259" key="Vcs.Push.Dialog.v2/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1620764245789" />
   </component>
 </project>
