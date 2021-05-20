@@ -1,29 +1,51 @@
-#!
-# code inspired by https://gist.github.com/mitchute/5a9f107aba213f1b683f4052027fc162
-#!
+import sys
 
 class EmsPy:
 
-    def __init__(self, ep_idf_to_run):
+    def __init__(self, ep_path, ep_idf_to_run, vars_dict, meters_dict, actuators_dict):
+        sys.path.insert(0, ep_path)  # set path to E+
         from pyenergyplus.api import EnergyPlusAPI
         self.api = EnergyPlusAPI()  # instantiation of Python EMS API
-        self.bca = BcaEnv()
-        self.ddashboard = DataDashboard()
+        self.bca = self.BcaEnv()  # instantiation of RL agent obj, inner class
+        self.ddash = self.DataDashboard()  # instantiation of data visualization obj, inner class
 
-        self.ep_idf = ep_idf_to_run  # E+ idf file to simulation
+        self.idf_path = ep_idf_to_run  # E+ idf file to simulation
 
+        # manage sensor and actuator .idf handles
+        self._create_instance_var_handles(vars_dict, meters_dict, actuators_dict)
         self.got_var_handles = False
-        self.got_internal_handles = False
+        self.got_meter_handles = False
         self.got_actuator_handles = False
 
 
-    def get_var_handles(self, state_arg):
-        self.got_var_handles = True
+    def _create_instance_var_handles(self, vars_dict, meters_dict, actuators_dict):
+        """
+        Initialize all the instance attribute names given by the user for the sensors/actuators to be called
+        :param variables_dict:
+        :param internals_dict:
+        :param actuators_dict:
+        :return:
+        """
+        # set attribute names given by user to None
+        for var_attr in vars_dict:
+            setattr(self, var_attr[0], None)
+        for meter_attr in meters_dict:
+            setattr(self, meter_attr[0], None)
+        for actuator_attr in actuators_dict:
+            setattr(self, actuator_attr[0], None)
 
-    def get_internal_handles(self, state_arg, internal_vars):
+
+    def get_var_handles(self, state_arg, vars):
+        """
+        :param vars:
+        :return:
+        """
         self.got_internal_handles = True
-        for i in internal_vars:
-            var_name = internal_vars[0]
+        for var in internal_vars:
+            var_name = var[0]
+            self.var_name = self.api.get_internal_variable_handle(state_arg,
+                                                                  var[1]
+                                                                  var[2])
 
     def get_actuator_handles(self, state_arg):
         self.got_actuator_handles = True
@@ -40,35 +62,36 @@ class EmsPy:
 
     def calling_point(self, calling_pnt: str):
 
-class DataDashboard:
-    def __init__(self):
+    class DataDashboard:
 
-    def init_plot(self):
+        def __init__(self):
+
+        def init_plot(self):
 
 
-class BcaEnv:
-    """ Inspired by OpenAI gym https://gym.openai.com/"""
-    def __init__(self):
+    class BcaEnv:
+        """ Inspired by OpenAI gym https://gym.openai.com/"""
+        def __init__(self):
 
-    def get_observation(self):
-        return observation
+        def get_observation(self):
+            return observation
 
-    def get_reward(self):
-        return reward
+        def get_reward(self):
+            return reward
 
-    def take_action(self):
+        def take_action(self):
 
-    def reset_sim(self):
+        def reset_sim(self):
 
 
 #####################################
-
+import emspy
 ep_path = ''  # path to EnergyPlus download in filesystem
 ep_file_path = ''  # path to .idf file for simulation
 ep_idf_to_run = ep_file_path + ''  #
 ep_weather_path = ep_path + '/WeatherData/.epw'
 
-ems = EmsPy()
+ems = emspy.EmsPy(ep_path, ep_idf_to_run)
 ems.get_var_handles()
 ems.get_internal_handles()
 ems.get_actuator_handles()
@@ -77,7 +100,7 @@ ems.get_actuator_handles()
 
 
 
-
+########################################################################################
 
 
 class Test(EnergyPlusPlugin):
