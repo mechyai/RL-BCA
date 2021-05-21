@@ -81,7 +81,7 @@
       <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\api-example-copies" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.PyEMS_CJE">
+  <component name="RunManager" selected="Python.scratch">
     <configuration name="PyEMS_CJE (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -121,27 +121,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="PyEMS_jmarrec (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="RL-BCA" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-pyEMS-jmarrec-copies" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-pyEMS-jmarrec-copies/PyEMS_jmarrec.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="PyEMS_jmarrec (2)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -157,6 +136,24 @@
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_jmarrec.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="scratch" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="RL-BCA" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
@@ -184,17 +181,17 @@
     <list>
       <item itemvalue="Python.PyEMS_CJE" />
       <item itemvalue="Python.PyEMS_CJE (1)" />
-      <item itemvalue="Python.PyEMS_jmarrec (1)" />
       <item itemvalue="Python.PyEMS_jmarrec (2)" />
       <item itemvalue="Python.scratch_1" />
+      <item itemvalue="Python.scratch" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.scratch" />
+        <item itemvalue="Python.scratch" />
         <item itemvalue="Python.PyEMS_CJE" />
         <item itemvalue="Python.scratch_1" />
         <item itemvalue="Python.scratch_1" />
-        <item itemvalue="Python.PyEMS_CJE (1)" />
-        <item itemvalue="Python.PyEMS_CJE" />
       </list>
     </recent_temporary>
   </component>
@@ -272,7 +269,14 @@
       <option name="project" value="LOCAL" />
       <updated>1621559919625</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="added weather calling functionality">
+      <created>1621606950804</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1621606950804</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -295,7 +299,8 @@
     <MESSAGE value="complete class wrapper strategy" />
     <MESSAGE value="progress underway with EMS RL custom class/library" />
     <MESSAGE value="added more _functions to EMS core class" />
-    <option name="LAST_COMMIT_MESSAGE" value="added more _functions to EMS core class" />
+    <MESSAGE value="added weather calling functionality" />
+    <option name="LAST_COMMIT_MESSAGE" value="added weather calling functionality" />
   </component>
   <component name="WindowStateProjectService">
     <state x="-1506" y="194" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1621478991886">
@@ -310,22 +315,22 @@
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
     <state x="-1122" y="233" key="#xdebugger.XInspectDialog/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621380283677" />
-    <state width="1359" height="152" key="GridCell.Tab.0.bottom" timestamp="1621568775828">
+    <state width="1358" height="333" key="GridCell.Tab.0.bottom" timestamp="1621617915119">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1359" height="152" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621568775828" />
-    <state width="1359" height="152" key="GridCell.Tab.0.center" timestamp="1621568775828">
+    <state width="1358" height="333" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621617915119" />
+    <state width="1358" height="333" key="GridCell.Tab.0.center" timestamp="1621617915119">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1359" height="152" key="GridCell.Tab.0.center/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621568775828" />
-    <state width="1359" height="152" key="GridCell.Tab.0.left" timestamp="1621568775828">
+    <state width="1358" height="333" key="GridCell.Tab.0.center/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621617915119" />
+    <state width="1358" height="333" key="GridCell.Tab.0.left" timestamp="1621617915119">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1359" height="152" key="GridCell.Tab.0.left/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621568775828" />
-    <state width="1359" height="152" key="GridCell.Tab.0.right" timestamp="1621568775828">
+    <state width="1358" height="333" key="GridCell.Tab.0.left/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621617915119" />
+    <state width="1358" height="333" key="GridCell.Tab.0.right" timestamp="1621617915119">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1359" height="152" key="GridCell.Tab.0.right/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621568775828" />
+    <state width="1358" height="333" key="GridCell.Tab.0.right/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621617915119" />
     <state width="1323" height="347" key="GridCell.Tab.1.bottom" timestamp="1620938852526">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
@@ -346,10 +351,10 @@
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
     <state x="-1459" y="184" key="SettingsEditor/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621379101168" />
-    <state x="-1368" y="259" key="Vcs.Push.Dialog.v2" timestamp="1621559922725">
+    <state x="-1368" y="259" key="Vcs.Push.Dialog.v2" timestamp="1621606955059">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="-1368" y="259" key="Vcs.Push.Dialog.v2/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621559922725" />
+    <state x="-1368" y="259" key="Vcs.Push.Dialog.v2/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621606955059" />
     <state width="968" height="548" key="XDebugger.FullValuePopup" timestamp="1620938535020">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
@@ -362,10 +367,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="11" y="-6" width="968" height="468" maximized="true" key="dock-window-1/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621012635740" />
-    <state x="-1381" y="45" width="840" height="1034" key="search.everywhere.popup" timestamp="1621569446402">
+    <state x="-1381" y="45" width="840" height="1034" key="search.everywhere.popup" timestamp="1621618394434">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="-1381" y="45" width="840" height="1034" key="search.everywhere.popup/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621569446402" />
+    <state x="-1381" y="45" width="840" height="1034" key="search.everywhere.popup/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621618394434" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
