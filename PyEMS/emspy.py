@@ -1,4 +1,5 @@
 import sys
+import datetime
 
 class EmsPy:
 
@@ -21,20 +22,9 @@ class EmsPy:
         # create attributes of sensor and actuator .idf handles and data arrays
         self._init_handles_and_data()
         self.got_ems_handles = False
-        # static (internal) variables once
-        self.static_vars_gathered = False
-
+        self.static_vars_gathered = False  # static (internal) variables, gather once
 
         # timing
-        self.actual_date_time = 0
-        self.actual_time = 0
-        self.current_time = 0
-        self.year = 0
-        self.month = 0
-        self.day = 0
-        self.hour = 0
-        self.minute = 0
-
         self.actual_date_times = []
         self.actual_times = []
         self.current_times = []
@@ -43,6 +33,16 @@ class EmsPy:
         self.days = []
         self.hours = []
         self.minutes = []
+        self.time_x = []
+
+
+    def _reset_state(self):
+        self.api.reset_state(self.state)
+
+
+    def _delete_state(self):
+        self.api.delete_state(self.state)
+
 
     def _init_handles_and_data(self):
         """
@@ -118,33 +118,90 @@ class EmsPy:
     def _update_time(self):
         state = self.state
         api = self.api
-        self.actual_date_time = api.exchange.actual_date_time(state)
-        self.actual_time = api.exchange.actual_time(state)
-        self.current_time = api.exchange.current_time(state)
-        self.year = api.exchange.year(state)
-        self.month = api.exchange.month(state)
-        self.day = api.exchange.day_of_month(state)
-        self.hour = api.exchange.hour(state)
-        self.minute = api.exchange.minutes(state)
+        # gather data
+        year = api.exchange.year(state)
+        month = api.exchange.month(state)
+        day = api.exchange.day_of_month(state)
+        hour = api.exchange.hour(state)
+        minute = api.exchange.minutes(state)
+        # set, append
+        self.actual_date_times.append(api.exchange.actual_date_time(state))
+        self.actual_timeas.append(api.exchange.actual_time(state))
+        self.current_timeas.append(api.exchange.current_time(state))
+        self.years.append(year)
+        self.months.append(month)
+        self.days.append(day)
+        self.hours.append(hour)
+        self.minutes.append(minute)
+        # manage timestep tracking
+        # manage timestep
+        timedelta = datetime.timedelta()
+        if hour >= 24.0:
+            hour = 23.0
+            timedelta += datetime.timedelta(hours=1)
+        if minute >= 60.0:
+            minute = 59
+            timedelta += datetime.timedelta(minutes=1)
+        dt = datetime.datetime(year=year, month=month, day=day, hour=hour, minute=minute)
+        dt += timedelta
+        self.time_x.append(dt)
 
 
     def _update_ems_vals(self, state_arg):
         if self.vars_tc is not None:
             for var in self.vars_tc:
-                data_i = self.api.get_actuator_value(state_arg, var[0] + "_handle")
-                getattr(self, var[0] + "_data").append(data_i)
+                data_i = self.api.get_variable_value(state_arg, getattr(self, var[0] + '_handle'))
+                getattr(self, var[0] + '_data').append(data_i)
         if self.meters_tc is not None:
             for meter in self.meters_tc:
-                data_i = self.api.get_actuator_value(state_arg, meter[0] + "_handle")
-                getattr(self, meter[0] + "_data").append(data_i)
+                data_i = self.api.get_meter_value(state_arg, getattr(self, meter[0] + '_handle'))
+                getattr(self, meter[0] + '_data').append(data_i)
         if self.actuators_tc is not None:
             for actuator in self.actuators_tc:
-                data_i = self.api.get_actuator_value(state_arg, actuator[0] + "_handle")
-                getattr(self, actuator[0] + "_data").append(data_i)
+                data_i = self.api.get_actuator_value(state_arg, getattr(self, actuator[0] + '_handle'))
+                getattr(self, actuator[0] + '_data').append(data_i)
         # update static (internal) variables once
         if self.int_vars_tc is not None and not self.static_vars_gathered:
             for int_var in self.int_vars_tc:
+                data_i = self.api.get_internal_variable_value(state_arg, getattr(self, int_var[0] + '_handle'))
+                getattr(self, int_var[0] + '_data').append(data_i)
                 self.static_vars_gathered = True
+
+    def get_weather_time_today(self, when: str, weather_type: str, time: int):
+        api = self.api
+        state = self.state
+
+        timestep = time
+        if when is 'today':
+            weather_dict = {
+                'sun_up': api.exchange.sun_is_up,
+                'rain': api.exchange.today_weather_is_raining_at_time,
+                'snow': api.exchange.today_weather_is_raning_at_time,
+                'precipitation': api.exchange.today_weather_liquid_precipitation_at_time,
+                'bar_pressure': api.exchange.today_weather_barometric_pressure_at_time,
+                'dew_point': api.exchange.today_weather_outdoor_dew_point_at_time,
+                'dry_bulb' : api.exchange.today_weather_outdoor_dry_buld_at_time,
+                'rel_humidity': api.exchange.today_weather_outdoor_relative_humidity_at_time,
+                'wind_dir': api.exchange.today_weather_wind_direction_at_time,
+                'wind_speed': api.exchange.today_weather_wind_speed_at_time
+            }
+        elif when is 'tomorrow':
+            weather_dict = {
+                # NO SUN
+                'rain': api.exchange.tomorrow_weather_is_raining_at_time,
+                'snow': api.exchange.tomorrow_weather_is_raning_at_time,
+                'precipitation': api.exchange.tomorrow_weather_liquid_precipitation_at_time,
+                'bar_pressure': api.exchange.tomorrow_weather_barometric_pressure_at_time,
+                'dew_point': api.exchange.tomorrow_weather_outdoor_dew_point_at_time,
+                'dry_bulb': api.exchange.tomorrow_weather_outdoor_dry_buld_at_time,
+                'rel_humidity': api.exchange.tomorrow_weather_outdoor_relative_humidity_at_time,
+                'wind_dir': api.exchange.tomorrow_weather_wind_direction_at_time,
+                'wind_speed': api.exchange.tomorrow_weather_wind_speed_at_time
+            }
+        if weather_type is 'sun_up':  # today only
+            return weather_dict.get('sun_up')(state)  # no timestep argument, current
+        else:
+            return weather_dict.get(weather_type)(state, timestep)
 
 
     def set_calling_point(self, calling_pnt: str):
@@ -171,6 +228,10 @@ class EmsPy:
         self._update_ems_vals(state_arg)
 
 
+    class EnergyPlusModel:
+
+        def __init__(self):
+
     class DataDashboard:
 
         def __init__(self):
@@ -182,25 +243,19 @@ class EmsPy:
         """ Inspired by OpenAI gym https://gym.openai.com/"""
         def __init__(self):
 
-        def get_observation(self):
+        def _get_observation(self):
             return observation
 
-        def get_reward(self):
+        def _get_reward(self):
             return reward
 
-        def take_action(self):
+        def _take_action(self):
+
+        def step_env(self):
+            return observation, reward, done, info
 
         def reset_sim(self):
 
-
-    # user-defined exceptions
-    class Error(Exception):
-        """Base class for other exceptions"""
-        pass
-
-    class VarHandleNotFound(Error):
-        """Either Variable (sensor) or Internal Variable handle could not be found. Please consult .idf and your ToC"""
-        pass
 
     #####################################
 import emspy
@@ -215,10 +270,8 @@ ep_weather_path = ep_path + '/WeatherData/.epw'
 # meters_tc = [["attr_handle_name", "meter_name",[...],...]
 # actuators_tc = [["attr_handle_name", "component_type", "control_type", "actuator_key"],[...],...]
 
-ems = emspy.EmsPy(ep_path, ep_idf_to_run)
-ems.get_var_handles()
-ems.get_internal_handles()
-ems.get_actuator_handles()
+ems = EmsPy(ep_path, ep_idf_to_run, vars_tc, int_vars_tc, meters_tc, actuators_tc)
+bca = ems.BcaEnv()
 
 
 
