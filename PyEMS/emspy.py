@@ -3,13 +3,15 @@ import datetime
 
 class EmsPy:
 
-    def __init__(self, ep_path, ep_idf_to_run, vars_tc=None, int_vars_tc=None, meters_tc=None, actuators_tc=None):
+    def __init__(self, ep_path, ep_idf_to_run, vars_tc=None, int_vars_tc=None, meters_tc=None, actuators_tc=None,
+                 weather_tc=None):
         sys.path.insert(0, ep_path)  # set path to E+
         from pyenergyplus.api import EnergyPlusAPI
         self.api = EnergyPlusAPI()  # instantiation of Python EMS API
         self.state = self.api.state_manager.new_state()
-        self.bca = self.BcaEnv()  # instantiation of RL agent obj, inner class
-        self.ddash = self.DataDashboard()  # instantiation of data visualization obj, inner class
+        # TODO likely get rid of
+        # self.bca = self.BcaEnv()  # instantiation of RL agent obj, inner class
+        # self.ddash = self.DataDashboard()  # instantiation of data visualization obj, inner class
 
 
         self.idf_path = ep_idf_to_run  # E+ idf file to simulation
@@ -20,9 +22,13 @@ class EmsPy:
         self.meters_tc = meters_tc
         self.actuators_tc = actuators_tc
         # create attributes of sensor and actuator .idf handles and data arrays
-        self._init_handles_and_data()
+        self._init_ems_handles_and_data()  # creates ems_handle = int & ems_data = [] attributes
         self.got_ems_handles = False
         self.static_vars_gathered = False  # static (internal) variables, gather once
+
+        # Table of Content for present weather data
+        self.weather_tc = weather_tc
+        self._init_weather_data()  # creates weather_data = [] attribute, useful for present/prior weather data tracking
 
         # timing
         self.actual_date_times = []
@@ -34,6 +40,9 @@ class EmsPy:
         self.hours = []
         self.minutes = []
         self.time_x = []
+        # present simulation timesteps
+        self.sys_ts = 0
+        self.zone_ts = 0  # TODO what to track?
 
 
     def _reset_state(self):
@@ -44,7 +53,7 @@ class EmsPy:
         self.api.delete_state(self.state)
 
 
-    def _init_handles_and_data(self):
+    def _init_ems_handles_and_data(self):
         """
         Initialize all the instance attribute names given by the user for the sensors/actuators to be called
         :param variables_dict:
@@ -55,20 +64,26 @@ class EmsPy:
         # set attribute handle names and data arrays given by user to None
         if self.vars_tc is not None:
             for var in self.vars_tc:
-                setattr(self, var[0] + "_handle", None)
-                setattr(self, var[0] + "_data", [])
+                setattr(self, var[0] + '_handle', None)
+                setattr(self, var[0] + '_data', [])
         if self.int_vars_tc is not None:
             for int_var in self.int_vars_tc:
-                setattr(self, int_var[0] + "_handle", None)
-                setattr(self, int_var[0] + "_data", None)  # static val
+                setattr(self, int_var[0] + '_handle', None)
+                setattr(self, int_var[0] + '_data', None)  # static val
         if self.meters_tc is not None:
             for meter in self.meters_tc:
-                setattr(self, meter[0] + "_handle", None)
-                setattr(self, meter[0] + "_data", [])
+                setattr(self, meter[0] + '_handle', None)
+                setattr(self, meter[0] + '_data', [])
         if self.actuators_tc is not None:
             for actuator in self.actuators_tc:
-                setattr(self, actuator[0] + "_handle", None)
-                setattr(self, actuator[0] + "_data", [])
+                setattr(self, actuator[0] + '_handle', None)
+                setattr(self, actuator[0] + '_data', [])
+
+
+    def _init_weather_data(self):
+        if self.weather_tc is not None:
+            for weather_type in self.weather_tc:
+                setattr(self, weather_type + '_data', [])
 
 
     def _set_ems_handles(self, state_arg):
@@ -126,15 +141,14 @@ class EmsPy:
         minute = api.exchange.minutes(state)
         # set, append
         self.actual_date_times.append(api.exchange.actual_date_time(state))
-        self.actual_timeas.append(api.exchange.actual_time(state))
-        self.current_timeas.append(api.exchange.current_time(state))
+        self.actual_times.append(api.exchange.actual_time(state))
+        self.current_times.append(api.exchange.current_time(state))
         self.years.append(year)
         self.months.append(month)
         self.days.append(day)
         self.hours.append(hour)
         self.minutes.append(minute)
         # manage timestep tracking
-        # manage timestep
         timedelta = datetime.timedelta()
         if hour >= 24.0:
             hour = 23.0
@@ -145,6 +159,7 @@ class EmsPy:
         dt = datetime.datetime(year=year, month=month, day=day, hour=hour, minute=minute)
         dt += timedelta
         self.time_x.append(dt)
+        # TODO update zone and sys timsteps
 
 
     def _update_ems_vals(self, state_arg):
@@ -167,11 +182,17 @@ class EmsPy:
                 getattr(self, int_var[0] + '_data').append(data_i)
                 self.static_vars_gathered = True
 
-    def get_weather_time_today(self, when: str, weather_type: str, time: int):
+
+    def _update_weather_vals(self):
+        # update and append present weather vals
+        for weather_type in self.weather_tc:
+            data_i = self._get_weather('today', weather_type, self.hours[-1], self.zone_ts)
+            getattr(self, weather_type + '_data').append(data_i)
+
+
+    def _get_weather(self, when: str, weather_type: str, hour:int, zone_ts: int):
         api = self.api
         state = self.state
-
-        timestep = time
         if when is 'today':
             weather_dict = {
                 'sun_up': api.exchange.sun_is_up,
@@ -184,6 +205,7 @@ class EmsPy:
                 'rel_humidity': api.exchange.today_weather_outdoor_relative_humidity_at_time,
                 'wind_dir': api.exchange.today_weather_wind_direction_at_time,
                 'wind_speed': api.exchange.today_weather_wind_speed_at_time
+                # TODO or use getattr(self, 'api.exchange.' + when + '_weather_..._at time') and eliminate if else
             }
         elif when is 'tomorrow':
             weather_dict = {
@@ -201,7 +223,7 @@ class EmsPy:
         if weather_type is 'sun_up':  # today only
             return weather_dict.get('sun_up')(state)  # no timestep argument, current
         else:
-            return weather_dict.get(weather_type)(state, timestep)
+            return weather_dict.get(weather_type)(state, hour, zone_ts)
 
 
     def set_calling_point(self, calling_pnt: str):
@@ -269,6 +291,7 @@ ep_weather_path = ep_path + '/WeatherData/.epw'
 # int_vars_tc = [["attr_handle_name", "variable_type", "variable_key"],[...],...]
 # meters_tc = [["attr_handle_name", "meter_name",[...],...]
 # actuators_tc = [["attr_handle_name", "component_type", "control_type", "actuator_key"],[...],...]
+# weather_tc = ["sun", "rain", "snow", "wind_dir", ...]
 
 ems = EmsPy(ep_path, ep_idf_to_run, vars_tc, int_vars_tc, meters_tc, actuators_tc)
 bca = ems.BcaEnv()
