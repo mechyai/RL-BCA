@@ -2745,23 +2745,21 @@ LifeCycleCost:NonrecurringCost,
 
 ! node 8 is outlet node
 
-EnergyManagementSystem:Actuator,
-  Setpoint Manager Single Zone Reheat 1,               !- Name
-  Node 8: Thermal Zone 1, !- Actuated Component Unique Name
-  System Zone Setpoint,    !- Actuated Component Type
-  Temperature Setpoint;    !- Actuated Component Control Type
+!EnergyManagementSystem:Actuator,
+!  Setpoint Manager Single Zone Reheat 1,               !- Name
+!  Node 8: Thermal Zone 1, !- Actuated Component Unique Name
+!  System Zone Setpoint,    !- Actuated Component Type
+!  Temperature Setpoint;    !- Actuated Component Control Type
 
-
-SetpointManager:SingleZone:Reheat,
-  Setpoint Manager Single Zone Reheat 1,  !- Name
-  Temperature,                            !- Control Variable
-  -99,                                    !- Minimum Supply Air Temperature {C}
-  99,                                     !- Maximum Supply Air Temperature {C}
-  Thermal Zone 1,                         !- Control Zone Name
-  Node 1,                                 !- Zone Node Name
-  Node 8,                                 !- Zone Inlet Node Name
-  Node 5;                                 !- Setpoint Node or NodeList Name
-
+!SetpointManager:SingleZone:Reheat,
+!  Setpoint Manager Single Zone Reheat 1,  !- Name
+!  Temperature,                            !- Control Variable
+!  -99,                                    !- Minimum Supply Air Temperature {C}
+!  99,                                     !- Maximum Supply Air Temperature {C}
+!  Thermal Zone 1,                         !- Control Zone Name
+!  Node 1,                                 !- Zone Node Name
+!  Node 8,                                 !- Zone Inlet Node Name
+!  Node 5;                                 !- Setpoint Node or NodeList Name
 
 !Output:EnergyManagementSystem,
 !    Verbose,    ! Actuator Availability Dictionary Reporting
@@ -2777,7 +2775,19 @@ SetpointManager:SingleZone:Reheat,
 !    DummyProgram, ! Name
 !    SET A = 1;
 
+!EnergyManagementSystem:Actuator Available,NODE 2,System Node Setpoint,Temperature Setpoint,[C]
+EnergyManagementSystem:Actuator,
+  test_name,               !- Name
+  Node 8, !- Actuated Component Unique Name
+  System Node Setpoint,    !- Actuated Component Type
+  Temperature Setpoint;    !- Actuated Component Control Type
 
+!EnergyManagementSystem:Actuator Available,Environment,Weather Data,Outdoor Dry Bulb,[C]
+EnergyManagementSystem:Actuator,
+  test_weather,               !- Name
+  Environment, !- Actuated Component Unique Name
+  Weather Data,    !- Actuated Component Type
+  Outdoor Dry Bulb;    !- Actuated Component Control Type
 
 
 Output:EnergyManagementSystem,

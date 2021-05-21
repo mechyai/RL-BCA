@@ -25,7 +25,7 @@ from pyenergyplus.api import EnergyPlusAPI
 # import pyenergyplus
 # print(pyenergyplus.api.EnergyPlusAPI.api_version())  # 0.2
 
-ts = 5  # seconds
+ts = 30  # seconds
 step_freq = int(60/ts)  # num of steps per hour
 
 # ----------------------------------------OpenStudio Route--------------------------------------------------------------
@@ -181,15 +181,19 @@ class TwoGraphs:
         # ax.autoscale_view()
         self.fig.canvas.draw()
 
+    def get_handle(self, state_argument):
+        self.oa_temp_handle = (
+            api.exchange.get_variable_handle(state_argument, u"SITE OUTDOOR AIR DRYBULB TEMPERATURE",
+                                             u"ENVIRONMENT")
+        )
+
     def callback_function(self, state_argument):
         # run only once first iter
         if not self.got_handles:
             if not api.exchange.api_data_fully_ready(state_argument):
                 return
-            self.oa_temp_handle = (
-                api.exchange.get_variable_handle(state_argument, u"SITE OUTDOOR AIR DRYBULB TEMPERATURE",
-                                                 u"ENVIRONMENT")
-            )
+            self.get_handle(state_argument)
+
             self.zone_temp_handle = (
                 api.exchange.get_variable_handle(state_argument,
                                                  "Zone Mean Air Temperature",
@@ -212,13 +216,30 @@ class TwoGraphs:
                                                  self.zone_name)
             )
 
-            # # --- Actuator ---
+            # ---------------------------------------- Actuator TEST ----------------------------------------
+            # < EnergyManagementSystem: Actuator Available >, Component Unique Name, Component Type, Control Type, Units
+            # EnergyManagementSystem: Actuator Available, THERMAL ZONE 1, Zone Temperature Control, Cooling Setpoint,[C]
             # self.test_actuator_handle = (
             #     api.exchange.get_actuator_handle(state_argument,
-            #                                      "Main Heating Volume Flow Rate",
-            #                                      "AirLoopHVAC:OutdoorAirSystem"
-            #
-            #                                      self.zone_name)
+            #                                      "component type / actuator category",
+            #                                      "control type / name",
+            #                                      "actuator key / instance")
+            # )
+            self.test_actuator_handle = (
+                api.exchange.get_actuator_handle(state_argument,
+                                                 "Zone Temperature Control",
+                                                 "Cooling Setpoint",
+                                                 "Thermal Zone 1")
+            )
+            # self.test_weather_handle = (
+            #     api.exchange.get_actuator_handle(state_argument,
+            #                                      "Weather Data",
+            #                                      "Outdoor Dry Bulb",
+            #                                      "Environment")
+            # )
+
+            print('*** test actuator handle: ' + str(self.test_actuator_handle))
+            # print('*** test weather handle: ' + str(self.test_weather_handle))
 
             # QUIT program if invalid sensors
             if -1 in [self.oa_temp_handle, self.zone_temp_handle,
@@ -233,6 +254,11 @@ class TwoGraphs:
             return
 
         self.count += 1
+
+        ## ** set actuator arbitrary
+        value = api.exchange.get_actuator_value(state_argument, self.test_actuator_handle)
+        print("***actuator value:" + str(value))
+        api.exchange.set_actuator_value(state_argument, self.test_actuator_handle, 10000)
 
         oa_temp = api.exchange.get_variable_value(state_argument,
                                                   self.oa_temp_handle)
@@ -253,6 +279,7 @@ class TwoGraphs:
         rh = api.exchange.get_variable_value(state_argument, self.zone_rh_handle)
         self.y_rh.append(rh)
 
+        # timing
         year = api.exchange.year(state)
         month = api.exchange.month(state)
         day = api.exchange.day_of_month(state)
@@ -299,6 +326,7 @@ class TwoGraphs:
             self.update_line()
 
 api = EnergyPlusAPI()
+# global var
 state = api.state_manager.new_state()
 
 
