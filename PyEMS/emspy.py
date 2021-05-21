@@ -191,40 +191,23 @@ class EmsPy:
 
 
     def _get_weather(self, when: str, weather_type: str, hour:int, zone_ts: int):
-        api = self.api
-        state = self.state
-        if when is 'today':
+        if weather_type is not 'sun_up':
             weather_dict = {
-                'sun_up': api.exchange.sun_is_up,
-                'rain': api.exchange.today_weather_is_raining_at_time,
-                'snow': api.exchange.today_weather_is_raning_at_time,
-                'precipitation': api.exchange.today_weather_liquid_precipitation_at_time,
-                'bar_pressure': api.exchange.today_weather_barometric_pressure_at_time,
-                'dew_point': api.exchange.today_weather_outdoor_dew_point_at_time,
-                'dry_bulb' : api.exchange.today_weather_outdoor_dry_buld_at_time,
-                'rel_humidity': api.exchange.today_weather_outdoor_relative_humidity_at_time,
-                'wind_dir': api.exchange.today_weather_wind_direction_at_time,
-                'wind_speed': api.exchange.today_weather_wind_speed_at_time
-                # TODO or use getattr(self, 'api.exchange.' + when + '_weather_..._at time') and eliminate if else
+                'rain': 'is_raining',
+                'snow': 'is_snowing',
+                'precipitation': 'liquid_precipiation',
+                'bar_pressure': 'barometric_pressure',
+                'dew_point': 'outdoor_dew_point',
+                'dry_bulb': 'outdoor_dry_buld',
+                'rel_humidity': 'outdoor_relative_humidity',
+                'wind_dir': 'wind_direction',
+                'wind_speed': 'wind_speed',
+                # simply add api weather relations
             }
-        elif when is 'tomorrow':
-            weather_dict = {
-                # NO SUN
-                'rain': api.exchange.tomorrow_weather_is_raining_at_time,
-                'snow': api.exchange.tomorrow_weather_is_raning_at_time,
-                'precipitation': api.exchange.tomorrow_weather_liquid_precipitation_at_time,
-                'bar_pressure': api.exchange.tomorrow_weather_barometric_pressure_at_time,
-                'dew_point': api.exchange.tomorrow_weather_outdoor_dew_point_at_time,
-                'dry_bulb': api.exchange.tomorrow_weather_outdoor_dry_buld_at_time,
-                'rel_humidity': api.exchange.tomorrow_weather_outdoor_relative_humidity_at_time,
-                'wind_dir': api.exchange.tomorrow_weather_wind_direction_at_time,
-                'wind_speed': api.exchange.tomorrow_weather_wind_speed_at_time
-            }
-        if weather_type is 'sun_up':  # today only
-            return weather_dict.get('sun_up')(state)  # no timestep argument, current
-        else:
-            return weather_dict.get(weather_type)(state, hour, zone_ts)
-
+            weather = weather_dict.get(weather_type)
+            return getattr(self, 'api.exchange.' + when + '_weather_' + weather + '_at_time')(self.state, hour, zone_ts)
+        elif weather_type is 'sun_up':
+            return self.api.exchange.sun_is.up(self.state)
 
     def set_calling_point(self, calling_pnt: str):
 
