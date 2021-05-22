@@ -34,13 +34,15 @@ int_vars_tc = None
 meters_tc = None
 # still not working
 actuators_tc = [['act_odb_temp', 'weather data', 'outdoor dry bulb', 'environment']]
-weather_tc = ['sun_up', 'rain', 'wind_dir', 'rel_humidity']
+weather_tc = ['sun_is_up', 'is_raining', 'wind_direction', 'outdoor_relative_humidity']
 
 
 # ems = emspy.EmsPy(ep_path, ep_idf_to_run, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc)
 calling_point = 'callback_begin_zone_timestep_after_init_heat_balance'
 #ems._run_simulation(ep_weather_path, calling_point)
-agent = emspy.BcaEnv(ep_path, ep_idf_to_run, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc)
+ts = 12
+emspy.EmsPy.ep_path = ep_path
+agent = emspy.BcaEnv(ep_path, ep_idf_to_run, ts, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc)
 agent.reset_sim(ep_weather_path, calling_point)
 
 # ems._reset_state()
