@@ -10,7 +10,7 @@ class EmsPy:
                                  'outdoor_dew_point', 'outdoor_dry_bulb', 'outdoor_relative_humidity',
                                  'sky_temperature', 'wind_direction', 'wind_speed']
 
-    def __init__(self, ep_path: str, ep_idf_to_run: str, timesteps: int, vars_tc: list, int_vars_tc: list,
+    def __init__(self, ep_path: str, ep_idf_to_run: str, timesteps: int, vars_tc: list, intvars_tc: list,
                  meters_tc: list, actuators_tc: list, weather_tc: list):
         """
         Establish connection to EnergyPlusAPI and initializes desired EMS sensors, actuators, and weather data.
@@ -50,7 +50,7 @@ class EmsPy:
 
         # Table of Contents for EMS sensor and actuators
         self.vars_tc = vars_tc
-        self.int_vars_tc = int_vars_tc
+        self.intvars_tc = intvars_tc
         self.meters_tc = meters_tc
         self.actuators_tc = actuators_tc
         # create attributes of sensor and actuator .idf handles and data arrays
@@ -75,9 +75,17 @@ class EmsPy:
         # timesteps and simulation iterations
         self.count = 0
         self.sys_ts = 0  # TODO nothing done with this yet
+        #TODO should I keep zone_ts per run/callingpoint, initialize when run simulation 
         self.zone_ts = 1  # fluctuate from one to # of timesteps per hour
         self.timestep_freq = timesteps
         self.timestep_period = 60/timesteps  # minute duration of each timestep of simulation
+
+        # dataframes
+        self.df_vars = None
+        self.df_intvars = None
+        self.df_meters = None
+        self.df_actuators = None
+        self.df_weather = None
 
     def _init_ems_handles_and_data(self):
         """Creates and initializes the necessary instance attributes given by the user for the EMS sensors/actuators."""
@@ -87,8 +95,8 @@ class EmsPy:
             for var in self.vars_tc:
                 setattr(self, 'handle_var_' + var[0], None)
                 setattr(self, 'data_var_' + var[0], [])
-        if self.int_vars_tc is not None:
-            for int_var in self.int_vars_tc:
+        if self.intvars_tc is not None:
+            for int_var in self.intvars_tc:
                 setattr(self, 'handle_intvar_' + int_var[0], None)
                 setattr(self, 'data_intvar_' + int_var[0], None)  # static val
         if self.meters_tc is not None:
@@ -117,9 +125,9 @@ class EmsPy:
         if self.vars_tc is not None:
             for var in self.vars_tc:
                 setattr(self, 'handle_var_' + var[0], self._get_handle('var', var))
-        if self.int_vars_tc is not None:
-            for int_var in self.int_vars_tc:
-                setattr(self, 'handle_intvar_' + int_var[0], self._get_handle('int_var', int_var))
+        if self.intvars_tc is not None:
+            for intvar in self.intvars_tc:
+                setattr(self, 'handle_intvar_' + int_var[0], self._get_handle('intvar', intvar))
         if self.meters_tc is not None:
             for meter in self.meters_tc:
                 setattr(self, 'handle_meter_' + meter[0], self._get_handle('meter', meter))
@@ -142,7 +150,7 @@ class EmsPy:
                 handle = datax.get_variable_handle(state,
                                                    ems_obj[1],  # var name
                                                    ems_obj[2])  # var key
-            elif ems_type is 'int_var':
+            elif ems_type is 'intvar':
                 handle = datax.get_internal_variable_handle(state,
                                                             ems_obj[1],  # int var name
                                                             ems_obj[2])  # int var key
@@ -219,10 +227,10 @@ class EmsPy:
                 data_i = datax.get_actuator_value(state, getattr(self, 'handle_actuator_' + actuator[0]))
                 getattr(self, 'data_actuator_' + actuator[0]).append(data_i)
         # update static (internal) variables once
-        if self.int_vars_tc is not None and not self.static_vars_gathered:
-            for int_var in self.int_vars_tc:
-                data_i = datax.get_internal_variable_value(state, getattr(self, 'handle_intvar_' + int_var[0]))
-                getattr(self, 'data_intvar_' + int_var[0]).append(data_i)
+        if self.intvars_tc is not None and not self.static_vars_gathered:
+            for intvar in self.intvars_tc:
+                data_i = datax.get_internal_variable_value(state, getattr(self, 'handle_intvar_' + intvar[0]))
+                getattr(self, 'data_intvar_' + intvar[0]).append(data_i)
                 self.static_vars_gathered = True
 
     def _update_weather_vals(self):
@@ -235,22 +243,18 @@ class EmsPy:
 
     def _get_weather(self, when: str, weather_type: str, hour: int, zone_ts: int):
         """
+        Gets desired weather metric data for a given hour and zone timestep, either for today or tomorrow in simulation
 
-
-        :param when:
-        :param weather_type:
-        :param hour:
-        :param zone_ts:
-        :return:
+        :param when: the day in question, 'today' or 'tomorrow'
+        :param weather_type: the weather metric to call from EnergyPlusAPI, only specific fields are granted
+        :param hour: the hour of the day to call the weather value
+        :param zone_ts: the zone timestep of the given hour to call the weather value
         """
         if weather_type is not 'sun_is_up':
             return getattr(self.api.exchange, when + '_weather_' + weather_type + '_at_time')(self.state, hour, zone_ts)
         elif weather_type is 'sun_is_up':
             return self.api.exchange.sun_is_up(self.state)
 
-    def set_calling_point(self, calling_pnt: str):
-        # TODO
-        pass
 
     def _callback_function(self, state_arg):
         # get handles once
@@ -271,9 +275,13 @@ class EmsPy:
         self._update_weather_vals()
 
         self.count += 1
-        self.zone_ts += 1  # TODO make dependent on input file
-        if self.zone_ts == 12:
+        self.zone_ts += 1  # TODO make dependent on input file OR handle mistake where user enters incorrect ts
+        if self.zone_ts > self.timestep_freq:
             self.zone_ts = 1
+
+    def set_calling_point(self, calling_pnt: str):
+            # TODO - can the sim run multiple calling functions? If so, how should I manage a user wanting to call multiple instances (with multiple callbacks)
+            pass
 
     def _reset_state(self):
         self.api.state_manager.reset_state(self.state)
@@ -283,6 +291,7 @@ class EmsPy:
 
     def _run_simulation(self, weather_file, calling_point):
         # set calling point with callback function
+        #TODO *vargs multiple calling points from here, how to integrate with setting actuators 
         getattr(self.api.runtime, calling_point)(self.state, self._callback_function)
         # run simulation
         self.api.runtime.run_energyplus(self.state,
