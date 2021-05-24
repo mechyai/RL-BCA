@@ -53,6 +53,11 @@ class EmsPy:
         self.intvars_tc = intvars_tc
         self.meters_tc = meters_tc
         self.actuators_tc = actuators_tc
+        # name lists
+        self.var_names = []
+        self.intvar_names = []
+        self.meter_names = []
+        self.actuator_names = []
         # create attributes of sensor and actuator .idf handles and data arrays
         self._init_ems_handles_and_data()  # creates ems_handle = int & ems_data = [] attributes
         self.got_ems_handles = False
@@ -93,20 +98,29 @@ class EmsPy:
         # set attribute handle names and data arrays given by user to None
         if self.vars_tc is not None:
             for var in self.vars_tc:
-                setattr(self, 'handle_var_' + var[0], None)
-                setattr(self, 'data_var_' + var[0], [])
+                var_name = var[0]
+                self.var_names.append(var_name)
+                setattr(self, 'handle_var_' + var_name, None)
+                setattr(self, 'data_var_' + var_name, [])
         if self.intvars_tc is not None:
-            for int_var in self.intvars_tc:
-                setattr(self, 'handle_intvar_' + int_var[0], None)
-                setattr(self, 'data_intvar_' + int_var[0], None)  # static val
+            for intvar in self.intvars_tc:
+                intvar_name = intvar[0]
+                self.intvar_names.append(intvar_name)
+                setattr(self, 'handle_intvar_' + intvar_name, None)
+                setattr(self, 'data_intvar_' + intvar_name, None)  # static val
         if self.meters_tc is not None:
             for meter in self.meters_tc:
-                setattr(self, 'handle_meter_' + meter[0], None)
-                setattr(self, 'data_meter_' + meter[0], [])
+                meter_name = meter[0]
+                self.meter_names.append(meter_name)
+                setattr(self, 'handle_meter_' + meter_name, None)
+                setattr(self, 'data_meter_' + meter_name, [])
         if self.actuators_tc is not None:
+            setattr(self, 'actuators_tc_names', [])  # TODO this may only be needed for actuators
             for actuator in self.actuators_tc:
-                setattr(self, 'handle_actuator_' + actuator[0], None)
-                setattr(self, 'data_actuator_' + actuator[0], [])
+                actuator_name = actuator[0]
+                self.actuator_names.append(actuator_name)
+                setattr(self, 'handle_actuator_' + actuator_name, None)
+                setattr(self, 'data_actuator_' + actuator_name, [])
 
     def _init_weather_data(self):
         """Creates and initializes the necessary instance attributes given by the user for present weather metrics."""
@@ -127,7 +141,7 @@ class EmsPy:
                 setattr(self, 'handle_var_' + var[0], self._get_handle('var', var))
         if self.intvars_tc is not None:
             for intvar in self.intvars_tc:
-                setattr(self, 'handle_intvar_' + int_var[0], self._get_handle('intvar', intvar))
+                setattr(self, 'handle_intvar_' + intvar[0], self._get_handle('intvar', intvar))
         if self.meters_tc is not None:
             for meter in self.meters_tc:
                 setattr(self, 'handle_meter_' + meter[0], self._get_handle('meter', meter))
@@ -165,7 +179,7 @@ class EmsPy:
             # catch error handling by EMS E+
             if handle == -1:
                 raise Exception(str(ems_obj) + ': Either Variable (sensor) or Internal Variable handle could not be'
-                                                ' found. Please consult the .idf and/or your ToC for accuracy')
+                                               ' found. Please consult the .idf and/or your ToC for accuracy')
             else:
                 return handle
         except IndexError:
@@ -242,7 +256,7 @@ class EmsPy:
 
     def _get_weather(self, when: str, weather_type: str, hour: int, zone_ts: int):
         """
-        Gets desired weather metric data for a given hour and zone timestep, either for today or tomorrow in simulation
+        Gets desired weather metric data for a given hour and zone timestep, either for today or tomorrow in simulation.
 
         :param when: the day in question, 'today' or 'tomorrow'
         :param weather_type: the weather metric to call from EnergyPlusAPI, only specific fields are granted
@@ -254,7 +268,25 @@ class EmsPy:
         elif weather_type is 'sun_is_up':
             return self.api.exchange.sun_is_up(self.state)
 
+    def _actuate(self, actuator_val: list):
+        for actuator_val_pair in actuator_val:
+            if actuator_val_pair[0] not in self.actuator_names:
+                raise Exception(f'Either this actuator {actuator_val_pair[0]} is not tracked, or misspelled.'
+                                f'Check your Actuator ToC.')
+            handle = getattr(self, 'handle_actuator_' + actuator_val_pair[0])
+            val = actuator_val_pair[1]  # TODO should I handle out of range actuator values
+            # use None to relinquish control
+            if val is None:
+                self.api.exchange.reset_actuator(self.state, handle)  # return actuator control to EnergyPlus
+            else:
+                self.api.exchange.set_actuator_value(self.state, handle, val)
+
     def _callback_function(self, state_arg):
+        """
+        The main callback passed to the running EnergyPlus simulation, this commands the behavior of there interaction.
+
+        :param state_arg: NOT USED by this API - used internally by EnergyPlus
+        """
         # get handles once
         if not self.got_ems_handles:
             # verify ems objects are ready for access, skip until
@@ -271,6 +303,7 @@ class EmsPy:
         self._update_time()  # note timing update is first
         self._update_ems_vals()
         self._update_weather_vals()
+        self._actuate(RL_fxn)  # TODO figure out the proper sequential order of this with data, time, weather updates - likely dependent on calling point`
 
         self.count += 1
         self.zone_ts += 1  # TODO make dependent on input file OR handle mistake where user enters incorrect ts
