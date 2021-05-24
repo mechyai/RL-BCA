@@ -38,14 +38,14 @@ class EmsPy:
         """
         self.ep_path = ep_path
         sys.path.insert(0, ep_path)  # set path to E+
-        import pyenergyplus.api  # TODO add basic usability functions to
+        import pyenergyplus.api
         from pyenergyplus.api import EnergyPlusAPI
 
         self.pyapi = pyenergyplus.api
         self.api = EnergyPlusAPI()  # instantiation of Python EMS API
 
         # instance important below
-        self.state = self.api.state_manager.new_state()
+        self.state = self._new_state  # TODO determine if multiple state instances should be allowed (new meta attr.)
         self.idf_file = ep_idf_to_run  # E+ idf file to simulation
 
         # Table of Contents for EMS sensor and actuators
@@ -208,7 +208,6 @@ class EmsPy:
         else:
             self.zone_ts += 1
 
-
     def _update_ems_vals(self):
         """Updates and appends given sensor/actuator values from running simulation."""
 
@@ -255,7 +254,6 @@ class EmsPy:
         elif weather_type is 'sun_is_up':
             return self.api.exchange.sun_is_up(self.state)
 
-
     def _callback_function(self, state_arg):
         # get handles once
         if not self.got_ems_handles:
@@ -280,13 +278,24 @@ class EmsPy:
             self.zone_ts = 1
 
     def set_calling_point(self, calling_pnt: str):
-            # TODO - can the sim run multiple calling functions? If so, how should I manage a user wanting to call multiple instances (with multiple callbacks)
-            pass
+        """
+        Sets a calling point attribute for when the callback function will be called within the running simulation.
+
+        :param calling_pnt: the calling point defined by EnergyPlus Runtime API documentation and EMS App Guide
+        """
+        # TODO - can the sim run multiple calling functions? If so, how should I manage a user wanting to call multiple instances (with multiple callbacks)
+        pass
+
+    def _new_state(self):
+        """Creates & returns a new state instance that's required to pass into EnergyPlus Runtime API function calls."""
+        return self.api.state_manager.new_state()
 
     def _reset_state(self):
+        """Resets the state instance of a simulation per EnergyPlus State API documentation."""
         self.api.state_manager.reset_state(self.state)
 
     def _delete_state(self):
+        """ Deletes the existing state instance"""
         self.api.state_manager.delete_state(self.state)
 
     def _run_simulation(self, weather_file, calling_point):
