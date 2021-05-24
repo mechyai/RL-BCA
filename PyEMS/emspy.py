@@ -1,3 +1,12 @@
+"""
+This program was constructed with the help from the work of Julien Marrec
+https://github.com/jmarrec/OpenStudio_to_EnergyPlusAPI/blob/main/OpenStudio_to_EnergyPlusAPI.ipynb
+
+EnergyPlus Python API 0.2 documentation https://eplus.readthedocs.io/en/stable/
+EnergyPlus documentation (EMS Application Guide) https://energyplus.net/documentation
+OpenStudio SDK documentation http://nrel.github.io/OpenStudio-user-documentation/
+"""
+
 import sys
 import datetime
 
@@ -16,8 +25,10 @@ class EmsPy:
         Establish connection to EnergyPlusAPI and initializes desired EMS sensors, actuators, and weather data.
 
         This instantiation will implement the meta-class functionality - various handle and data list attributes will
-        be created based on the user's input of desired EMS sensors, actuators, and weather data. Other functionality
-        of the EnergyPlusAPI, not provided by this class, may also be accessed directly through the .pyapi pointer.
+        be created based on the user's input of desired EMS sensors, actuators, and weather data. Understanding what
+        sensors and actuators are available, and how they are labeled, requires a reasonably well understanding of your
+        EnergyPlus model and it's .idf file, as well as the .edd and .rdd output files. Other functionality of the
+        EnergyPlusAPI, not provided by this simplified class, may also be accessed directly through the .pyapi pointer.
 
         :param ep_path: absolute path to EnergyPlus download directory in user's file system
         :param ep_idf_to_run: absolute/relative path to EnergyPlus building energy model to be simulated, .idf file
@@ -45,7 +56,7 @@ class EmsPy:
         self.api = EnergyPlusAPI()  # instantiation of Python EMS API
 
         # instance important below
-        self.state = self._new_state  # TODO determine if multiple state instances should be allowed (new meta attr.)
+        self.state = self._new_state()  # TODO determine if multiple state instances should be allowed (new meta attr.)
         self.idf_file = ep_idf_to_run  # E+ idf file to simulation
 
         # Table of Contents for EMS sensor and actuators
@@ -303,7 +314,7 @@ class EmsPy:
         self._update_time()  # note timing update is first
         self._update_ems_vals()
         self._update_weather_vals()
-        self._actuate(RL_fxn)  # TODO figure out the proper sequential order of this with data, time, weather updates - likely dependent on calling point`
+        # self._actuate(RL_fxn)  # TODO figure out the proper sequential order of this with data, time, weather updates - likely dependent on calling point`
 
         self.count += 1
         self.zone_ts += 1  # TODO make dependent on input file OR handle mistake where user enters incorrect ts
@@ -365,6 +376,9 @@ class BcaEnv(EmsPy):
         # return reward
 
     def _take_action(self):
+        pass
+
+    def act(self, action_algorithm, calling_point: str):
         pass
 
     def step_env(self):
