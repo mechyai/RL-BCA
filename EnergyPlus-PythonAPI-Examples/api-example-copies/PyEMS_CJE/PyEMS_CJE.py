@@ -30,6 +30,7 @@ step_freq = int(60/ts)  # num of steps per hour
 
 # ----------------------------------------OpenStudio Route--------------------------------------------------------------
 
+# TODO interacting with idf and OSM in controlled way
 m = openstudio.model.exampleModel()  # {Model} idf file
 #
 # [x.remove() for x in m.getOutputVariables()]
@@ -101,8 +102,8 @@ class TwoGraphs:
         self.zone_htg_tstat_handle = -1
         self.zone_clg_tstat_handle = -1
         self.zone_rh_handle = -1  # added by CJE
-        self.count = 0
-        self.plot_update_interval = 250  # time steps
+        self.count = 0 #TODO
+        self.plot_update_interval = 250  # time steps TODO
 
         self.x = []
         self.y_outdoor = []
@@ -119,7 +120,8 @@ class TwoGraphs:
         self.current_times = []
         self.actual_date_times = []
         self.actual_times = []
-        self.df = pd.DataFrame({'OA Temp': [], 'Zone Temp': [], 'Htg Tstat': [], 'Clg Tstat': []})
+        self.df = pd.DataFrame({'OA Temp': [], 'Zone Temp': [], 'Htg Tstat': [], 'Clg Tstat': []})  # TODO
+
 
     def init_plot(self):
 
@@ -257,21 +259,21 @@ class TwoGraphs:
 
         ## ** set actuator arbitrary
         value = api.exchange.get_actuator_value(state_argument, self.test_actuator_handle)
-        print("***actuator value:" + str(value))
+        # print("***actuator value:" + str(value))
         api.exchange.set_actuator_value(state_argument, self.test_actuator_handle, 10000)
 
-        oa_temp = api.exchange.get_variable_value(state_argument,
+        oa_temp = api.exchange.get_variable_value(state,
                                                   self.oa_temp_handle)
         self.y_outdoor.append(oa_temp)
-        zone_temp = api.exchange.get_variable_value(state_argument,
+        zone_temp = api.exchange.get_variable_value(state,
                                                     self.zone_temp_handle)
         self.y_zone.append(zone_temp)
 
-        zone_htg_tstat = api.exchange.get_variable_value(state_argument,
+        zone_htg_tstat = api.exchange.get_variable_value(state,
                                                          self.zone_htg_tstat_handle)
         self.y_htg.append(zone_htg_tstat)
 
-        zone_clg_tstat = api.exchange.get_variable_value(state_argument,
+        zone_clg_tstat = api.exchange.get_variable_value(state,
                                                          self.zone_clg_tstat_handle)
         self.y_clg.append(zone_clg_tstat)
 
@@ -280,7 +282,7 @@ class TwoGraphs:
         self.y_rh.append(rh)
 
         # timing
-        year = api.exchange.year(state)
+        year = api.exchange.year(state_argument)
         month = api.exchange.month(state)
         day = api.exchange.day_of_month(state)
         hour = api.exchange.hour(state)
@@ -303,17 +305,21 @@ class TwoGraphs:
         self.actual_times.append(actual_time)
 
         timedelta = datetime.timedelta()
+        # print(timedelta)
         if hour >= 24.0:
-            hour = 23.0
+            hour = 23
             timedelta += datetime.timedelta(hours=1)
         if minute >= 60.0:
             minute = 59
             timedelta += datetime.timedelta(minutes=1)
+        # print(timedelta)
 
         dt = datetime.datetime(year=year, month=month, day=day, hour=hour, minute=minute)
+        # print(dt)
         dt += timedelta
         self.x.append(dt)
 
+        # TODO
         if self.count % self.plot_update_interval == 0:
             self.df = pd.DataFrame({'OA Temp': self.y_outdoor,
                                     'Zone Temp': self.y_zone,
@@ -322,19 +328,25 @@ class TwoGraphs:
                                     'Zone RH': self.y_rh,  # CJE
                                     },
                                    index=self.x)
-
             self.update_line()
 
-api = EnergyPlusAPI()
-# global var
-state = api.state_manager.new_state()
+##################################
 
+api = EnergyPlusAPI()
+api1 = EnergyPlusAPI()
+# global var
+state = api.state_manager.new_state()  # TODO
+state1 = api1.state_manager.new_state()
 
 filename_to_run = project_path + 'test_CJE_act.idf'
 g = TwoGraphs(filename_to_run=filename_to_run,
               zone_name=openstudio.model.getThermalZones(m)[0].nameString())
+g1 = TwoGraphs(filename_to_run=filename_to_run,
+              zone_name=openstudio.model.getThermalZones(m)[0].nameString())
 
 api.runtime.callback_begin_zone_timestep_after_init_heat_balance(state, g.callback_function)
+# api.runtime.callback_after_predictor_after_hvac_managers(state, g.callback_function)
+# api1.runtime.callback_begin_zone_timestep_after_init_heat_balance(state1, g1.callback_function)
 api.runtime.run_energyplus(state,
     [
         '-w', ep_path + '/WeatherData/USA_CO_Golden-NREL.724666_TMY3.epw',
@@ -342,7 +354,14 @@ api.runtime.run_energyplus(state,
         filename_to_run
     ]
 )
-
+#
+# api1.runtime.run_energyplus(state1,
+#     [
+#         '-w', ep_path + '/WeatherData/USA_CO_Golden-NREL.724666_TMY3.epw',
+#         '-d', 'out',
+#         filename_to_run
+#     ]
+# )
 # If you need to call run_energyplus again, then reset the state first
 api.state_manager.reset_state(state)
 plt.show()

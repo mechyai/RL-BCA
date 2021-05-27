@@ -30,11 +30,9 @@
       <change beforePath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.err" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.err" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.eso" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.eso" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.mdd" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.mdd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.mtd" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.mtd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.mtr" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.mtr" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.rdd" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.rdd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.sql" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusssz.csv" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusssz.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplustbl.htm" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplustbl.htm" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/sqlite.err" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/sqlite.err" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PyEMS/emspy.py" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/emspy.py" afterDir="false" />
@@ -52,7 +50,19 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="actuators_callingpoints" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="hiddenUrls">
+      <set>
+        <option value="https://github.com/mechyai/RL-BCA.git" />
+      </set>
+    </option>
   </component>
   <component name="ProjectId" id="1sP8Lt4tciOZrO5Zujfx9rDgJhD" />
   <component name="ProjectViewState">
@@ -64,7 +74,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Python" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/PyEMS" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
@@ -75,6 +85,7 @@
       <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\api-example-copiespyEMS_jmarrec" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="A:\Files\PycharmProjects\RL-BCA\PyEMS" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\api-example-copies\PyEMS_CJE" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\CJE-examples" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples" />
@@ -82,37 +93,40 @@
     </key>
   </component>
   <component name="RunManager" selected="Python.scratch">
-    <configuration name="PyEMS_CJE (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="RL-BCA" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/PyEMS_CJE.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="PyEMS_CJE" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/PyEMS_CJE.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="emspy" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="RL-BCA" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PyEMS" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/PyEMS/emspy.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -121,21 +135,18 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="PyEMS_jmarrec (2)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="emspy_testscript" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PyEMS" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_jmarrec.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/PyEMS/emspy_testscript.py" />
       <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
@@ -180,18 +191,18 @@
     </configuration>
     <list>
       <item itemvalue="Python.PyEMS_CJE" />
-      <item itemvalue="Python.PyEMS_CJE (1)" />
-      <item itemvalue="Python.PyEMS_jmarrec (2)" />
-      <item itemvalue="Python.scratch_1" />
+      <item itemvalue="Python.emspy" />
+      <item itemvalue="Python.emspy_testscript" />
       <item itemvalue="Python.scratch" />
+      <item itemvalue="Python.scratch_1" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.scratch" />
+        <item itemvalue="Python.emspy_testscript" />
+        <item itemvalue="Python.scratch_1" />
         <item itemvalue="Python.scratch" />
-        <item itemvalue="Python.PyEMS_CJE" />
-        <item itemvalue="Python.scratch_1" />
-        <item itemvalue="Python.scratch_1" />
+        <item itemvalue="Python.emspy" />
       </list>
     </recent_temporary>
   </component>
@@ -276,7 +287,63 @@
       <option name="project" value="LOCAL" />
       <updated>1621606950804</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="about to finish weather, changing to getattr instead to handle today/tomorrow">
+      <created>1621621808901</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1621621808901</updated>
+    </task>
+    <task id="LOCAL-00012" summary="about to finish weather, changing to getattr instead to handle today/tomorrow">
+      <created>1621621820462</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1621621820462</updated>
+    </task>
+    <task id="LOCAL-00013" summary="weather functions v1 finalized">
+      <created>1621622561819</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1621622561819</updated>
+    </task>
+    <task id="LOCAL-00014" summary="emspy library working on tests of weather, variables, and actuators (actuators output 0 still), but have not tested meters or internal vars.">
+      <created>1621632280971</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1621632280971</updated>
+    </task>
+    <task id="LOCAL-00015" summary="update to meta-class">
+      <created>1621708589307</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1621708589307</updated>
+    </task>
+    <task id="LOCAL-00016" summary="update, might fork soon to handle multi state instances or callbacks">
+      <created>1621818401627</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1621818401627</updated>
+    </task>
+    <task id="LOCAL-00017" summary="adding actuator components, modified EMS var ToC name instantiation and tracking, editing calling points soon">
+      <created>1621872181969</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1621872181969</updated>
+    </task>
+    <task id="LOCAL-00018" summary="update, references added">
+      <created>1621885935708</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1621885935708</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -300,61 +367,73 @@
     <MESSAGE value="progress underway with EMS RL custom class/library" />
     <MESSAGE value="added more _functions to EMS core class" />
     <MESSAGE value="added weather calling functionality" />
-    <option name="LAST_COMMIT_MESSAGE" value="added weather calling functionality" />
+    <MESSAGE value="about to finish weather, changing to getattr instead to handle today/tomorrow" />
+    <MESSAGE value="weather functions v1 finalized" />
+    <MESSAGE value="emspy library working on tests of weather, variables, and actuators (actuators output 0 still), but have not tested meters or internal vars." />
+    <MESSAGE value="update to meta-class" />
+    <MESSAGE value="update, might fork soon to handle multi state instances or callbacks" />
+    <MESSAGE value="adding actuator components, modified EMS var ToC name instantiation and tracking, editing calling points soon" />
+    <MESSAGE value="update, references added" />
+    <option name="LAST_COMMIT_MESSAGE" value="update, references added" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="-1468" y="114" width="1016" height="911" key="#Intentions" timestamp="1621702557664">
+      <screen x="-1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="-1468" y="114" width="1016" height="911" key="#Intentions/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621702557664" />
     <state x="-1506" y="194" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1621478991886">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
     <state x="-1506" y="194" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621478991886" />
-    <state x="-1205" y="341" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1621012802077">
-      <screen x="-1920" y="0" width="1920" height="1080" />
+    <state x="572" y="260" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1621822006589">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="-1205" y="341" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621012802077" />
+    <state x="572" y="260" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824/-1920.0.1920.1080@0.0.1536.824" timestamp="1621822006589" />
     <state x="-1122" y="233" key="#xdebugger.XInspectDialog" timestamp="1621380283677">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
     <state x="-1122" y="233" key="#xdebugger.XInspectDialog/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621380283677" />
-    <state width="1358" height="333" key="GridCell.Tab.0.bottom" timestamp="1621617915119">
+    <state width="1867" height="257" key="GridCell.Tab.0.bottom" timestamp="1621654576178">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1358" height="333" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621617915119" />
-    <state width="1358" height="333" key="GridCell.Tab.0.center" timestamp="1621617915119">
+    <state width="1867" height="257" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621654576178" />
+    <state width="1867" height="257" key="GridCell.Tab.0.center" timestamp="1621654576177">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1358" height="333" key="GridCell.Tab.0.center/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621617915119" />
-    <state width="1358" height="333" key="GridCell.Tab.0.left" timestamp="1621617915119">
+    <state width="1867" height="257" key="GridCell.Tab.0.center/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621654576177" />
+    <state width="1867" height="257" key="GridCell.Tab.0.left" timestamp="1621654576177">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1358" height="333" key="GridCell.Tab.0.left/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621617915119" />
-    <state width="1358" height="333" key="GridCell.Tab.0.right" timestamp="1621617915119">
+    <state width="1867" height="257" key="GridCell.Tab.0.left/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621654576177" />
+    <state width="1867" height="257" key="GridCell.Tab.0.right" timestamp="1621654576178">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1358" height="333" key="GridCell.Tab.0.right/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621617915119" />
-    <state width="1323" height="347" key="GridCell.Tab.1.bottom" timestamp="1620938852526">
+    <state width="1867" height="257" key="GridCell.Tab.0.right/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621654576178" />
+    <state width="1867" height="257" key="GridCell.Tab.1.bottom" timestamp="1621654576178">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1323" height="347" key="GridCell.Tab.1.bottom/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1620938852526" />
-    <state width="1323" height="347" key="GridCell.Tab.1.center" timestamp="1620938852526">
+    <state width="1867" height="257" key="GridCell.Tab.1.bottom/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621654576178" />
+    <state width="1867" height="257" key="GridCell.Tab.1.center" timestamp="1621654576178">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1323" height="347" key="GridCell.Tab.1.center/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1620938852526" />
-    <state width="1323" height="347" key="GridCell.Tab.1.left" timestamp="1620938852526">
+    <state width="1867" height="257" key="GridCell.Tab.1.center/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621654576178" />
+    <state width="1867" height="257" key="GridCell.Tab.1.left" timestamp="1621654576178">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1323" height="347" key="GridCell.Tab.1.left/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1620938852526" />
-    <state width="1323" height="347" key="GridCell.Tab.1.right" timestamp="1620938852526">
+    <state width="1867" height="257" key="GridCell.Tab.1.left/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621654576178" />
+    <state width="1867" height="257" key="GridCell.Tab.1.right" timestamp="1621654576178">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1323" height="347" key="GridCell.Tab.1.right/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1620938852526" />
+    <state width="1867" height="257" key="GridCell.Tab.1.right/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621654576178" />
     <state x="-1459" y="184" key="SettingsEditor" timestamp="1621379101168">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
     <state x="-1459" y="184" key="SettingsEditor/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621379101168" />
-    <state x="-1368" y="259" key="Vcs.Push.Dialog.v2" timestamp="1621606955059">
+    <state x="-1368" y="259" key="Vcs.Push.Dialog.v2" timestamp="1621885950119">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="-1368" y="259" key="Vcs.Push.Dialog.v2/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621606955059" />
+    <state x="-1368" y="259" key="Vcs.Push.Dialog.v2/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621885950119" />
     <state width="968" height="548" key="XDebugger.FullValuePopup" timestamp="1620938535020">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
@@ -377,12 +456,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/PyEMS_CJE.py</url>
-          <line>305</line>
+          <line>306</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/PyEMS_CJE.py</url>
-          <line>315</line>
+          <line>316</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
@@ -396,6 +475,13 @@
           <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
     </breakpoint-manager>
   </component>
 </project>

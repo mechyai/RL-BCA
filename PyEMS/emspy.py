@@ -104,7 +104,15 @@ class EmsPy:
         self.df_weather = None
 
     def _init_ems_handles_and_data(self):
-        """Creates and initializes the necessary instance attributes given by the user for the EMS sensors/actuators."""
+        """
+        Creates and initializes the necessary instance attributes given by the user for the EMS sensors/actuators.
+
+        This will initialize data list and EMS handle attributes to the proper Null value for each EMS variable,
+        internal variable, meter, and actuator as outlined by the user in their respective Table of Contents variable.
+        All of these attributes need to be initialized for later use, using the 'variable name' of the object in the
+        first element of each ToC element. Then 'handle_' and 'data_' will be added to the given name to further specify
+        the created attribute.
+        """
 
         # set attribute handle names and data arrays given by user to None
         if self.vars_tc is not None:
@@ -280,12 +288,17 @@ class EmsPy:
             return self.api.exchange.sun_is_up(self.state)
 
     def _actuate(self, actuator_val: list):
+        """
+        # TODO document
+        :param actuator_val:
+        :return:
+        """
         for actuator_val_pair in actuator_val:
             if actuator_val_pair[0] not in self.actuator_names:
                 raise Exception(f'Either this actuator {actuator_val_pair[0]} is not tracked, or misspelled.'
                                 f'Check your Actuator ToC.')
             handle = getattr(self, 'handle_actuator_' + actuator_val_pair[0])
-            val = actuator_val_pair[1]  # TODO should I handle out of range actuator values
+            val = actuator_val_pair[1]  # TODO should I handle out of range actuator values???
             # use None to relinquish control
             if val is None:
                 self.api.exchange.reset_actuator(self.state, handle)  # return actuator control to EnergyPlus
@@ -296,7 +309,7 @@ class EmsPy:
         """
         The main callback passed to the running EnergyPlus simulation, this commands the behavior of there interaction.
 
-        :param state_arg: NOT USED by this API - used internally by EnergyPlus
+        :param state_arg: NOT USED by this API - passed to and used internally by EnergyPlus simulation
         """
         # get handles once
         if not self.got_ems_handles:
@@ -306,7 +319,7 @@ class EmsPy:
             self._set_ems_handles()
             self.got_ems_handles = True
 
-        # skip simulation warmup
+        # skip if simulation in warmup
         if self.api.exchange.warmup_flag(state_arg):
             return
 
@@ -314,6 +327,9 @@ class EmsPy:
         self._update_time()  # note timing update is first
         self._update_ems_vals()
         self._update_weather_vals()
+        # if self.callingpoint_algorithm is not None:
+        #     for _, algorithm in self.callingpoint_algorithm:
+        #         self._actuate(algorithm())
         # self._actuate(RL_fxn)  # TODO figure out the proper sequential order of this with data, time, weather updates - likely dependent on calling point`
 
         self.count += 1
@@ -345,7 +361,7 @@ class EmsPy:
     def _run_simulation(self, weather_file, calling_point):
         # set calling point with callback function
         #TODO *vargs multiple calling points from here, how to integrate with setting actuators 
-        getattr(self.api.runtime, calling_point)(self.state, self._callback_function)
+        getattr(self.api.runtime, calling_point)(self.state, self._callback)
         # run simulation
         self.api.runtime.run_energyplus(self.state,
                                         [
@@ -354,6 +370,56 @@ class EmsPy:
                                             self.idf_file
                                         ]
                                         )
+
+
+
+# TODO could have prerun calling points and during sim calling points ?????????
+
+
+def outter(self, *args, **kwargs):
+
+    def _callback_function(self, state_arg):
+
+        # get handles once --------------------------------------------------------------------------------------------
+        if not self.got_ems_handles:
+            # verify ems objects are ready for access, skip until
+            if not self.api.exchange.api_data_fully_ready(state_arg):
+                return  # TODO will this be an issue for @decorators??? don't think so
+            self._set_ems_handles()
+            self.got_ems_handles = True
+
+        # skip if simulation in warmup --------------------------------------------------------------------------------
+        if self.api.exchange.warmup_flag(state_arg):
+            # TODO can I utilize this as a single that only timestep calling points are from this point onward???
+            return
+
+        # update & append simulation data [DO ONCE per timestep, in right place] --------------------------------------
+        if not self.done_per_timestep:
+            self._update_time()  # note timing update is first
+            self._update_ems_vals()
+            self._update_weather_vals()
+
+        # timing & count updates [DO ONCE per timstep] ----------------------------------------------------------------
+        self.count += 1
+        self.zone_ts += 1  # TODO make dependent on input file OR handle mistake where user enters incorrect ts
+        if self.zone_ts > self.timestep_freq:
+            self.zone_ts = 1
+
+
+
+
+
+        # if self.callingpoint_algorithm is not None:
+        #     for _, algorithm in self.callingpoint_algorithm:
+        #         self._actuate(algorithm())
+        # self._actuate(RL_fxn)  # TODO figure out the proper sequential order of this with data, time, weather updates - likely dependent on calling point`
+
+
+
+
+
+
+
 
 
 
@@ -388,6 +454,16 @@ class BcaEnv(EmsPy):
     def reset_sim(self, weather_file, calling_point):
         self._run_simulation(weather_file, calling_point)
         pass
+
+
+def test_rl_alg(agent: BcaEnv, ):
+    action_list = []
+    agent.ste_env()
+    action = agent.act()
+    return action
+
+
+
 
 
 class DataDashboard(BcaEnv):
