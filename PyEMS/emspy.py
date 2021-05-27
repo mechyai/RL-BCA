@@ -5,6 +5,7 @@ https://github.com/jmarrec/OpenStudio_to_EnergyPlusAPI/blob/main/OpenStudio_to_E
 EnergyPlus Python API 0.2 documentation https://eplus.readthedocs.io/en/stable/
 EnergyPlus documentation (EMS Application Guide) https://energyplus.net/documentation
 OpenStudio SDK documentation http://nrel.github.io/OpenStudio-user-documentation/
+Unmet Hours help forum https://unmethours.com/questions/
 """
 
 import sys
@@ -69,8 +70,9 @@ class EmsPy:
         self.intvar_names = []
         self.meter_names = []
         self.actuator_names = []
+        self.ems_dict = {}  # keep track of EMS variable categories and num of vars
         # create attributes of sensor and actuator .idf handles and data arrays
-        self._init_ems_handles_and_data()  # creates ems_handle = int & ems_data = [] attributes
+        self._init_ems_handles_and_data()  # creates ems_handle = int & ems_data = [] attributes, and variable counts
         self.got_ems_handles = False
         self.static_vars_gathered = False  # static (internal) variables, gather once
 
@@ -78,7 +80,7 @@ class EmsPy:
         self.weather_tc = weather_tc
         self._init_weather_data()  # creates weather_data = [] attribute, useful for present/prior weather data tracking
 
-        # timing
+        # timing data
         self.actual_date_times = []
         self.actual_times = []
         self.current_times = []
@@ -112,29 +114,34 @@ class EmsPy:
         All of these attributes need to be initialized for later use, using the 'variable name' of the object in the
         first element of each ToC element. Then 'handle_' and 'data_' will be added to the given name to further specify
         the created attribute.
+        This will also update the EMS dictionary which tracks which EMS variable types are in use and how many for each
+        category. This dictionary attribute is used elsewhere for quick data fetching.
         """
 
         # set attribute handle names and data arrays given by user to None
         if self.vars_tc is not None:
+            self.ems_dict['var'] = len(self.vars_tc)
             for var in self.vars_tc:
                 var_name = var[0]
                 self.var_names.append(var_name)
                 setattr(self, 'handle_var_' + var_name, None)
                 setattr(self, 'data_var_' + var_name, [])
         if self.intvars_tc is not None:
+            self.ems_dict['intvar'] = len(self.intvars_tc)
             for intvar in self.intvars_tc:
                 intvar_name = intvar[0]
                 self.intvar_names.append(intvar_name)
                 setattr(self, 'handle_intvar_' + intvar_name, None)
                 setattr(self, 'data_intvar_' + intvar_name, None)  # static val
         if self.meters_tc is not None:
+            self.ems_dict['meter'] = len(self.meters_tc)
             for meter in self.meters_tc:
                 meter_name = meter[0]
                 self.meter_names.append(meter_name)
                 setattr(self, 'handle_meter_' + meter_name, None)
                 setattr(self, 'data_meter_' + meter_name, [])
         if self.actuators_tc is not None:
-            setattr(self, 'actuators_tc_names', [])  # TODO this may only be needed for actuators
+            self.ems_dict['actuator'] = len(self.actuators_tc)
             for actuator in self.actuators_tc:
                 actuator_name = actuator[0]
                 self.actuator_names.append(actuator_name)
@@ -149,6 +156,7 @@ class EmsPy:
             if weather_metric not in EmsPy.available_weather_metrics:
                 raise Exception(f'{weather_metric} weather metric is misspelled or not provided by EnergyPlusAPI.')
         if self.weather_tc is not None:
+            self.ems_dict['weather'] = len(self.weather_tc)
             for weather_type in self.weather_tc:
                 setattr(self, 'data_weather_' + weather_type, [])
 
@@ -372,9 +380,49 @@ class EmsPy:
                                         )
 
 
+class BcaEnv(EmsPy):
+    def __init__(self, ep_path, ep_idf_to_run, timesteps, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc):
+        super().__init__(ep_path, ep_idf_to_run, timesteps, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc)
+
+    def get_observation(self, var_type: str, t_back: int=0) -> list:
+        if var_type not in self.ems_dict:
+            raise ValueError('The observation category specified is incorrect, please see method documentation.')
+
+        for var_i in range(self.ems_dict):
+        return self.
+        pass
+        # return observation
+
+    def _get_reward(self):
+        pass
+        # return reward
+
+    def _take_action(self):
+        pass
+
+    def act(self, action_algorithm, calling_point: str):
+        pass
+
+    def step_env(self):
+        pass
+        # return observation, reward, done, info
+
+    def reset_sim(self, weather_file, calling_point):
+        self._run_simulation(weather_file, calling_point)
+        pass
+
+
+
+
+
+
+
+
+
+
+
 
 # TODO could have prerun calling points and during sim calling points ?????????
-
 
 def outter(self, *args, **kwargs):
 
@@ -418,42 +466,6 @@ def outter(self, *args, **kwargs):
 
 
 
-
-
-
-
-
-
-
-
-class BcaEnv(EmsPy):
-    def __init__(self, ep_path, ep_idf_to_run, timesteps, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc):
-        super().__init__(ep_path, ep_idf_to_run, timesteps, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc)
-
-        self.reward = 0
-        self.cumulative_reward = 0
-
-    def _get_observation(self):
-        pass
-        # return observation
-
-    def _get_reward(self):
-        pass
-        # return reward
-
-    def _take_action(self):
-        pass
-
-    def act(self, action_algorithm, calling_point: str):
-        pass
-
-    def step_env(self):
-        pass
-        # return observation, reward, done, info
-
-    def reset_sim(self, weather_file, calling_point):
-        self._run_simulation(weather_file, calling_point)
-        pass
 
 
 def test_rl_alg(agent: BcaEnv, ):
