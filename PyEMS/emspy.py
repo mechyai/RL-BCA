@@ -1,5 +1,5 @@
 """
-This program was constructed with the help from the work of Julien Marrec
+This program was constructed with the inspiration from the demo work of Julien Marrec
 https://github.com/jmarrec/OpenStudio_to_EnergyPlusAPI/blob/main/OpenStudio_to_EnergyPlusAPI.ipynb
 
 EnergyPlus Python API 0.2 documentation https://eplus.readthedocs.io/en/stable/
@@ -10,6 +10,7 @@ Unmet Hours help forum https://unmethours.com/questions/
 
 import sys
 import datetime
+# from typing import Union  # TODO check Python version compatibility
 
 
 class EmsPy:
@@ -70,7 +71,9 @@ class EmsPy:
         self.intvar_names = []
         self.meter_names = []
         self.actuator_names = []
+        # summary dicts
         self.ems_dict = {}  # keep track of EMS variable categories and num of vars
+        self.calling_pnt_dict = {}  # attached calling points to their actuation function its arguments
         # create attributes of sensor and actuator .idf handles and data arrays
         self._init_ems_handles_and_data()  # creates ems_handle = int & ems_data = [] attributes, and variable counts
         self.got_ems_handles = False
@@ -240,10 +243,13 @@ class EmsPy:
         if minute >= 60.0:
             minute = 59
             timedelta += datetime.timedelta(minutes=1)
+        # dataframe management
         dt = datetime.datetime(year=year, month=month, day=day, hour=hour, minute=minute)
         dt += timedelta
         self.time_x.append(dt)
+
         # manage timestep update
+        # TODO make dependent on input file OR handle mistake where user enters incorrect ts
         if self.zone_ts > self.timestep_freq:
             self.zone_ts = 1
         else:
@@ -281,78 +287,100 @@ class EmsPy:
                 data_i = self._get_weather('today', weather_type, self.hours[-1], self.zone_ts)
                 getattr(self, 'data_weather_' + weather_type).append(data_i)
 
-    def _get_weather(self, when: str, weather_type: str, hour: int, zone_ts: int):
+    def _get_weather(self, when: str, weather_metric: str, hour: int, zone_ts: int):
         """
         Gets desired weather metric data for a given hour and zone timestep, either for today or tomorrow in simulation.
 
         :param when: the day in question, 'today' or 'tomorrow'
-        :param weather_type: the weather metric to call from EnergyPlusAPI, only specific fields are granted
+        :param weather_metric: the weather metric to call from EnergyPlusAPI, only specific fields are granted
         :param hour: the hour of the day to call the weather value
         :param zone_ts: the zone timestep of the given hour to call the weather value
         """
-        if weather_type is not 'sun_is_up':
-            return getattr(self.api.exchange, when + '_weather_' + weather_type + '_at_time')(self.state, hour, zone_ts)
-        elif weather_type is 'sun_is_up':
+        if weather_metric is not 'sun_is_up':
+            return getattr(self.api.exchange, when + '_weather_' + weather_metric + '_at_time')\
+                (self.state, hour, zone_ts)
+        elif weather_metric is 'sun_is_up':  # doesn't follow consistent naming system
             return self.api.exchange.sun_is_up(self.state)
 
-    def _actuate(self, actuator_val: list):
-        """
-        # TODO document
-        :param actuator_val:
-        :return:
-        """
-        for actuator_val_pair in actuator_val:
-            if actuator_val_pair[0] not in self.actuator_names:
-                raise Exception(f'Either this actuator {actuator_val_pair[0]} is not tracked, or misspelled.'
-                                f'Check your Actuator ToC.')
-            handle = getattr(self, 'handle_actuator_' + actuator_val_pair[0])
-            val = actuator_val_pair[1]  # TODO should I handle out of range actuator values???
-            # use None to relinquish control
-            if val is None:
-                self.api.exchange.reset_actuator(self.state, handle)  # return actuator control to EnergyPlus
-            else:
-                self.api.exchange.set_actuator_value(self.state, handle, val)
+    def _actuate(self, actuator_handle: str, actuator_val):
+        """ Sets value of a specific actuator in running simulator, or relinquishes control back to EnergyPlus."""
+        # use None to relinquish control
+        # TODO should I handle out of range actuator values???
+        if actuator_val is None:
+            self.api.exchange.reset_actuator(self.state, actuator_handle)  # return actuator control to EnergyPlus
+        else:
+            self.api.exchange.set_actuator_value(self.state, actuator_handle, actuator_val)
 
-    def _callback_function(self, state_arg):
+    def _actuate_from_list(self, actuator_pairs_list: list[tuple[str, int]]):
         """
-        The main callback passed to the running EnergyPlus simulation, this commands the behavior of there interaction.
+        This iterates through list of actuator name and value setpoint pairs to be set in simulation.
 
-        :param state_arg: NOT USED by this API - passed to and used internally by EnergyPlus simulation
+        CAUTION: Actuation functions written by user must return an actuator_name-value pair list [[actuator1, val1],..
+
+        :param actuator_pairs_list: list of actuator name(str) & value(float) pairs [[actuator1, val1],...]
         """
-        # get handles once
-        if not self.got_ems_handles:
-            # verify ems objects are ready for access, skip until
-            if not self.api.exchange.api_data_fully_ready(state_arg):
+        if actuator_pairs_list is not None:  # in case some 'actuation functions' does not actually act
+            for actuator_name, actuator_val in actuator_pairs_list:
+                if actuator_name not in self.actuator_names:
+                    raise Exception(f'Either this actuator {actuator_name} is not tracked, or misspelled.'
+                                    f'Check your Actuator ToC.')
+                actuator_handle = getattr(self, 'handle_actuator_' + actuator_name)
+                self._actuate(actuator_handle, actuator_val)
+
+    def _enclosing_callback(self, calling_point: str, actuation_fxn, update_data: bool, update_timing: bool):
+        # decorator function to standard callback procedure TODO doc
+        def _callback_function(state_arg):
+            """
+            The main callback passed to the running EnergyPlus simulation, this commands the behavior of there interaction.
+
+            :param state_arg: NOT USED by this API - passed to and used internally by EnergyPlus simulation
+            """
+            # get handles once
+            if not self.got_ems_handles:
+                # verify ems objects are ready for access, skip until
+                if not self.api.exchange.api_data_fully_ready(state_arg):
+                    return
+                self._set_ems_handles()
+                self.got_ems_handles = True
+
+            # skip if simulation in warmup
+            if self.api.exchange.warmup_flag(state_arg):
                 return
-            self._set_ems_handles()
-            self.got_ems_handles = True
 
-        # skip if simulation in warmup
-        if self.api.exchange.warmup_flag(state_arg):
-            return
+            if update_data:
+                # update & append simulation data
+                self._update_ems_vals()
+                self._update_weather_vals()
 
-        # update & append simulation data
-        self._update_time()  # note timing update is first
-        self._update_ems_vals()
-        self._update_weather_vals()
-        # if self.callingpoint_algorithm is not None:
-        #     for _, algorithm in self.callingpoint_algorithm:
-        #         self._actuate(algorithm())
-        # self._actuate(RL_fxn)  # TODO figure out the proper sequential order of this with data, time, weather updates - likely dependent on calling point`
+            if update_timing:
+                self._update_time()  # note timing update is first
 
-        self.count += 1
-        self.zone_ts += 1  # TODO make dependent on input file OR handle mistake where user enters incorrect ts
-        if self.zone_ts > self.timestep_freq:
-            self.zone_ts = 1
+            if actuation_fxn is not None:
+                self._actuate_from_list(actuation_fxn())
 
-    def set_calling_point(self, calling_pnt: str):
-        """
-        Sets a calling point attribute for when the callback function will be called within the running simulation.
+            # TODO verify if this separate timestep update can be ommited and just included in timing
+            # update times at end
+            # if update_timestep:
+            #     self.count += 1
+            #     self.zone_ts += 1
+            #     if self.zone_ts > self.timestep_freq:
+            #         self.zone_ts = 1
 
-        :param calling_pnt: the calling point defined by EnergyPlus Runtime API documentation and EMS App Guide
-        """
-        # TODO - can the sim run multiple calling functions? If so, how should I manage a user wanting to call multiple instances (with multiple callbacks)
-        pass
+        return _callback_function
+
+    def _set_calling_points_and_actuation_fxns(self):
+        # iterate through calling point dict setting runtime calling points and actuation fxn and arguments
+        if not self.calling_pnt_dict:
+            raise Exception('Your Calling Point dict{} is empty, please see documentation and define it before running'
+                            ' simulation.')
+        else:
+            for calling_key in self.calling_pnt_dict:
+                callback_details = self.calling_pnt_dict.get(calling_key)
+                actuation_fxn, update_data, update_timing = callback_details  # unpack actuation and fxn arguments
+                getattr(self.api.runtime, calling_key)(self.state, self._enclosing_callback(calling_key,
+                                                                                            actuation_fxn,
+                                                                                            update_data,
+                                                                                            update_timing))
 
     def _new_state(self):
         """Creates & returns a new state instance that's required to pass into EnergyPlus Runtime API function calls."""
@@ -363,15 +391,17 @@ class EmsPy:
         self.api.state_manager.reset_state(self.state)
 
     def _delete_state(self):
-        """ Deletes the existing state instance"""
+        """ Deletes the existing state instance."""
         self.api.state_manager.delete_state(self.state)
 
-    def _run_simulation(self, weather_file, calling_point):
-        # set calling point with callback function
-        #TODO *vargs multiple calling points from here, how to integrate with setting actuators 
-        getattr(self.api.runtime, calling_point)(self.state, self._callback)
-        # run simulation
-        self.api.runtime.run_energyplus(self.state,
+    def _run_simulation(self, weather_file):
+        """ This runs the EnergyPlus simulation"""
+        # establish runtime calling points and callback function specification with defined arguments
+        self._set_calling_points_and_actuation_fxns()
+
+        # RUN SIMULATION
+        print('**Running E+ Simulation**')
+        self.api.runtime.run_energyplus(self.state,  # cmd line arguments
                                         [
                                             '-w', weather_file,
                                             '-d', 'out',
@@ -379,101 +409,37 @@ class EmsPy:
                                         ]
                                         )
 
+    # TYPE HINTING
+    # actuator_name_val_pair_list = list[list[str, int]]
 
 class BcaEnv(EmsPy):
+    # Building Control Agent (BCA) for env
+
     def __init__(self, ep_path, ep_idf_to_run, timesteps, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc):
+        # follow same init procedure as parent class EmsPy
         super().__init__(ep_path, ep_idf_to_run, timesteps, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc)
 
-    def get_observation(self, var_type: str, t_back: int=0) -> list:
-        if var_type not in self.ems_dict:
+    def set_calling_pnt_dict(self, cp_dict: dict):
+        # define Calling Point dict {'calling_pnt_x':[actuation_fxn_name, update_data, update_time,...]
+        self.calling_pnt_dict = cp_dict
+
+    def get_observation(self, ems_category: str, t_back: int=0) -> list:
+        # returns data of given ems category ordered by ToC ordering
+        if ems_category not in self.ems_dict:
             raise ValueError('The observation category specified is incorrect, please see method documentation.')
+        data_i_t = []
+        for var_i_t in range(self.ems_dict.get(ems_category)):
+            var_name = getattr(self, ems_category + '_names')[var_i_t]
+            data = (getattr(self, var_name + '_data'))[-1 - t_back]  # get data from end of list
+            data_i_t.append(data)
+        return data_i_t
 
-        for var_i in range(self.ems_dict):
-        return self.
+    def get_weather_forecast(self, when: str, weather_metric: str, hour: int, zone_ts: int):
+        return self._get_weather(when, weather_metric, hour, zone_ts)
+
+    def run_env(self, weather_file: str):
+        self._run_simulation(weather_file)
         pass
-        # return observation
-
-    def _get_reward(self):
-        pass
-        # return reward
-
-    def _take_action(self):
-        pass
-
-    def act(self, action_algorithm, calling_point: str):
-        pass
-
-    def step_env(self):
-        pass
-        # return observation, reward, done, info
-
-    def reset_sim(self, weather_file, calling_point):
-        self._run_simulation(weather_file, calling_point)
-        pass
-
-
-
-
-
-
-
-
-
-
-
-
-# TODO could have prerun calling points and during sim calling points ?????????
-
-def outter(self, *args, **kwargs):
-
-    def _callback_function(self, state_arg):
-
-        # get handles once --------------------------------------------------------------------------------------------
-        if not self.got_ems_handles:
-            # verify ems objects are ready for access, skip until
-            if not self.api.exchange.api_data_fully_ready(state_arg):
-                return  # TODO will this be an issue for @decorators??? don't think so
-            self._set_ems_handles()
-            self.got_ems_handles = True
-
-        # skip if simulation in warmup --------------------------------------------------------------------------------
-        if self.api.exchange.warmup_flag(state_arg):
-            # TODO can I utilize this as a single that only timestep calling points are from this point onward???
-            return
-
-        # update & append simulation data [DO ONCE per timestep, in right place] --------------------------------------
-        if not self.done_per_timestep:
-            self._update_time()  # note timing update is first
-            self._update_ems_vals()
-            self._update_weather_vals()
-
-        # timing & count updates [DO ONCE per timstep] ----------------------------------------------------------------
-        self.count += 1
-        self.zone_ts += 1  # TODO make dependent on input file OR handle mistake where user enters incorrect ts
-        if self.zone_ts > self.timestep_freq:
-            self.zone_ts = 1
-
-
-
-
-
-        # if self.callingpoint_algorithm is not None:
-        #     for _, algorithm in self.callingpoint_algorithm:
-        #         self._actuate(algorithm())
-        # self._actuate(RL_fxn)  # TODO figure out the proper sequential order of this with data, time, weather updates - likely dependent on calling point`
-
-
-
-
-
-
-
-def test_rl_alg(agent: BcaEnv, ):
-    action_list = []
-    agent.ste_env()
-    action = agent.act()
-    return action
-
 
 
 
@@ -492,19 +458,3 @@ class EnergyPlusModel:
     def __init__(self):
         pass
 
-    #####################################
-# import emspy
-# ep_path = ''  # path to EnergyPlus download in filesystem
-# ep_file_path = ''  # path to .idf file for simulation
-# ep_idf_to_run = ep_file_path + ''  #
-# ep_weather_path = ep_path + '/WeatherData/.epw'
-#
-# # define EMS sensors and actuators to be used via 'Table of Contents'
-# #vars_tc = [["attr_handle_name", "variable_type", "variable_key"],[...],...]
-# # int_vars_tc = [["attr_handle_name", "variable_type", "variable_key"],[...],...]
-# # meters_tc = [["attr_handle_name", "meter_name",[...],...]
-# # actuators_tc = [["attr_handle_name", "component_type", "control_type", "actuator_key"],[...],...]
-# # weather_tc = ["sun", "rain", "snow", "wind_dir", ...]
-#
-# ems = EmsPy(ep_path, ep_idf_to_run, vars_tc, int_vars_tc, meters_tc, actuators_tc)
-# bca = ems.BcaEnv()

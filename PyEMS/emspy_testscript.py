@@ -39,13 +39,18 @@ weather_tc = ['sun_is_up', 'is_raining', 'wind_direction', 'outdoor_relative_hum
 
 # ems = emspy.EmsPy(ep_path, ep_idf_to_run, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc)
 calling_point = 'callback_begin_zone_timestep_after_init_heat_balance'
-#ems._run_simulation(ep_weather_path, calling_point)
+
+def fxn():
+    print('working...')
+    return None
+
+cp_dict = {calling_point: [fxn, True, True]}
 ts = 12
 emspy.EmsPy.ep_path = ep_path
 agent = emspy.BcaEnv(ep_path, ep_idf_to_run, ts, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc)
-agent.reset_sim(ep_weather_path, calling_point)
-
-# ems._reset_state()
+agent._set_calling_pnt_dict(cp_dict)
+agent.run_env(ep_weather_path)
+agent._reset_state()
 
 
 
