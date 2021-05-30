@@ -10,6 +10,7 @@ Unmet Hours help forum https://unmethours.com/questions/
 
 import sys
 import datetime
+import pandas as pd
 # from typing import Union  # TODO check Python version compatibility
 
 
@@ -20,6 +21,16 @@ class EmsPy:
                                  'horizontal_ir', 'liquid_precipitation', 'outdoor_barometric_pressure',
                                  'outdoor_dew_point', 'outdoor_dry_bulb', 'outdoor_relative_humidity',
                                  'sky_temperature', 'wind_direction', 'wind_speed']
+
+    # TODO verify correctness
+    available_calling_points = ['after_component_get_input', 'after_new_environment_warmup_complete',
+    							'after_predictor_after_hvac_managers', 'after_predictor_before_hvac_managers',
+    							'begin_new_environment', 'begin_system_timestep_before_predictor', 
+    							'begin_zone_timestep_after_init_heat_balance', 'begin_zone_timestep_before_set_current_weather',
+    							'end_system_sizing', 'end_system_after_hvac_reporting', 'end_system_timestep_before_hvac_reporting'
+    							'end_zone_sizing', 'end_zone_timestep_after_zone_reporting', 'end_zone_timestep_before_zone_reporting',
+    							'inside_system_iteration_loop']
+
 
     def __init__(self, ep_path: str, ep_idf_to_run: str, timesteps: int, vars_tc: list, intvars_tc: list,
                  meters_tc: list, actuators_tc: list, weather_tc: list):
@@ -328,7 +339,14 @@ class EmsPy:
                 self._actuate(actuator_handle, actuator_val)
 
     def _enclosing_callback(self, calling_point: str, actuation_fxn, update_data: bool, update_timing: bool):
-        # decorator function to standard callback procedure TODO doc
+        """
+		Decorates the main callback function to set the user-defined calling function and set timing and data params.
+		# TODO specify Warning documentation and find a way to check if only one data/timing update is done per timestep
+		:param calling_point: the calling point at which the callback function will be called during simulation runtime 
+		:param actuation_fxn: the user defined actuation function to be called at runtime
+		:param update_data: whether EMS data should be updated. This should only be done once a timestep
+		:param update_timing: whether time data and timesteps should be updated. This should only be done once a timestep
+        """
         def _callback_function(state_arg):
             """
             The main callback passed to the running EnergyPlus simulation, this commands the behavior of there interaction.
@@ -369,18 +387,36 @@ class EmsPy:
         return _callback_function
 
     def _set_calling_points_and_actuation_fxns(self):
-        # iterate through calling point dict setting runtime calling points and actuation fxn and arguments
-        if not self.calling_pnt_dict:
-            raise Exception('Your Calling Point dict{} is empty, please see documentation and define it before running'
+    	"""This iterates through the Calling Point Dict{} to set runtime calling points with actuation functions."""
+    	
+    	if not self.calling_pnt_dict:
+            raise Exception('Your Calling Point dict is empty, please see documentation and define it before running'
                             ' simulation.')
-        else:
-            for calling_key in self.calling_pnt_dict:
-                callback_details = self.calling_pnt_dict.get(calling_key)
-                actuation_fxn, update_data, update_timing = callback_details  # unpack actuation and fxn arguments
-                getattr(self.api.runtime, calling_key)(self.state, self._enclosing_callback(calling_key,
+
+        for calling_key in self.calling_pnt_dict:
+        	# check if user-specified calling point is correct and available
+        	if calling_key.strip('callback_') not in self.available_calling_points:
+        		raise Exception(f'This calling point "{calling_key}" is not a valid calling point. Please see the Python API documentation.')
+        	else:
+        		# unpack actuation and fxn arguments
+                actuation_fxn, update_data, update_timing = = self.calling_pnt_dict.get(calling_key)  
+                getattr(self.api.runtime, calling_key)(self.state, self._enclodsing_callback(calling_key,
                                                                                             actuation_fxn,
                                                                                             update_data,
                                                                                             update_timing))
+
+    def _user_input_check():
+    	# TODO    
+
+    def _post_data(self, ems_data_type: str, absolute_path: path):
+    	"""
+    	This will post pandas dataframe to absolute path.
+
+    	"""
+    	# build dataframe based on number of ems data types and automatically pool data 
+    	# concatentate ems data using ems var names and save to absolute path
+    	# optional by user to call 
+
 
     def _new_state(self):
         """Creates & returns a new state instance that's required to pass into EnergyPlus Runtime API function calls."""
@@ -391,11 +427,15 @@ class EmsPy:
         self.api.state_manager.reset_state(self.state)
 
     def _delete_state(self):
-        """ Deletes the existing state instance."""
+        """Deletes the existing state instance."""
         self.api.state_manager.delete_state(self.state)
 
     def _run_simulation(self, weather_file):
-        """ This runs the EnergyPlus simulation"""
+        """This runs the EnergyPlus simulation."""
+        
+        # TODO create function that checks if all user-input attributes has been specified and add help directions
+        self._user_input_check()
+
         # establish runtime calling points and callback function specification with defined arguments
         self._set_calling_points_and_actuation_fxns()
 
