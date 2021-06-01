@@ -408,10 +408,9 @@ class EmsPy:
     def _user_input_check():
     	# TODO    
 
-    def _post_data(self, ems_data_type: str, absolute_path: path):
+    def _post_data(self, absolute_path: str, ems_metrics, *args):
     	"""
-    	This will post pandas dataframe to absolute path.
-
+    	This will post specific EMS metrics or entire metrics list (vars, intvars, meters, actuators, weather) to pandas dataframe to absolute path.
     	"""
     	# build dataframe based on number of ems data types and automatically pool data 
     	# concatentate ems data using ems var names and save to absolute path
