@@ -1,0 +1,13 @@
+- FIGURE OUT WHERE AGENT(act) -> ENV (state, reward) needs to happen (test)
+- figure out best standard calling point(s)
+- meta-elements for actuators, design actuator functionality (setting actuator values)
+- how to automate using internal variables to scale actuator control (are names alike)?? (since everything is normalized [0,1]
+- pandas dataframe with custom csv data logging
+- RL simple wrapper
+- how to deal/allow with multiple calling points (effects on zone timesteps and other callback dependencys)
+- how to deal/allow multiple state instances and multiple API instances / simulations
+
+???
+- what calling point should be used for standard weather, vars, intvars, meters?
+
+- RL: how will I know an agent is using predictive control strategies

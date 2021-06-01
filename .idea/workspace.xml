@@ -22,20 +22,6 @@
     <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/dictionaries/ceube.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/ceube.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/PyEMS_CJE.py" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/PyEMS_CJE.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.audit" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.audit" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.bnd" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.bnd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.eio" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.eio" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.end" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.end" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.err" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.err" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.eso" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.eso" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.mdd" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.mdd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.mtr" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.mtr" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.rdd" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.rdd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.sql" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplusout.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplustbl.htm" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/eplustbl.htm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/sqlite.err" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/out/sqlite.err" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/emspy.py" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/emspy.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,7 +38,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="actuators_callingpoints" />
+        <entry key="$PROJECT_DIR$" value="rl_framework" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -139,6 +125,9 @@
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PyEMS" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -157,6 +146,9 @@
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
       <option name="IS_MODULE_SDK" value="false" />
@@ -175,6 +167,9 @@
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
       <option name="IS_MODULE_SDK" value="false" />
@@ -198,11 +193,11 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.scratch" />
-        <item itemvalue="Python.emspy_testscript" />
         <item itemvalue="Python.scratch_1" />
         <item itemvalue="Python.scratch" />
+        <item itemvalue="Python.emspy_testscript" />
         <item itemvalue="Python.emspy" />
+        <item itemvalue="Python.PyEMS_CJE" />
       </list>
     </recent_temporary>
   </component>
@@ -343,7 +338,28 @@
       <option name="project" value="LOCAL" />
       <updated>1621885935708</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="minor update - branching soon">
+      <created>1622131445856</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1622131445856</updated>
+    </task>
+    <task id="LOCAL-00020" summary="added ems_dict for quick var category and count tracking, within RL branch">
+      <created>1622135018387</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1622135018387</updated>
+    </task>
+    <task id="LOCAL-00021" summary="fixed actuation, calling point dicts, and RL basic framework - still lots TODO">
+      <created>1622153091209</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1622153091209</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -374,7 +390,10 @@
     <MESSAGE value="update, might fork soon to handle multi state instances or callbacks" />
     <MESSAGE value="adding actuator components, modified EMS var ToC name instantiation and tracking, editing calling points soon" />
     <MESSAGE value="update, references added" />
-    <option name="LAST_COMMIT_MESSAGE" value="update, references added" />
+    <MESSAGE value="minor update - branching soon" />
+    <MESSAGE value="added ems_dict for quick var category and count tracking, within RL branch" />
+    <MESSAGE value="fixed actuation, calling point dicts, and RL basic framework - still lots TODO" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed actuation, calling point dicts, and RL basic framework - still lots TODO" />
   </component>
   <component name="WindowStateProjectService">
     <state x="-1468" y="114" width="1016" height="911" key="#Intentions" timestamp="1621702557664">
@@ -430,10 +449,10 @@
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
     <state x="-1459" y="184" key="SettingsEditor/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621379101168" />
-    <state x="-1368" y="259" key="Vcs.Push.Dialog.v2" timestamp="1621885950119">
+    <state x="-1368" y="259" key="Vcs.Push.Dialog.v2" timestamp="1622153093398">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="-1368" y="259" key="Vcs.Push.Dialog.v2/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621885950119" />
+    <state x="-1368" y="259" key="Vcs.Push.Dialog.v2/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1622153093398" />
     <state width="968" height="548" key="XDebugger.FullValuePopup" timestamp="1620938535020">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
