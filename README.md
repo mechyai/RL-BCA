@@ -8,7 +8,7 @@ EMS exposes E+ data such as variables, internal variables, meters, actuators, an
 
 Although this repo is meant to facilitate in interfacing with E+ and open up this environment to more AI and controls people, a good understanding of E+ and building modeling may still be necessary, ecspecially if you intend to create and control your own building models. Eventually, some standard building testbed environments will be created and implemented so that user's can just interface with them through Python purely for control purposes. However, you will still need to have the E+ simulation engine downloaded. 
 
-Further documentation:
+### Further documentation:
 - [EnergyPlus](https://energyplus.net/)
 - [EnergyPlus Documentation](https://energyplus.net/documentation) *(including EMS Application Guide)*
 - [EnergyPlus EMS Python API 0.2 Documentation](https://energyplus.readthedocs.io/en/stable/api.html)
@@ -16,6 +16,7 @@ Further documentation:
 - [OpenStudio Coalition](https://openstudiocoalition.org/)
 - [Unmet Hours Help Forum](https://unmethours.com/questions/)
 
+### Usage Explanation
 
 The image below depicts the RL-loop within a simulation timestep at runtime. Because of the technicalities of the interaction between EMS and the simulator, the RL algorithm must be implemented in a very specific manner, which will be explained in detail below. 
 
