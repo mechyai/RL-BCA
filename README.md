@@ -1,5 +1,5 @@
 # RL-BCA (Work In Progress...)
-### This repo is for reinforcement learning (RL) algorithm development and testing of BCA (Building Control Agent) on EnergyPlus (E+) 9.5 building energy simulator using Python Energy Management System (EMS) API using a meta-class wrapper.
+### This repo is for reinforcement learning (RL) algorithm development and testing of BCA (Building Control Agent) on EnergyPlus (E+) 9.5 building energy simulator using Python Energy Management System (EMS) API with a meta-class wrapper.
 
 *This repo was constructed by someone with little experience with EnergyPlus and software/programming, but wanted to assist in creating an easily interfacable RL 'environment' for intelligent HVAC control research.* 
 
@@ -16,6 +16,8 @@ Further documentation:
 - [OpenStudio Coalition](https://openstudiocoalition.org/)
 - [Unmet Hours Help Forum](https://unmethours.com/questions/)
 
+
+The image below depicts the RL-loop within a simulation timestep at runtime. Because of the technicalities of the interaction between EMS and the simulator, the RL algorithm must be implemented in a very specific manner, which will be explained in detail below. 
 ![image](https://user-images.githubusercontent.com/65429130/119517258-764bbc00-bd45-11eb-97bf-1af9ab0444cb.png)
 
 
