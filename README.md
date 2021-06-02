@@ -18,7 +18,7 @@ Further documentation:
 
 
 The image below depicts the RL-loop within a simulation timestep at runtime. Because of the technicalities of the interaction between EMS and the simulator, the RL algorithm must be implemented in a very specific manner, which will be explained in detail below. 
-![image](https://user-images.githubusercontent.com/65429130/119517258-764bbc00-bd45-11eb-97bf-1af9ab0444cb.png)
+![image](https://user-images.githubusercontent.com/65429130/119517258-764bbc00-bd45-11eb-97bf-1af9ab0444cb.png = 250x250)
 
 
 
