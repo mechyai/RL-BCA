@@ -17,8 +17,10 @@ Although this repo is meant to facilitate in interfacing with E+ and open up thi
 - [Unmet Hours Help Forum](https://unmethours.com/questions/)
 
 ### Dependencies
-- pyenergyplus Python package clude
+- E+ (building energy simulation engine)
+- pyenergyplus Python package (included in E+ download)
 - openstudio Python package
+
 ### Usage Explanation
 
 The image below depicts the RL-loop within a simulation timestep at runtime. Because of the technicalities of the interaction between EMS and the simulator - mainly the use of callback function(s) and multiple calling point opportunties per timestep - the RL algorithm must be implemented in a very specific manner, which will be explained in detail below. 
