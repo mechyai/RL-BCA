@@ -10,12 +10,15 @@ Although this repo is meant to facilitate in interfacing with E+ and open up thi
 
 ### Further documentation:
 - [EnergyPlus](https://energyplus.net/)
-- [EnergyPlus Documentation](https://energyplus.net/documentation) *(including EMS Application Guide)*
+- [EnergyPlus Documentation](https://energyplus.net/documentation) *(including EMS Application Guide!)*
 - [EnergyPlus EMS Python API 0.2 Documentation](https://energyplus.readthedocs.io/en/stable/api.html)
 - [OpenStudio SDK Documentation](http://nrel.github.io/OpenStudio-user-documentation/)
 - [OpenStudio Coalition](https://openstudiocoalition.org/)
 - [Unmet Hours Help Forum](https://unmethours.com/questions/)
 
+### Dependencies
+- pyenergyplus Python package clude
+- openstudio Python package
 ### Usage Explanation
 
 The image below depicts the RL-loop within a simulation timestep at runtime. Because of the technicalities of the interaction between EMS and the simulator - mainly the use of callback function(s) and multiple calling point opportunties per timestep - the RL algorithm must be implemented in a very specific manner, which will be explained in detail below. 
