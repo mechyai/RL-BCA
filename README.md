@@ -18,7 +18,7 @@ Although this repo is meant to facilitate in interfacing with E+ and open up thi
 
 ### Usage Explanation
 
-The image below depicts the RL-loop within a simulation timestep at runtime. Because of the technicalities of the interaction between EMS and the simulator, the RL algorithm must be implemented in a very specific manner, which will be explained in detail below. 
+The image below depicts the RL-loop within a simulation timestep at runtime. Because of the technicalities of the interaction between EMS and the simulator - mainly the use of callback function(s) and multiple calling point opportunties per timestep - the RL algorithm must be implemented in a very specific manner, which will be explained in detail below. 
 
 <img src="https://user-images.githubusercontent.com/65429130/119517258-764bbc00-bd45-11eb-97bf-1af9ab0444cb.png" width = "750"> 
 
