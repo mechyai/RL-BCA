@@ -25,8 +25,8 @@ The image below depicts the RL-loop within a simulation timestep at runtime. Bec
 There are likely 4 main use-cases for this repo, if you are hoping to implement RL algorithms.
 They are, in order of increasing complexity:
 1. You want to use an existing pre-integrated template to purely implement RL control
-2. You already have an existing E+ building model (with no model or .idf modification needed) that you want to integrate for RL control
-3. You already have an existing E+ building model (with some amount of model or .idf modification needed) that you want to integrate for RL control
-4. You want to create a new E+ building model and integrate it for RL control
+2. You have an existing E+ building model (with no model or .idf modification needed) that you want to integrate and implement RL control
+3. You have an existing E+ building model (with some amount of model or .idf modification needed) that you want to integrate implement RL control
+4. You want to create a new E+ building model to integrate and implement RL control
 
 
