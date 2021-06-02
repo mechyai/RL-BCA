@@ -26,7 +26,7 @@ There are likely 4 main use-cases for this repo, if you are hoping to implement 
 They are, in order of increasing complexity:
 1. You want to use an existing pre-integrated template to purely implement RL control
 2. You have an existing E+ building model (with no model or .idf modification needed) that you want to integrate and implement RL control
-3. You have an existing E+ building model (with some amount of model or .idf modification needed) that you want to integrate implement RL control
+3. You have an existing E+ building model (with some amount of model or .idf modification needed) that you want to integrate and implement RL control
 4. You want to create a new E+ building model to integrate and implement RL control
 
 
