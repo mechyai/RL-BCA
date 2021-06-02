@@ -18,8 +18,14 @@ Further documentation:
 
 
 The image below depicts the RL-loop within a simulation timestep at runtime. Because of the technicalities of the interaction between EMS and the simulator, the RL algorithm must be implemented in a very specific manner, which will be explained in detail below. 
+
 <img src="https://user-images.githubusercontent.com/65429130/119517258-764bbc00-bd45-11eb-97bf-1af9ab0444cb.png" width = "750"> 
 
+There are likely 4 main use-cases for this repo, if you are hoping to implement RL algorithms.
+They are, in order of increasing complexity:
+1. You want to use an existing pre-integrated template to purely implement RL control
+2. You already have an existing E+ building model (with no model or .idf modification needed) that you want to integrate for RL control
+3. You already have an existing E+ building model (with some amount of model or .idf modification needed) that you want to integrate for RL control
+4. You want to create a new E+ building model and integrate it for RL control
 
 
- 
