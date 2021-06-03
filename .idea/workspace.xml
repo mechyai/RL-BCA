@@ -22,6 +22,8 @@
     <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/dictionaries/ceube.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/ceube.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyEMS/emspy.py" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/emspy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyEMS/emspy_todo" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/emspy_todo" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +62,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Python" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/PyEMS" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../PnC_HRL" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
@@ -78,7 +80,7 @@
       <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\api-example-copies" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.scratch">
+  <component name="RunManager" selected="Python.scratch_1">
     <configuration name="PyEMS_CJE" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -167,9 +169,6 @@
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
       <option name="IS_MODULE_SDK" value="false" />
@@ -194,10 +193,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.scratch_1" />
+        <item itemvalue="Python.scratch_1" />
         <item itemvalue="Python.scratch" />
         <item itemvalue="Python.emspy_testscript" />
         <item itemvalue="Python.emspy" />
-        <item itemvalue="Python.PyEMS_CJE" />
       </list>
     </recent_temporary>
   </component>
@@ -359,7 +358,14 @@
       <option name="project" value="LOCAL" />
       <updated>1622153091209</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="back on main pycharm">
+      <created>1622564212725</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1622564212725</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -393,7 +399,8 @@
     <MESSAGE value="minor update - branching soon" />
     <MESSAGE value="added ems_dict for quick var category and count tracking, within RL branch" />
     <MESSAGE value="fixed actuation, calling point dicts, and RL basic framework - still lots TODO" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed actuation, calling point dicts, and RL basic framework - still lots TODO" />
+    <MESSAGE value="back on main pycharm" />
+    <option name="LAST_COMMIT_MESSAGE" value="back on main pycharm" />
   </component>
   <component name="WindowStateProjectService">
     <state x="-1468" y="114" width="1016" height="911" key="#Intentions" timestamp="1621702557664">
@@ -413,6 +420,10 @@
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
     <state x="-1122" y="233" key="#xdebugger.XInspectDialog/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621380283677" />
+    <state x="-1233" y="235" key="FileChooserDialogImpl" timestamp="1622687869939">
+      <screen x="-1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="-1233" y="235" key="FileChooserDialogImpl/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1622687869939" />
     <state width="1867" height="257" key="GridCell.Tab.0.bottom" timestamp="1621654576178">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
@@ -449,10 +460,10 @@
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
     <state x="-1459" y="184" key="SettingsEditor/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621379101168" />
-    <state x="-1368" y="259" key="Vcs.Push.Dialog.v2" timestamp="1622153093398">
+    <state x="-1368" y="259" key="Vcs.Push.Dialog.v2" timestamp="1622564214647">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="-1368" y="259" key="Vcs.Push.Dialog.v2/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1622153093398" />
+    <state x="-1368" y="259" key="Vcs.Push.Dialog.v2/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1622564214647" />
     <state width="968" height="548" key="XDebugger.FullValuePopup" timestamp="1620938535020">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
