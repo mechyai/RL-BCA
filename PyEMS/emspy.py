@@ -31,7 +31,7 @@ class EmsPy:
                                 'end_system_timestep_before_hvac_reporting'
                                 'end_zone_sizing', 'end_zone_timestep_after_zone_reporting',
                                 'end_zone_timestep_before_zone_reporting',
-                                'inside_system_iteration_loop'] # TODO verify correctness
+                                'inside_system_iteration_loop']  # TODO verify correctness
 
     # TODO restrict timesteps in known range
     def __init__(self, ep_path: str, ep_idf_to_run: str, timesteps: int, calling_point_actuation_dict: {},
@@ -120,7 +120,7 @@ class EmsPy:
         self.timestep_count = 0
         self.callback_count = 0
         self.zone_timestep = 1  # fluctuate from one to # of timesteps per hour # TODO how to enforce only once per ts
-        self.timestep_freq = timesteps
+        self.timestep_freq = timesteps  # sim timesteps per hour # TODO enforce via OPENSTUDIO SDK
         # TODO determine proper rounding of int timesteps interval
         self.timestep_period = 60 // timesteps  # minute duration of each timestep of simulation
 
@@ -359,7 +359,7 @@ class EmsPy:
         else:
             self.api.exchange.set_actuator_value(self.state, actuator_handle, actuator_val)
 
-    def _actuate_from_list(self, actuator_pairs_list: list[tuple[str, int]]):
+    def _actuate_from_list(self, actuator_pairs_list: list):
         """
         This iterates through list of actuator name and value setpoint pairs to be set in simulation.
 
@@ -441,12 +441,12 @@ class EmsPy:
 
         for calling_key in self.calling_point_actuation_dict:
             # check if user-specified calling point is correct and available
-            if calling_key.strip('callback_') not in self.available_calling_points:
+            if calling_key[9:] not in self.available_calling_points: # remove 'callback_'
                 raise Exception(f'This calling point "{calling_key}" is not a valid calling point. Please see the'
                                 f' Python API documentation and available calling point list class attribute.')
             else:
                 # unpack actuation and fxn arguments
-                unpack = self.calling_point_actuation_dict.get(calling_key)
+                unpack = self.calling_point_actuation_dict[calling_key]
                 actuation_fxn, update_state, update_state_freq, update_act_freq = unpack
                 # establish calling points at runtime and create/pass its custom callback function
                 getattr(self.api.runtime, calling_key)(self.state, self._enclosing_callback(calling_key,
@@ -454,7 +454,7 @@ class EmsPy:
                                                                                             update_state_freq,
                                                                                             update_act_freq))
 
-    def init_custom_dataframe(self, df_name: str, calling_point: str, update_freq: int, ems_metrics: list[str]):
+    def init_custom_dataframe(self, df_name: str, calling_point: str, update_freq: int, ems_metrics: list):
         """
         Used to initialize EMS metric pandas dataframe attributes and validates proper user input.
 
@@ -540,11 +540,11 @@ class EmsPy:
         """Creates & returns a new state instance that's required to pass into EnergyPlus Runtime API function calls."""
         return self.api.state_manager.new_state()
 
-    def _reset_state(self):
+    def reset_state(self):
         """Resets the state instance of a simulation per EnergyPlus State API documentation."""
         self.api.state_manager.reset_state(self.state)
 
-    def _delete_state(self):
+    def delete_state(self):
         """Deletes the existing state instance."""
         self.api.state_manager.delete_state(self.state)
 
@@ -573,14 +573,13 @@ class EmsPy:
 class BcaEnv(EmsPy):
     # Building Control Agent (BCA) for env
 
-    def __init__(self, ep_path, ep_idf_to_run, timesteps, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc):
+    def __init__(self, ep_path: str, ep_idf_to_run: str, timesteps: int, calling_point_actuation_dict: {},
+                 vars_tc: list, intvars_tc: list, meters_tc: list, actuators_tc: list, weather_tc: list):
         # follow same init procedure as parent class EmsPy
-        super().__init__(ep_path, ep_idf_to_run, timesteps, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc)
+        super().__init__(ep_path, ep_idf_to_run, timesteps, calling_point_actuation_dict, vars_tc, intvars_tc,
+                         meters_tc, actuators_tc, weather_tc)
 
-    def set_calling_pnt_dict(self, cp_dict: dict):
-        # define Calling Point dict {'calling_pnt_x':[actuation_fxn_name, update_data, update_time,...]
-        self.calling_pnt_dict = cp_dict
-
+    # TODO update if needed
     def get_observation(self, ems_category: str, t_back: int = 0) -> list:
         # returns data of given ems category ordered by ToC ordering
         if ems_category not in self.ems_dict:
@@ -600,12 +599,8 @@ class BcaEnv(EmsPy):
         pass
 
 
-class DataDashboard(BcaEnv):
-
+class DataDashboard:
     def __init__(self):
-        pass
-
-    def init_ddash(self):
         pass
 
 
