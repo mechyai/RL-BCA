@@ -51,9 +51,9 @@ ts = 12
 
 agent = emspy.BcaEnv(ep_path, ep_idf_to_run, ts, cp_dict, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc)
 
-# TODO create function for custom df
-df_custom_dict = {'df1': (['act_odb_temp', 'sun_is_up'], calling_point,1)}
-agent.df_custom_dict = df_custom_dict
+# create custom dict
+agent.init_custom_dataframe_dict('df1', calling_point, 4, ['act_odb_temp', 'sun_is_up'])
+agent.init_custom_dataframe_dict('df2', calling_point, 2, ['is_raining', 'zone_temp'])
 
 agent.run_env(ep_weather_path)
 # agent.run_env(ep_weather_path)

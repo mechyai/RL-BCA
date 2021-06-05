@@ -4,9 +4,11 @@
 
 TODO
 - take user input on timesteps and enforce it on build
+- implement basic OpenStudio functionality for model manipulation (timestep enforcement)
 - manage ems/time and zone timestep updates only ONCE per timestep (or if ems updates need to be more flexible allow
 them to break up ems vars on calling point basis)
 - how to automate actuator ranges and enforce compliance
+- find all reference for documentation
 
 ???
 - what calling point should be used for standard weather, vars, intvars, meters?

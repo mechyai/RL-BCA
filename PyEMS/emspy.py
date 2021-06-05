@@ -388,7 +388,7 @@ class EmsPy:
         :param actuation_fxn: the user defined actuation function to be called at runtime
         :param update_state: whether EMS and time/timestep should be updated. This should only be done once a timestep
         :param update_state_freq: the number of zone timesteps per updating the simulation state
-        :param update_act_freq: the numer of zone timesteps per updating the actuators from the actuation function
+        :param update_act_freq: the number of zone timesteps per updating the actuators from the actuation function
         """
 
         def _callback_function(state_arg):

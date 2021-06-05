@@ -22,8 +22,19 @@
     <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/dictionaries/ceube.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/ceube.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/emspy.py" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/emspy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyEMS/emspy_testscript.py" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/emspy_testscript.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PyEMS/emspy_todo" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/emspy_todo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.bnd" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplusout.bnd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.eio" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplusout.eio" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.end" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplusout.end" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.err" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplusout.err" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.eso" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplusout.eso" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.mdd" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplusout.mdd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.mtr" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplusout.mtr" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.rdd" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplusout.rdd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.sql" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplusout.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplustbl.htm" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplustbl.htm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,7 +51,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="rl_framework" />
+        <entry key="$PROJECT_DIR$" value="df_to_dict" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -80,7 +91,7 @@
       <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\api-example-copies" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.scratch_1">
+  <component name="RunManager" selected="Python.emspy_testscript">
     <configuration name="PyEMS_CJE" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -127,9 +138,6 @@
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PyEMS" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -169,6 +177,9 @@
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
       <option name="IS_MODULE_SDK" value="false" />
@@ -192,7 +203,7 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.scratch_1" />
+        <item itemvalue="Python.emspy_testscript" />
         <item itemvalue="Python.scratch_1" />
         <item itemvalue="Python.scratch" />
         <item itemvalue="Python.emspy_testscript" />
@@ -365,7 +376,56 @@
       <option name="project" value="LOCAL" />
       <updated>1622564212725</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="updated df creation and updating - wop">
+      <created>1622693785964</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1622693785964</updated>
+    </task>
+    <task id="LOCAL-00024" summary="compressed update time &amp; data into just update state to assist dataframe updates">
+      <created>1622746570832</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1622746570832</updated>
+    </task>
+    <task id="LOCAL-00025" summary="redesigned dataframe creation, put at end, packed every input into __init__, gave callback state &amp; act update freq">
+      <created>1622815322749</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1622815322749</updated>
+    </task>
+    <task id="LOCAL-00026" summary="debug in process, updated testscript">
+      <created>1622816993331</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1622816993331</updated>
+    </task>
+    <task id="LOCAL-00027" summary="debugging, attribute var name change - reorder,">
+      <created>1622865565587</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1622865565587</updated>
+    </task>
+    <task id="LOCAL-00028" summary="debugging, attribute var name change - reorder,&#10;custom df completed and debugged!">
+      <created>1622909180668</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1622909180668</updated>
+    </task>
+    <task id="LOCAL-00029" summary="test script updated, working">
+      <created>1622909201552</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1622909201552</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -381,7 +441,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Added Python API example files" />
     <MESSAGE value="Added examples files, folder, and notebook folder" />
     <MESSAGE value="added notebooks and readme" />
     <MESSAGE value="updated some python ems examples and began emspy library" />
@@ -400,7 +459,14 @@
     <MESSAGE value="added ems_dict for quick var category and count tracking, within RL branch" />
     <MESSAGE value="fixed actuation, calling point dicts, and RL basic framework - still lots TODO" />
     <MESSAGE value="back on main pycharm" />
-    <option name="LAST_COMMIT_MESSAGE" value="back on main pycharm" />
+    <MESSAGE value="updated df creation and updating - wop" />
+    <MESSAGE value="compressed update time &amp; data into just update state to assist dataframe updates" />
+    <MESSAGE value="redesigned dataframe creation, put at end, packed every input into __init__, gave callback state &amp; act update freq" />
+    <MESSAGE value="debug in process, updated testscript" />
+    <MESSAGE value="debugging, attribute var name change - reorder," />
+    <MESSAGE value="debugging, attribute var name change - reorder,&#10;custom df completed and debugged!" />
+    <MESSAGE value="test script updated, working" />
+    <option name="LAST_COMMIT_MESSAGE" value="test script updated, working" />
   </component>
   <component name="WindowStateProjectService">
     <state x="-1468" y="114" width="1016" height="911" key="#Intentions" timestamp="1621702557664">
@@ -460,10 +526,10 @@
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
     <state x="-1459" y="184" key="SettingsEditor/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621379101168" />
-    <state x="-1368" y="259" key="Vcs.Push.Dialog.v2" timestamp="1622564214647">
+    <state x="-1368" y="259" key="Vcs.Push.Dialog.v2" timestamp="1622909205554">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="-1368" y="259" key="Vcs.Push.Dialog.v2/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1622564214647" />
+    <state x="-1368" y="259" key="Vcs.Push.Dialog.v2/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1622909205554" />
     <state width="968" height="548" key="XDebugger.FullValuePopup" timestamp="1620938535020">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
@@ -472,14 +538,15 @@
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
     <state x="-1396" y="268" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1620935971857" />
-    <state x="11" y="-6" width="968" height="468" maximized="true" key="dock-window-1" timestamp="1621012635740">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="11" y="-6" width="968" height="468" maximized="true" key="dock-window-1/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621012635740" />
-    <state x="-1381" y="45" width="840" height="1034" key="search.everywhere.popup" timestamp="1621618394434">
+    <state x="-2228" y="-25" width="1548" height="878" maximized="true" key="dock-window-1" timestamp="1622911050010">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="-1381" y="45" width="840" height="1034" key="search.everywhere.popup/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621618394434" />
+    <state x="11" y="-6" width="968" height="468" maximized="true" key="dock-window-1/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621012635740" />
+    <state x="-2228" y="-25" width="1548" height="878" maximized="true" key="dock-window-1/0.0.1536.824/-1920.0.1920.1080@0.0.1536.824" timestamp="1622911050010" />
+    <state x="-1381" y="45" width="840" height="1034" key="search.everywhere.popup" timestamp="1622815190315">
+      <screen x="-1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="-1381" y="45" width="840" height="1034" key="search.everywhere.popup/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1622815190315" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -503,6 +570,11 @@
           <url>file://$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/PyEMS_CJE.py</url>
           <line>91</line>
           <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/PyEMS/emspy.py</url>
+          <line>454</line>
+          <option name="timeStamp" value="13" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
