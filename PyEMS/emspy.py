@@ -155,7 +155,7 @@ class EmsPy:
                 setattr(self, 'handle_var_' + var_name, None)
                 setattr(self, 'data_var_' + var_name, [])
             self.ems_dict['var'] = len(self.tc_vars)  # num of metrics per ems category
-            self.ems_master_list = self.ems_master_list + self.tc_vars  # all ems metrics collected
+            self.ems_master_list = self.ems_master_list + self.names_var  # all ems metrics collected
             self.df_count += 1
 
         if self.tc_intvars is not None:
@@ -165,7 +165,7 @@ class EmsPy:
                 setattr(self, 'handle_intvar_' + intvar_name, None)
                 setattr(self, 'data_intvar_' + intvar_name, None)  # static val
             self.ems_dict['intvar'] = len(self.tc_intvars)
-            self.ems_master_list = self.ems_master_list + self.tc_intvars
+            self.ems_master_list = self.ems_master_list + self.names_intvar
             self.df_count += 1
 
         if self.tc_meters is not None:
@@ -175,7 +175,7 @@ class EmsPy:
                 setattr(self, 'handle_meter_' + meter_name, None)
                 setattr(self, 'data_meter_' + meter_name, [])
             self.ems_dict['meter'] = len(self.tc_meters)
-            self.ems_master_list = self.ems_master_list + self.tc_meters
+            self.ems_master_list = self.ems_master_list + self.names_meter
             self.df_count += 1
 
         if self.tc_actuators is not None:
@@ -185,7 +185,7 @@ class EmsPy:
                 setattr(self, 'handle_actuator_' + actuator_name, None)
                 setattr(self, 'data_actuator_' + actuator_name, [])
             self.ems_dict['actuator'] = len(self.tc_actuators)
-            self.ems_master_list = self.ems_master_list + self.tc_actuators
+            self.ems_master_list = self.ems_master_list + self.names_actuator
             self.df_count += 1
 
     def _init_weather_data(self):
@@ -200,7 +200,7 @@ class EmsPy:
                 self.names_weather.append(weather_type)
                 setattr(self, 'data_weather_' + weather_type, [])
             self.ems_dict['weather'] = len(self.weather_tc)
-            self.ems_master_list = self.ems_master_list + self.weather_tc
+            self.ems_master_list = self.ems_master_list + self.names_weather
             self.df_count += 1
 
     def _set_ems_handles(self):
@@ -351,6 +351,7 @@ class EmsPy:
 
     def _actuate(self, actuator_handle: str, actuator_val):
         """ Sets value of a specific actuator in running simulator, or relinquishes control back to EnergyPlus."""
+
         # use None to relinquish control
         # TODO should I handle out-of-range actuator values??? (can this be managed with auto internal var lookup?)
         if actuator_val is None:
@@ -375,7 +376,7 @@ class EmsPy:
                 self._actuate(actuator_handle, actuator_val)
                 self.ems_current_data_dict[actuator_name] = actuator_val
         else:
-            print('WARNING: no actuators or values defined for actuation function')
+            print('WARNING: No actuators/values defined for actuation function')
 
     def _enclosing_callback(self, calling_point: str, actuation_fxn, update_state: bool,
                             update_state_freq: int = 1, update_act_freq: int = 1):
@@ -455,7 +456,7 @@ class EmsPy:
                                                                                             update_state_freq,
                                                                                             update_act_freq))
 
-    def init_custom_dataframe(self, df_name: str, calling_point: str, update_freq: int, ems_metrics: list):
+    def init_custom_dataframe_dict(self, df_name: str, calling_point: str, update_freq: int, ems_metrics: list):
         """
         Used to initialize EMS metric pandas dataframe attributes and validates proper user input.
 
@@ -473,7 +474,7 @@ class EmsPy:
         for metric in ems_metrics:
             ems_type = ''
             if metric not in self.ems_master_list:
-                raise Exception('Incorrect EMS metric names were entered for positing CSV data.')
+                raise Exception('Incorrect EMS metric names were entered for custom dataframes.')
             if metric in self.names_var:
                 ems_type = 'var'
             elif metric in self.names_intvar:
@@ -493,21 +494,23 @@ class EmsPy:
 
     def _update_custom_dataframe_dicts(self, calling_point):
         """Updates data based on desired calling point, frequency, and specific ems vars."""
-        if self.df_custom_dict:
+        if not self.df_custom_dict:
             return  # no custom dicts created
         # iterate through and update all default and user-defined dataframes
         for df_name in self.df_custom_dict:
-            ems_dict, cp, update_freq = self.df_custom_dict[df_name]
+            ems_dict, cp, update_freq = self.df_custom_dict[df_name]  # unpack value
             # TODO verify if % mod is robust enough for interval collection
-            if cp is calling_point and self.timestep_count % update_freq is 0:
-                # TODO will this update, pass by reference????
+            if cp is calling_point and self.timestep_count % update_freq == 0:
                 for ems_metric in ems_dict:
                     # get most recent data point
-                    ems_type = self.ems_custom_type_dict[ems_metric]
-                    data_list_name = 'data_' + ems_type + '_' + ems_metric
-                    data_i = getattr(self, data_list_name)[-1]
-                    # append to dict list # TODO will this store
-                    ems_dict[ems_metric].append(data_i)
+                    if ems_metric is 'Datetime':
+                        data_i = self.time_x[-1]
+                    else:
+                        ems_type = self.ems_custom_type_dict[ems_metric]
+                        data_list_name = 'data_' + ems_type + '_' + ems_metric
+                        data_i = getattr(self, data_list_name)[-1]
+                        # append to dict list
+                    self.df_custom_dict[df_name][0][ems_metric].append(data_i)
 
     def _create_custom_dataframes(self):
         """Creates custom dataframes for specifically tracked ems data list, for each ems category."""
@@ -516,8 +519,6 @@ class EmsPy:
             return  # no ems dicts created, very unlikely
         for df_name in self.df_custom_dict:
             ems_dict, _, _ = self.df_custom_dict[df_name]
-            # TODO FIX
-            ems_dict['Datetime'] = self.time_x  # add time info
             setattr(self, df_name, pd.DataFrame.from_dict(ems_dict))
 
     def _create_default_dataframes(self):
@@ -531,8 +532,6 @@ class EmsPy:
                 ems_dict[ems_name] = getattr(self, ems_data_list_name)
             # create default df
             df_name = 'df_' + ems_type
-            print(df_name)
-            print(ems_dict)
             setattr(self, df_name, pd.DataFrame.from_dict(ems_dict))
 
     def _user_input_check(self):
