@@ -4,7 +4,7 @@
 *This repo was constructed by someone with little experience with EnergyPlus and software/programming, but wanted to 
 assist in creating an easily interfacable RL 'environment' for intelligent HVAC control research.* 
 
-The meta-class wrapper, EmsPy, is meant to simplify and somewhat constrain the E+ EMS API. The popular/intended use of 
+The meta-class wrapper, **EmsPy**, is meant to simplify and somewhat constrain the E+ EMS API. The popular/intended use of 
 EMS is to interface with a running E+ building simulation, not so easily done otherwise. Recently, an Python API was 
 created for EMS so users aren't constrained to using the E+ Runtime Language (ERL) and can more readily interact with 
 a running building simulation to gather state information and implement custom control at each simulation timestep 
