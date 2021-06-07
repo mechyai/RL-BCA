@@ -20,20 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/ceube.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/ceube.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/emspy_testscript.py" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/emspy_testscript.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/emspy_todo" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/emspy_todo" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.bnd" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplusout.bnd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.eio" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplusout.eio" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.end" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplusout.end" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.err" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplusout.err" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.eso" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplusout.eso" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.mdd" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplusout.mdd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.mtr" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplusout.mtr" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.rdd" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplusout.rdd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.sql" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplusout.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplustbl.htm" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplustbl.htm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyEMS/emspy.py" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/emspy.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -425,7 +413,14 @@
       <option name="project" value="LOCAL" />
       <updated>1622909201552</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="update to readme">
+      <created>1622912632207</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1622912632207</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -441,7 +436,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Added examples files, folder, and notebook folder" />
     <MESSAGE value="added notebooks and readme" />
     <MESSAGE value="updated some python ems examples and began emspy library" />
     <MESSAGE value="complete class wrapper strategy" />
@@ -466,7 +460,8 @@
     <MESSAGE value="debugging, attribute var name change - reorder," />
     <MESSAGE value="debugging, attribute var name change - reorder,&#10;custom df completed and debugged!" />
     <MESSAGE value="test script updated, working" />
-    <option name="LAST_COMMIT_MESSAGE" value="test script updated, working" />
+    <MESSAGE value="update to readme" />
+    <option name="LAST_COMMIT_MESSAGE" value="update to readme" />
   </component>
   <component name="WindowStateProjectService">
     <state x="-1468" y="114" width="1016" height="911" key="#Intentions" timestamp="1621702557664">
@@ -526,10 +521,11 @@
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
     <state x="-1459" y="184" key="SettingsEditor/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621379101168" />
-    <state x="-1368" y="259" key="Vcs.Push.Dialog.v2" timestamp="1622909205554">
-      <screen x="-1920" y="0" width="1920" height="1080" />
+    <state x="442" y="130" key="Vcs.Push.Dialog.v2" timestamp="1622912658496">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="-1368" y="259" key="Vcs.Push.Dialog.v2/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1622909205554" />
+    <state x="442" y="130" key="Vcs.Push.Dialog.v2/0.0.1536.824/-1920.0.1920.1080@0.0.1536.824" timestamp="1622912658496" />
     <state width="968" height="548" key="XDebugger.FullValuePopup" timestamp="1620938535020">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
@@ -570,11 +566,6 @@
           <url>file://$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/PyEMS_CJE.py</url>
           <line>91</line>
           <option name="timeStamp" value="11" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/PyEMS/emspy.py</url>
-          <line>454</line>
-          <option name="timeStamp" value="13" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
