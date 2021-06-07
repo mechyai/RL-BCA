@@ -8,7 +8,7 @@ The meta-class wrapper, **EmsPy**, is meant to simplify and somewhat constrain t
 EMS is to interface with a running E+ building simulation, not so easily done otherwise. Recently, an Python API was 
 created for EMS so users aren't constrained to using the E+ Runtime Language (ERL) and can more readily interact with 
 a running building simulation to gather state information and implement custom control at each simulation timestep 
-(subhourly).
+(subhourly). This API can be used to create Python plugins or use E+ as a library and run simulations from Python - EmsPy utilizies the latter method.  
 EMS exposes E+ data such as variables, internal variables, meters, actuators, and weather. Please see the documentation 
 hyperlinks below to learn more. 
 
