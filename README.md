@@ -72,8 +72,12 @@ This guide follows the design of the template Python scripts provided.
 1. First, you will create an **EmsPy object** from proper inputs (this acts as your simulation/environment and agent). The inputs include paths to the E+ directory and the
 building model file to be simulated, information about desired EMS metrics, simulation timestep, and actuation functions with 
 calling points:   
-    - define the path to your EnergyPlus 9.5 installation directory
-    - define the path to your EnergyPlus building model (likely .idf file)
+```
+agent = emspy.BcaEnv(ep_path, ep_idf_to_run, timesteps, cp_dict, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc)
+```
+    - set the path to your EnergyPlus 9.5 installation directory
+    - set the path to your EnergyPlus building model, likely .idf file
+    - set the number of timesteps per hour of the simulation
     - define all EMS metrics you want to call or interact with in your model
         - Build the Table of Contents (TC) for EMS variables, internal variables, meters, actuators, and weather 
         (this requires an understanding of EnergyPlus model input and output files, especially for actuators)
@@ -84,11 +88,12 @@ calling points:
             - Meter: [meter_name]
             - Actuator: [component_type, control_type, actuator_key]
             - Weather: [weather_name]
-    - define the Calling Point and Actuation Function dictionary. This sets when a callback function(s), possibly 
-    assigned with a user-defined actuation function(s) (RL algorithm), will be called at each timestep. There are 
-    multiple calling points per timestep. The diagram above represents the simulation flow. An understanding of calling 
-    points and when to collect data
-    actuate is crucial - Please the EMS Application Guide for more information on calling points.
+    - define the Calling Point & Actuation Function dictionary. This dictionary links a calling point(s) to a callback function(s) and its related arguments.
+    The calling point defines when the callback function will be ran during the simulation timestep calculations, there are multiple calling points per timestep. The majority of calling points occur consistently throughout the simulation, but several occur once before it begins. 
+    The diagram above represents the simulation flow. An understanding of calling points and when to collect data or actuate is crucial - Please see the EMS Application Guide       for more information on calling points.
+    The default callback function can include a user-defined actuation function(s) (RL algorithm) and several other parameters. This is to all be defined in the Calling Point
+    & Actuation Function dictionary. 
+    
         - for each element in this dictionary. This key is the calling point at which the value tuple will be 
         implemented
         - the dictionary value must contain:
@@ -98,8 +103,4 @@ calling points:
             recommended that this only be done once per timestep, so be carefull if implmenting multiple callbacks per 
             timestep)
             - frequency of timesteps when the state space should be updated.................
-            
            
-```
-agent = emspy.BcaEnv(ep_path, ep_idf_to_run, ts, cp_dict, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc)
-```
