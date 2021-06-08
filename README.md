@@ -65,7 +65,7 @@ At the least, even if solely using EmsPy for a given model, it is important to u
   action space of your control framework. See the EMS Application Guide and Input Output Reference documents for detailed
   information on these elements https://energyplus.net/documentation.
   
-###How to use EmsPy with an E+ Model:
+### How to use EmsPy with an E+ Model:
  
 This guide follows the design of the template Python scripts provided.
 

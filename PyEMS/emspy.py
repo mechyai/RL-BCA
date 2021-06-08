@@ -379,7 +379,7 @@ class EmsPy:
             print('WARNING: No actuators/values defined for actuation function')
 
     def _enclosing_callback(self, calling_point: str, actuation_fxn, update_state: bool,
-                            update_state_freq: int = 1, update_act_freq: int = 1):
+                            update_state_f req: int = 1, update_act_freq: int = 1):
         """
         Decorates the main callback function to set the user-defined calling function and set timing and data params.
 
