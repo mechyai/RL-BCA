@@ -98,4 +98,8 @@ calling points:
             recommended that this only be done once per timestep, so be carefull if implmenting multiple callbacks per 
             timestep)
             - frequency of timesteps when the state space should be updated.................
-    
+            
+           
+```
+agent = emspy.BcaEnv(ep_path, ep_idf_to_run, ts, cp_dict, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc)
+```
