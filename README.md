@@ -72,9 +72,11 @@ This guide follows the design of the template Python scripts provided.
 1. First, you will create an **EmsPy object** from proper inputs (this acts as your simulation/environment and agent). The inputs include paths to the E+ directory and the
 building model file to be simulated, information about desired EMS metrics, simulation timestep, and actuation functions with 
 calling points:   
+
 ```
 agent = emspy.BcaEnv(ep_path, ep_idf_to_run, timesteps, cp_dict, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc)
 ```
+
 
     - set the path to your EnergyPlus 9.5 installation directory
     - set the path to your EnergyPlus building model, likely .idf file
