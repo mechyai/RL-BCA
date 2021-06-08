@@ -73,12 +73,10 @@ This guide follows the design of the template Python scripts provided.
 building model file to be simulated, information about desired EMS metrics, simulation timestep, and actuation functions with 
 calling points:   
 
-```
+```python
 agent = emspy.BcaEnv(ep_path, ep_idf_to_run, timesteps, cp_dict, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc)
 ```
-
-
-    - set the path to your EnergyPlus 9.5 installation directory
+   - set the path to your EnergyPlus 9.5 installation directory
     - set the path to your EnergyPlus building model, likely .idf file
     - set the number of timesteps per hour of the simulation
     - define all EMS metrics you want to call or interact with in your model
