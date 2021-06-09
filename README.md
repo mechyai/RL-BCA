@@ -80,16 +80,15 @@ agent = emspy.BcaEnv(ep_path, ep_idf_to_run, timesteps, vars_tc, int_vars_tc, me
 - set the path to your EnergyPlus building model, likely .idf file
 - set the number of timesteps per hour of the simulation
 - define all EMS metrics you want to call or interact with in your model
-        - Build the Table of Contents (TC) for EMS variables, internal variables, meters, actuators, and weather 
-        (this requires an understanding of EnergyPlus model input and output files, especially for actuators)
-        - Each EMS category TC should be a list with nested lists of each EMS metric and its required arguments for
-          fetching the 'handle' from the model. See Data Transfer API documentation for more info https://eplus.readthedocs.io/en/stable/datatransfer.html
-          
-             - Variable: [variable_name, variable_key]
-             - Internal [variable_type, variable_key]
-             - Meter: [meter_name]
-             - Actuator: [component_type, control_type, actuator_key]
-             - Weather: [weather_name]
+  - Build the Table of Contents (TC) for EMS variables, internal variables, meters, actuators, and weather 
+    (this requires an understanding of EnergyPlus model input and output files, especially for actuators)
+  - Each EMS category TC should be a list with nested lists of each EMS metric and its required arguments for
+    fetching the 'handle' from the model. See Data Transfer API documentation for more info https://eplus.readthedocs.io/en/stable/datatransfer.html      
+        - Variable: [variable_name, variable_key]
+        - Internal [variable_type, variable_key]
+        - Meter: [meter_name]
+        - Actuator: [component_type, control_type, actuator_key]
+        - Weather: [weather_name]
  
 Once this has been completed the meta-class, ***EmsPy***, has all it needs to build out the class to create various data collection/organization and dataframes attributes, as well as find the EMS handles from the ToCs, etc. It may be helpful to run this 'agent' object initialization and then review its contents to see all that the meta-class has created. *At this point, the simulation can be ran but nothing useful will happen, in terms of control and data collection, as no calling points, callback functions, or actuation functions have been defined.* 
  
