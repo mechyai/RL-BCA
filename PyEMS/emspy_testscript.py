@@ -40,24 +40,22 @@ weather_tc = ['sun_is_up', 'is_raining', 'wind_direction', 'outdoor_relative_hum
 calling_point = 'callback_begin_zone_timestep_after_init_heat_balance'
 
 
-def actuation_fxn1(agent):
-    # data = 1
-    data = agent.get_ems_data(['actuator'], [0])
-    print('working...{}')
-    return None
-
-
-# {'calling_point': [actuation_fxn, update state, update state freq, update act freq],...}
-cp_dict = {calling_point: [actuation_fxn1, True, 1, 1]}
 ts = 12
 
-agent = emspy.BcaEnv(ep_path, ep_idf_to_run, ts, cp_dict, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc)
+agent = emspy.BcaEnv(ep_path, ep_idf_to_run, ts, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc)
+
+def actuation_fxn1():
+    # data = 1
+    data = agent.get_ems_data(['wind_direction'], [0, 1, 2])
+    print(f'working...{data}')
+    return None
+
+agent.set_calling_point_and_actuation_function(calling_point, actuation_fxn1, True, 1, 1)
 
 # create custom dict
-agent.init_custom_dataframe_dict('df1', calling_point, 4, ['act_odb_temp', 'sun_is_up'])
-agent.init_custom_dataframe_dict('df2', calling_point, 2, ['is_raining', 'zone_temp'])
+# agent.init_custom_dataframe_dict('df1', calling_point, 4, ['act_odb_temp', 'sun_is_up'])
+# agent.init_custom_dataframe_dict('df2', calling_point, 2, ['is_raining', 'zone_temp'])
 
 agent.run_env(ep_weather_path)
-# agent.run_env(ep_weather_path)
-agent.reset_state()
+# agent.reset_state()
 
