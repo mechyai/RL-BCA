@@ -84,11 +84,11 @@ agent = emspy.BcaEnv(ep_path, ep_idf_to_run, timesteps, cp_dict, vars_tc, int_va
         (this requires an understanding of EnergyPlus model input and output files, especially for actuators)
         - Each EMS category TC should be a list with nested lists of each EMS metric and its required arguments for
         fetching the 'handle' from the model. See Data Transfer API documentation for more info https://eplus.readthedocs.io/en/stable/datatransfer.html
-            - Variable: [variable_name, variable_key]
-            - Internal [variable_type, variable_key]
-            - Meter: [meter_name]
-            - Actuator: [component_type, control_type, actuator_key]
-            - Weather: [weather_name]
+             - Variable: [variable_name, variable_key]
+             - Internal [variable_type, variable_key]
+             - Meter: [meter_name]
+             - Actuator: [component_type, control_type, actuator_key]
+             - Weather: [weather_name]
  - define the Calling Point & Actuation Function dictionary. This dictionary links a calling point(s) to a callback function(s) and its related arguments.
     The calling point defines when the callback function will be ran during the simulation timestep calculations, there are multiple calling points per timestep. The majority of calling points occur consistently throughout the simulation, but several occur once before it begins. 
     The diagram above represents the simulation flow. An understanding of calling points and when to collect data or actuate is crucial - Please see the EMS Application Guide for more information on calling points. The default callback function can include a user-defined actuation function(s) (RL algorithm) and several other parameters. This is to all be defined in the Calling Point & Actuation Function dictionary. 
