@@ -2,7 +2,7 @@
 ### This repo is for reinforcement learning (RL) algorithm development and testing of BCAs (Building Control Agent) in EnergyPlus (E+) building energy simulator using Python Energy Management System (EMS) API with a <ins>meta-class wrapper, EmsPy</ins>.
 
 *This repo was constructed by someone with little experience with EnergyPlus and software/programming, but wanted to 
-assist in creating an easily interfacable RL 'environment' for intelligent HVAC control research.* 
+assist in creating an easily interfacable RL 'environment' for intelligent HVAC control research. Any feedback/criticism is appreciated.* 
 
 The meta-class wrapper, **EmsPy**, is meant to simplify and somewhat constrain the E+ EMS API. The popular/intended use of 
 EMS is to interface with a running E+ building simulation, not so easily done otherwise. Recently, an Python API was 
@@ -45,9 +45,8 @@ detail below.
 
 <img src="https://user-images.githubusercontent.com/65429130/119517258-764bbc00-bd45-11eb-97bf-1af9ab0444cb.png" width = "750"> 
 
-<br/>There are likely 4 main use-cases for this repo, if you are hoping to implement RL algorithms at runtime.
+<br/>There are likely 4 main use-cases for this repo, if you are hoping to implement RL algorithms at runtime. In order of increasing complexity:
 
-They are, in order of increasing complexity:
 - You want to use an existing template and linked building model to purely implement RL control
 - You have an existing E+ building model (with *no* model or .idf modification needed) that you want to link and 
 implement RL control on
@@ -61,9 +60,9 @@ This guide will focus on utilizing EmsPy (EMS API meta-class wrapper), and the l
 be discussed briefly at the end, with basic guidance to get you started in the right direction. 
 
 At the least, even if solely using EmsPy for a given model, it is important to understand the EMS Metrics of a given
- model: variables, internal variables, meters, actuators, and weather. These are used to build the state and
-  action space of your control framework. See the EMS Application Guide and Input Output Reference documents for detailed
-  information on these elements https://energyplus.net/documentation.
+model: variables, internal variables, meters, actuators, and weather. These are used to build the state and
+action space of your control framework. See the EMS Application Guide and Input Output Reference documents for detailed
+information on these elements https://energyplus.net/documentation.
   
 ### How to use EmsPy with an E+ Model:
  
@@ -90,7 +89,9 @@ agent = emspy.BcaEnv(ep_path, ep_idf_to_run, timesteps, vars_tc, int_vars_tc, me
     - Actuator: [component_type, control_type, actuator_key]
     - Weather: [weather_name]
  
-Once this has been completed the meta-class, ***EmsPy***, has all it needs to build out the class to create various data collection/organization and dataframes attributes, as well as find the EMS handles from the ToCs, etc. It may be helpful to run this 'agent' object initialization and then review its contents to see all that the meta-class has created. *At this point, the simulation can be ran but nothing useful will happen, in terms of control and data collection, as no calling points, callback functions, or actuation functions have been defined.* 
+Once this has been completed the meta-class, ***EmsPy***, has all it needs to build out the class to create various data collection/organization and dataframes attributes, as well as find the EMS handles from the ToCs, etc. It may be helpful to run this 'agent' object initialization and then review its contents to see all that the meta-class has created. 
+
+***Note*** *: at this point, the simulation can be ran but nothing useful will happen (in terms of control or data collection) as no calling points, callback functions, or actuation functions have been defined.* 
  
 **2.** Next, you must define the Calling Point & Actuation Function dictionary to enable callback functionality at runtime. This dictionary links a calling point(s) to a callback function(s) and arguments related to data/actuation update frequencies. This dictionary should be built one key-value at a time using: 
 
