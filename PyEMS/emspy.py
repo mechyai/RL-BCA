@@ -34,7 +34,7 @@ class EmsPy:
                                 'inside_system_iteration_loop']  # TODO verify correctness
 
     # TODO restrict timesteps in known range
-    def __init__(self, ep_path: str, ep_idf_to_run: str, timesteps: int, calling_point_actuation_dict: {},
+    def __init__(self, ep_path: str, ep_idf_to_run: str, timesteps: int,
                  vars_tc: list, intvars_tc: list, meters_tc: list, actuators_tc: list, weather_tc: list):
         """
         Establish connection to EnergyPlusAPI and initializes desired EMS sensors, actuators, and weather data.
@@ -48,7 +48,6 @@ class EmsPy:
         :param ep_path: absolute path to EnergyPlus download directory in user's file system
         :param ep_idf_to_run: absolute/relative path to EnergyPlus building energy model to be simulated, .idf file
         :param timesteps: number of timesteps per hour set in EnergyPlus model .idf file
-        :param calling_point_actuation_dict: dict with calling point as key and linked actuation fxn and args as value
         :param vars_tc: list of desired output Variables, with each object provided as
         ['user_var_name', 'variable_name', 'variable_key'] within the list
         :param intvars_tc: list of desired Internal Variables (static), with each object provided as
@@ -102,9 +101,7 @@ class EmsPy:
         # summary dicts
         self.ems_dict = {}  # keep track of EMS variable categories and num of vars
         self.ems_current_data_dict = {}  # collection of all ems metrics (keys) and their current values (val)
-        self.calling_point_actuation_dict = calling_point_actuation_dict  # links cp to actuation fxn & its needed args
-        # establish runtime calling points and custom callback function specification with defined arguments
-        self._set_calling_points_and_actuation_functions()
+        self.calling_point_actuation_dict = {}  # links cp to actuation fxn & its needed args
 
         # create attributes of sensor and actuator .idf handles and data arrays
         self._init_ems_handles_and_data()  # creates ems_handle = int & ems_data = [] attributes, and variable counts
@@ -430,7 +427,7 @@ class EmsPy:
 
             # TODO verify freq robustness
             if actuation_fxn is not None and self.zone_timestep & update_act_freq == 0:
-                self._actuate_from_list(actuation_fxn(self))
+                self._actuate_from_list(actuation_fxn())
 
             # update custom dataframes
             self._update_custom_dataframe_dicts(calling_point)
@@ -446,7 +443,7 @@ class EmsPy:
 
         return _callback_function
 
-    def _set_calling_points_and_actuation_functions(self):
+    def _init_calling_points_and_actuation_functions(self):
         """This iterates through the Calling Point Dict{} to set runtime calling points with actuation functions."""
 
         if self.calling_point_actuation_dict is None:
@@ -546,6 +543,8 @@ class EmsPy:
 
     def _user_input_check(self):
         # TODO create function that checks if all user-input attributes has been specified and add help directions
+        if not self.calling_point_actuation_dict:
+            print('WARNING: No calling points or actuation functions were initialized.')
         pass
 
     def _new_state(self):
@@ -566,6 +565,8 @@ class EmsPy:
         # check valid input by user
         self._user_input_check()
 
+        self._init_calling_points_and_actuation_functions()
+
         # RUN SIMULATION
         print('* * * Running E+ Simulation * * *')
         self.api.runtime.run_energyplus(self.state, ['-w', weather_file, '-d', 'out', self.idf_file])   # cmd line args
@@ -584,11 +585,31 @@ class BcaEnv(EmsPy):
     """
 
     # Building Control Agent (BCA) & Environment
-    def __init__(self, ep_path: str, ep_idf_to_run: str, timesteps: int, calling_point_actuation_dict: {},
+    def __init__(self, ep_path: str, ep_idf_to_run: str, timesteps: int,
                  vars_tc: list, intvars_tc: list, meters_tc: list, actuators_tc: list, weather_tc: list):
         # follow same init procedure as parent class EmsPy
-        super().__init__(ep_path, ep_idf_to_run, timesteps, calling_point_actuation_dict, vars_tc, intvars_tc,
-                         meters_tc, actuators_tc, weather_tc)
+        super().__init__(ep_path, ep_idf_to_run, timesteps, vars_tc, intvars_tc, meters_tc, actuators_tc, weather_tc)
+
+    def set_calling_point_and_actuation_function(self, calling_point: str, actuation_fxn, update_state: bool,
+                                                  update_state_freq: int = 1, update_act_freq: int = 1):
+        # TODO specify Warning documentation and find a way to check if only one data/timing update is done per timestep
+        """
+        Modify dict for runtime calling points and custom callback function specification with defined arguments.
+
+        :param calling_point: the calling point at which the callback function will be called during simulation runtime
+        :param actuation_fxn: the user defined actuation function to be called at runtime
+        :param update_state: whether EMS and time/timestep should be updated. This should only be done once a timestep
+        :param update_state_freq: the number of zone timesteps per updating the simulation state
+        :param update_act_freq: the number of zone timesteps per updating the actuators from the actuation function
+        """
+        if update_act_freq > update_state_freq:
+            print(f'WARNING: it is unusual to have your action update more frequent than your state update')
+        if calling_point in self.calling_point_actuation_dict:
+            print(f'WARNING: you have overrided the calling point {calling_point}. Please keep calling points unique.')
+        self.calling_point_actuation_dict[calling_point] = [actuation_fxn, update_state,
+                                                            update_state_freq, update_act_freq]
+
+
 
     def get_ems_data(self, ems_metric_list: list, time_rev_index: list) -> list:
         """
