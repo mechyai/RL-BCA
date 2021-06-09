@@ -105,6 +105,6 @@ agent = emspy.BcaEnv(ep_path, ep_idf_to_run, timesteps, cp_dict, vars_tc, int_va
            
 CAUTION:
 - EMS data can be updated for each calling point assigned per timestep, you may want to avoid this and manually only implement one state update per timestep.
-- 
+- Make sure your hourly timestep matches that of your EnergyPlus .idf model
 
 ### References:
