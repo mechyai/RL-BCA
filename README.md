@@ -76,10 +76,10 @@ calling points:
 ```python
 agent = emspy.BcaEnv(ep_path, ep_idf_to_run, timesteps, cp_dict, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc)
 ```
-   - set the path to your EnergyPlus 9.5 installation directory
-    - set the path to your EnergyPlus building model, likely .idf file
-    - set the number of timesteps per hour of the simulation
-    - define all EMS metrics you want to call or interact with in your model
+- set the path to your EnergyPlus 9.5 installation directory
+- set the path to your EnergyPlus building model, likely .idf file
+- set the number of timesteps per hour of the simulation
+- define all EMS metrics you want to call or interact with in your model
         - Build the Table of Contents (TC) for EMS variables, internal variables, meters, actuators, and weather 
         (this requires an understanding of EnergyPlus model input and output files, especially for actuators)
         - Each EMS category TC should be a list with nested lists of each EMS metric and its required arguments for
@@ -105,3 +105,4 @@ agent = emspy.BcaEnv(ep_path, ep_idf_to_run, timesteps, cp_dict, vars_tc, int_va
             timestep)
             - frequency of timesteps when the state space should be updated.................
            
+CAUTION:
