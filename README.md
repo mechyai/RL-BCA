@@ -69,7 +69,7 @@ At the least, even if solely using EmsPy for a given model, it is important to u
  
 This guide follows the design of the template Python scripts provided.
 
-1. First, you will create an **EmsPy object** from proper inputs (this acts as your simulation/environment and agent). The inputs include paths to the E+ directory and the
+**1.** First, you will create an **EmsPy object** from proper inputs (this acts as your simulation/environment and agent). The inputs include paths to the E+ directory and the
 building model file to be simulated, information about desired EMS metrics, simulation timestep, and actuation functions with 
 calling points:   
 
@@ -92,7 +92,7 @@ agent = emspy.BcaEnv(ep_path, ep_idf_to_run, timesteps, vars_tc, int_vars_tc, me
  
 Once this has been completed the meta-class, ***EmsPy***, has all it needs to build out the class to create various data collection/organization and dataframes attributes, as well as find the EMS handles from the ToCs, etc. It may be helpful to run this 'agent' object initialization and then review its contents to see all that the meta-class has created. *At this point, the simulation can be ran but nothing useful will happen, in terms of control and data collection, as no calling points, callback functions, or actuation functions have been defined.* 
  
-2. Next, you must define the Calling Point & Actuation Function dictionary to enable callback functionality at runtime. This dictionary links a calling point(s) to a callback function(s) and arguments related to data/actuation update frequencies. This dictionary should be built one key-value at a time using: 
+**2.** Next, you must define the Calling Point & Actuation Function dictionary to enable callback functionality at runtime. This dictionary links a calling point(s) to a callback function(s) and arguments related to data/actuation update frequencies. This dictionary should be built one key-value at a time using: 
 
  ```python
  BcaEnv.get_ems_data(calling_point: str, actuation_fxn, update_state: bool, update_state_freq: int = 1, update_act_freq: int = 1)
@@ -102,20 +102,16 @@ A given <ins>calling point</ins> defines when a linked callback function will be
 The <ins>actuation function</ins> should encapsulate any sort of control algorithm (more than one can be created and linked to unqiue calling points, but it's likely that only one will be used as the entire RL algorithm. Using the 'agent' object attributes to collect state information, a control algorithm/function can be created by the user and then passed to this method. This function should return a dictionary (???) of the actuator variables (key) and set values (value). Using a decorator function, this actuation function will automatically be attached to a base callback function and the defined calling point.
 The rest of the arguments are also automatically passed to the base-callback function to dictate the update frequency of state data and actuation. This means that data collection or actuation updates do not need to have every timestep. 
  
- ***Note*** *: if you wish to just use callback functions just for data collection, pass `None` (???) for the actuation function.
+ ***Note*** *: if you wish to just use callback functions just for data collection, pass `None` (???) for the actuation function.*
  
  ***Warning*** *: EMS data (and actuation) can be updated for each calling point (and actuation function) assigned for a single timestep, you may want to avoid this and manually only implement one state update per timestep. Otherwise, you will screw up zone timestep increments (???) and may accidently be collecting data and actuating multiple times per timestep.*
 
 The diagram above represents the simulation flow. An understanding of calling points and when to collect data or actuate is crucial - Please see the EMS Application Guide for more information on calling points. The default callback function can include a user-defined actuation function(s) (RL algorithm) and several other parameters. This is to all be defined in the Calling Point & Actuation Function dictionary. 
 
-   - calling point at which the value tuple will be 
-     implemented
+   - calling point at which the value tuple will be implemented
    - the dictionary value must contain:
-   - an actuation function (or None) which returns a nested list of actuator variables and their desired value 
-     to be set
-   - True/False of whether or not the state should be updated at this calling point for a given timestep (it is
-     recommended that this only be done once per timestep, so be carefull if implmenting multiple callbacks per 
-     timestep)
+   - an actuation function (or None) which returns a nested list of actuator variables and their desired value to be set
+   - True/False of whether or not the state should be updated at this calling point for a given timestep (it is recommended that this only be done once per timestep, be              carefull if implmenting multiple callbacks per timestep)
    - frequency of timesteps when the state space should be updated.................
            
 **TIPS**:
