@@ -109,7 +109,7 @@ The rest of the arguments are also automatically passed to the base-callback fun
 
 The diagram above represents the simulation flow. An understanding of calling points and when to collect data or actuate is crucial - Please see the EMS Application Guide for more information on calling points. The default callback function can include a user-defined actuation function(s) (RL algorithm) and several other parameters. This is to all be defined in the Calling Point & Actuation Function dictionary. 
 
-   - for each element in this dictionary. This key is the calling point at which the value tuple will be 
+   - calling point at which the value tuple will be 
      implemented
    - the dictionary value must contain:
    - an actuation function (or None) which returns a nested list of actuator variables and their desired value 
