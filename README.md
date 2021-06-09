@@ -83,7 +83,8 @@ agent = emspy.BcaEnv(ep_path, ep_idf_to_run, timesteps, vars_tc, int_vars_tc, me
         - Build the Table of Contents (TC) for EMS variables, internal variables, meters, actuators, and weather 
         (this requires an understanding of EnergyPlus model input and output files, especially for actuators)
         - Each EMS category TC should be a list with nested lists of each EMS metric and its required arguments for
-        fetching the 'handle' from the model. See Data Transfer API documentation for more info https://eplus.readthedocs.io/en/stable/datatransfer.html
+          fetching the 'handle' from the model. See Data Transfer API documentation for more info https://eplus.readthedocs.io/en/stable/datatransfer.html
+          
              - Variable: [variable_name, variable_key]
              - Internal [variable_type, variable_key]
              - Meter: [meter_name]
@@ -107,6 +108,7 @@ The rest of the arguments are also automatically passed to the base-callback fun
  ***Warning*** *: EMS data (and actuation) can be updated for each calling point (and actuation function) assigned for a single timestep, you may want to avoid this and manually only implement one state update per timestep. Otherwise, you will screw up zone timestep increments (???) and may accidently be collecting data and actuating multiple times per timestep.*
 
 The diagram above represents the simulation flow. An understanding of calling points and when to collect data or actuate is crucial - Please see the EMS Application Guide for more information on calling points. The default callback function can include a user-defined actuation function(s) (RL algorithm) and several other parameters. This is to all be defined in the Calling Point & Actuation Function dictionary. 
+
     - for each element in this dictionary. This key is the calling point at which the value tuple will be 
       implemented
     - the dictionary value must contain:
