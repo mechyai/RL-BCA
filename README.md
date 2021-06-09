@@ -76,32 +76,35 @@ calling points:
 ```python
 agent = emspy.BcaEnv(ep_path, ep_idf_to_run, timesteps, cp_dict, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc)
 ```
-   - set the path to your EnergyPlus 9.5 installation directory
-    - set the path to your EnergyPlus building model, likely .idf file
-    - set the number of timesteps per hour of the simulation
-    - define all EMS metrics you want to call or interact with in your model
+- set the path to your EnergyPlus 9.5 installation directory
+- set the path to your EnergyPlus building model, likely .idf file
+- set the number of timesteps per hour of the simulation
+- define all EMS metrics you want to call or interact with in your model
         - Build the Table of Contents (TC) for EMS variables, internal variables, meters, actuators, and weather 
         (this requires an understanding of EnergyPlus model input and output files, especially for actuators)
         - Each EMS category TC should be a list with nested lists of each EMS metric and its required arguments for
         fetching the 'handle' from the model. See Data Transfer API documentation for more info https://eplus.readthedocs.io/en/stable/datatransfer.html
-            - Variable: [variable_name, variable_key]
-            - Internal [variable_type, variable_key]
-            - Meter: [meter_name]
-            - Actuator: [component_type, control_type, actuator_key]
-            - Weather: [weather_name]
-    - define the Calling Point & Actuation Function dictionary. This dictionary links a calling point(s) to a callback function(s) and its related arguments.
+             - Variable: [variable_name, variable_key]
+             - Internal [variable_type, variable_key]
+             - Meter: [meter_name]
+             - Actuator: [component_type, control_type, actuator_key]
+             - Weather: [weather_name]
+ - define the Calling Point & Actuation Function dictionary. This dictionary links a calling point(s) to a callback function(s) and its related arguments.
     The calling point defines when the callback function will be ran during the simulation timestep calculations, there are multiple calling points per timestep. The majority of calling points occur consistently throughout the simulation, but several occur once before it begins. 
-    The diagram above represents the simulation flow. An understanding of calling points and when to collect data or actuate is crucial - Please see the EMS Application Guide       for more information on calling points.
-    The default callback function can include a user-defined actuation function(s) (RL algorithm) and several other parameters. This is to all be defined in the Calling Point
-    & Actuation Function dictionary. 
+    The diagram above represents the simulation flow. An understanding of calling points and when to collect data or actuate is crucial - Please see the EMS Application Guide for more information on calling points. The default callback function can include a user-defined actuation function(s) (RL algorithm) and several other parameters. This is to all be defined in the Calling Point & Actuation Function dictionary. 
     
-        - for each element in this dictionary. This key is the calling point at which the value tuple will be 
+      - for each element in this dictionary. This key is the calling point at which the value tuple will be 
         implemented
-        - the dictionary value must contain:
-            - an actuation function (or None) which returns a nested list of actuator variables and their desired value 
+      - the dictionary value must contain:
+       - an actuation function (or None) which returns a nested list of actuator variables and their desired value 
             to be set
-            - True/False of whether or not the state should be updated at this calling point for a given timestep (it is
+       - True/False of whether or not the state should be updated at this calling point for a given timestep (it is
             recommended that this only be done once per timestep, so be carefull if implmenting multiple callbacks per 
             timestep)
-            - frequency of timesteps when the state space should be updated.................
+       - frequency of timesteps when the state space should be updated.................
            
+CAUTION:
+- EMS data can be updated for each calling point assigned per timestep, you may want to avoid this and manually only implement one state update per timestep.
+- Make sure your hourly timestep matches that of your EnergyPlus .idf model
+
+### References:
