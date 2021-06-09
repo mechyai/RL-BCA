@@ -103,8 +103,10 @@ agent = emspy.BcaEnv(ep_path, ep_idf_to_run, timesteps, cp_dict, vars_tc, int_va
             timestep)
        - frequency of timesteps when the state space should be updated.................
            
+TIPS:
+
 CAUTION:
-- EMS data can be updated for each calling point assigned per timestep, you may want to avoid this and manually only implement one state update per timestep.
+- EMS data can be updated for each calling point assigned per timestep, you may want to avoid this and manually only implement one state update per timestep. Will screw up zone timestep incremt. 
 - Make sure your hourly timestep matches that of your EnergyPlus .idf model
 
 ### References:
