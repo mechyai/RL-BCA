@@ -40,13 +40,15 @@ weather_tc = ['sun_is_up', 'is_raining', 'wind_direction', 'outdoor_relative_hum
 calling_point = 'callback_begin_zone_timestep_after_init_heat_balance'
 
 
-def actuation_fxn():
-    print('working...')
+def actuation_fxn1(agent):
+    # data = 1
+    data = agent.get_ems_data(['oa_temp'], [0, 1, 2])
+    print(f'working...{data}')
     return None
 
 
 # {'calling_point': [actuation_fxn, update state, update state freq, update act freq],...}
-cp_dict = {calling_point: [actuation_fxn, True, 1, 1]}
+cp_dict = {calling_point: [actuation_fxn1, True, 1, 1]}
 ts = 12
 
 agent = emspy.BcaEnv(ep_path, ep_idf_to_run, ts, cp_dict, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc)
