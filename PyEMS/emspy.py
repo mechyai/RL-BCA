@@ -607,27 +607,23 @@ class BcaEnv(EmsPy):
         """
 
         return_data_list = []
+        full_ems_category = False
+        # if only EMS category called
+        if ems_metric_list[0] in self.ems_dict and len(ems_metric_list) == 1:
+            ems_metric_list = getattr(self, 'names_' + ems_metric_list[0])
+            full_ems_category = True
         for ems_metric in ems_metric_list:
-            if ems_metric in self.ems_dict:
-                if len(ems_metric_list) > 1:
-                    raise Exception(f'EMS categories can only be called by themselves, please call only one at a time.')
-                else:
-                    # rewrite ems_metric_list to entire EMS metric list of given category
-                    ems_metric_list = getattr(self, 'names_' + ems_metric)
-                    ems_type = ems_metric  # given category
-            elif ems_metric not in self.ems_master_list:
-                # user put EMS category with EMS metrics
+            if not full_ems_category:
                 if ems_metric in self.ems_dict:
-                    raise Exception(f'The EMS category {ems_metric} cannot be called with specific EMS metrics and must'
-                                    f'be called alone.')
-                else:
+                    raise Exception(f'EMS categories can only be called by themselves, please only call one at a time.')
+                elif ems_metric not in self.ems_master_list:
                     raise Exception(f'The EMS metric {ems_metric} is not valid. Please see your ToCs or '
                                     f'.ems_master_list for available metrics.')
-            else:
-                ems_type = self.get_ems_type(ems_metric)
+
+            ems_type = self.get_ems_type(ems_metric)
             # no time index specified, return full data list
             if not time_rev_index:
-                return_data_list.append(getattr(self, 'data_' + ems_type + ems_metric))
+                return_data_list.append(getattr(self, 'data_' + ems_type + '_' + ems_metric))
             else:
                 return_data_indexed = []
                 for time in time_rev_index:

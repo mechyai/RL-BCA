@@ -42,8 +42,8 @@ calling_point = 'callback_begin_zone_timestep_after_init_heat_balance'
 
 def actuation_fxn1(agent):
     # data = 1
-    data = agent.get_ems_data(['oa_temp'], [0, 1, 2])
-    print(f'working...{data}')
+    data = agent.get_ems_data(['actuator'], [0])
+    print('working...{}')
     return None
 
 
