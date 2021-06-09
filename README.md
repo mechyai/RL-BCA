@@ -93,15 +93,15 @@ agent = emspy.BcaEnv(ep_path, ep_idf_to_run, timesteps, cp_dict, vars_tc, int_va
     The calling point defines when the callback function will be ran during the simulation timestep calculations, there are multiple calling points per timestep. The majority of calling points occur consistently throughout the simulation, but several occur once before it begins. 
     The diagram above represents the simulation flow. An understanding of calling points and when to collect data or actuate is crucial - Please see the EMS Application Guide for more information on calling points. The default callback function can include a user-defined actuation function(s) (RL algorithm) and several other parameters. This is to all be defined in the Calling Point & Actuation Function dictionary. 
     
-        - for each element in this dictionary. This key is the calling point at which the value tuple will be 
+      - for each element in this dictionary. This key is the calling point at which the value tuple will be 
         implemented
-        - the dictionary value must contain:
-            - an actuation function (or None) which returns a nested list of actuator variables and their desired value 
+      - the dictionary value must contain:
+       - an actuation function (or None) which returns a nested list of actuator variables and their desired value 
             to be set
-            - True/False of whether or not the state should be updated at this calling point for a given timestep (it is
+       - True/False of whether or not the state should be updated at this calling point for a given timestep (it is
             recommended that this only be done once per timestep, so be carefull if implmenting multiple callbacks per 
             timestep)
-            - frequency of timesteps when the state space should be updated.................
+       - frequency of timesteps when the state space should be updated.................
            
 CAUTION:
 
