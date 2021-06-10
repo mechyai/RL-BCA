@@ -368,7 +368,7 @@ class EmsPy:
         else:
             self.api.exchange.set_actuator_value(self.state, actuator_handle, actuator_val)
 
-    def _actuate_from_list(self, actuator_pairs_list: list):
+    def _actuate_from_list(self, actuator_pairs_dict: dict):
         """
         This iterates through list of actuator name and value setpoint pairs to be set in simulation.
 
