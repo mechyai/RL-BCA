@@ -35,7 +35,7 @@ class EmsPy:
 
     # TODO restrict timesteps in known range
     def __init__(self, ep_path: str, ep_idf_to_run: str, timesteps: int,
-                 vars_tc: list, intvars_tc: list, meters_tc: list, actuators_tc: list, weather_tc: list):
+                 tc_var: dict, tc_intvar: dict, tc_meter: dict, tc_actuator: dict, tc_weather: dict):
         """
         Establish connection to EnergyPlusAPI and initializes desired EMS sensors, actuators, and weather data.
 
@@ -48,20 +48,24 @@ class EmsPy:
         :param ep_path: absolute path to EnergyPlus download directory in user's file system
         :param ep_idf_to_run: absolute/relative path to EnergyPlus building energy model to be simulated, .idf file
         :param timesteps: number of timesteps per hour set in EnergyPlus model .idf file
-        :param vars_tc: list of desired output Variables, with each object provided as
-        ['user_var_name', 'variable_name', 'variable_key'] within the list
-        :param intvars_tc: list of desired Internal Variables (static), with each object provided as
-        ['user_var_name', 'variable_type', 'variable_key'] within the list
-        :param meters_tc: list of desired Meters, with each object provided as
-        ['user_var_name', 'meter_name'] within the list
-        :param actuators_tc: list of desired EMS Actuators, with each object provided as
-        ['user_var_name', 'component_type', 'control_type', 'actuator_key'] within the list
-        :param weather_tc: list of desired weather types, pertaining to any available weather metrics defined below:
+        :param tc_var: dict of desired output Variables, with each EMS object provided as
+        'user_var_name': ['variable_name', 'variable_key'] within the dict
+        :param tc_intvar: list of desired Internal Variables (static), with each object provided as
+        'user_var_name': ['variable_type', 'variable_key'] within the dict
+        :param tc_meter: list of desired Meters, with each object provided as
+        'user_var_name': 'meter_name' within the dict
+        :param tc_actuator: list of desired EMS Actuators, with each object provided as
+        'user_var_name': ['component_type', 'control_type', 'actuator_key'] within the dict
+
+        :param tc_weather: list of desired weather types, with each object provided as
+        'user_var_name': 'weather_metric' within the dict.
+        The available weather metrics are identified below:
         ['sun_is_up', 'is_raining', 'is_snowing', 'albedo', 'beam_solar', 'diffuse_solar', 'horizontal_ir',
         'liquid_precipitation', 'outdoor_barometric_pressure', 'outdoor_dew_point', 'outdoor_dry_bulb',
         'outdoor_relative_humidity', 'sky_temperature', 'wind_direction', 'wind_speed']
         Any such weather metric can also be called for Today or Tomorrow for a given hour and timestep, if desired
         """
+
         self.ep_path = ep_path
         sys.path.insert(0, ep_path)  # set path to E+
         import pyenergyplus.api
@@ -75,18 +79,13 @@ class EmsPy:
         self.idf_file = ep_idf_to_run  # E+ idf file to simulation
 
         # Table of Contents for EMS sensor and actuators
-        self.tc_vars = vars_tc
-        self.tc_intvars = intvars_tc
-        self.tc_meters = meters_tc
-        self.tc_actuators = actuators_tc
+        self.tc_var = tc_var
+        self.tc_intvar = tc_intvar
+        self.tc_meter = tc_meter
+        self.tc_actuator = tc_actuator
 
-        # name lists
-        self.names_var = []
-        self.names_intvar = []
-        self.names_meter = []
-        self.names_actuator = []
-        self.names_weather = []
-        self.ems_master_list = []
+        # Table of Content for present weather data
+        self.tc_weather = tc_weather
 
         # dataframes
         self.df_count = 0
@@ -98,8 +97,9 @@ class EmsPy:
         self.df_actuator = None
         self.weather = None
 
-        # summary dicts
-        self.ems_dict = {}  # keep track of EMS variable categories and num of vars
+        # summary dicts and lists
+        self.ems_names_master_list = []
+        self.ems_type_dict = {}  # keep track of EMS variable categories and num of vars
         self.ems_current_data_dict = {}  # collection of all ems metrics (keys) and their current values (val)
         self.calling_point_actuation_dict = {}  # links cp to actuation fxn & its needed args
 
@@ -108,8 +108,7 @@ class EmsPy:
         self.got_ems_handles = False
         self.static_vars_gathered = False  # static (internal) variables, gather once
 
-        # Table of Content for present weather data
-        self.weather_tc = weather_tc
+        # create attributes for weather
         self._init_weather_data()  # creates weather_data = [] attribute, useful for present/prior weather data tracking
 
         # timing data
@@ -143,90 +142,49 @@ class EmsPy:
         This will also update the EMS dictionary which tracks which EMS variable types are in use and how many for each
         category. This dictionary attribute is used elsewhere for quick data fetching.
         """
-        # TODO compress repetition if still readable
         # set attribute handle names and data arrays given by user to None
-        if self.tc_vars is not None:
-            for var in self.tc_vars:
-                var_name = var[0]
-                self.names_var.append(var_name)
-                self.ems_type_dict[var_name] = 'var'
-                setattr(self, 'handle_var_' + var_name, None)
-                setattr(self, 'data_var_' + var_name, [])
-            self.ems_dict['var'] = len(self.tc_vars)  # num of metrics per ems category
-            self.ems_master_list = self.ems_master_list + self.names_var  # all ems metrics collected
-            self.df_count += 1
-
-        if self.tc_intvars is not None:
-            for intvar in self.tc_intvars:
-                intvar_name = intvar[0]
-                self.names_intvar.append(intvar_name)
-                self.ems_type_dict[intvar_name] = 'intvar'
-                setattr(self, 'handle_intvar_' + intvar_name, None)
-                setattr(self, 'data_intvar_' + intvar_name, None)  # static val
-            self.ems_dict['intvar'] = len(self.tc_intvars)
-            self.ems_master_list = self.ems_master_list + self.names_intvar
-            self.df_count += 1
-
-        if self.tc_meters is not None:
-            for meter in self.tc_meters:
-                meter_name = meter[0]
-                self.names_meter.append(meter_name)
-                self.ems_type_dict[meter_name] = 'meter'
-                setattr(self, 'handle_meter_' + meter_name, None)
-                setattr(self, 'data_meter_' + meter_name, [])
-            self.ems_dict['meter'] = len(self.tc_meters)
-            self.ems_master_list = self.ems_master_list + self.names_meter
-            self.df_count += 1
-
-        if self.tc_actuators is not None:
-            for actuator in self.tc_actuators:
-                actuator_name = actuator[0]
-                self.names_actuator.append(actuator_name)
-                self.ems_type_dict[actuator_name] = 'actuator'
-                setattr(self, 'handle_actuator_' + actuator_name, None)
-                setattr(self, 'data_actuator_' + actuator_name, [])
-            self.ems_dict['actuator'] = len(self.tc_actuators)
-            self.ems_master_list = self.ems_master_list + self.names_actuator
-            self.df_count += 1
+        ems_types = ['var', 'intvar', 'meter', 'actuator']
+        for ems_type in ems_types:
+            ems_tc = getattr(self, 'tc' + ems_type)
+            if ems_tc is not None:
+                for ems_name in ems_tc:
+                    setattr(self, 'handle_' + ems_type + '_' + ems_name, None)
+                    setattr(self, 'data_' + ems_type + '_' + ems_name, [])
+                    self.ems_type_dict[ems_name] = ems_type
+                    self.ems_names_master_list.append(ems_name)  # all ems metrics collected
+                self.ems_type_dict[ems_type] = len(ems_tc)  # num of metrics per ems category
+                self.df_count += 1
 
     def _init_weather_data(self):
         """Creates and initializes the necessary instance attributes given by the user for present weather metrics."""
 
-        if self.weather_tc is not None:
+        if self.tc_weather is not None:
             # verify provided weather ToC is accurate/acceptable
-            for weather_metric in self.weather_tc:
+            for weather_name, weather_metric in self.tc_weather.items():
                 if weather_metric not in EmsPy.available_weather_metrics:
                     raise Exception(f'{weather_metric} weather metric is misspelled or not provided by EnergyPlusAPI.')
-            for weather_name in self.weather_tc:
-                self.names_weather.append(weather_name)
-                self.ems_type_dict[weather_name] = 'weather'
                 setattr(self, 'data_weather_' + weather_name, [])
-            self.ems_dict['weather'] = len(self.weather_tc)
-            self.ems_master_list = self.ems_master_list + self.names_weather
+                self.ems_names_master_list.append(weather_name)
+            self.ems_type_dict['weather'] = len(self.tc_weather)
             self.df_count += 1
 
     def _set_ems_handles(self):
         """Gets and reassigns the gathered sensor/actuators handles to their according _handle instance attribute."""
 
-        if self.tc_vars is not None:
-            for var in self.tc_vars:
-                setattr(self, 'handle_var_' + var[0], self._get_handle('var', var))
-        if self.tc_intvars is not None:
-            for intvar in self.tc_intvars:
-                setattr(self, 'handle_intvar_' + intvar[0], self._get_handle('intvar', intvar))
-        if self.tc_meters is not None:
-            for meter in self.tc_meters:
-                setattr(self, 'handle_meter_' + meter[0], self._get_handle('meter', meter))
-        if self.tc_actuators is not None:
-            for actuator in self.tc_actuators:
-                setattr(self, 'handle_actuator_' + actuator[0], self._get_handle('actuator', actuator))
+        ems_types = ['var', 'intvar', 'meter', 'actuator']
+        for ems_type in ems_types:
+            ems_tc = getattr(self, 'tc' + ems_type)
+            if ems_tc is not None:
+                for name in ems_tc:
+                    handle_inputs = ems_tc[name]
+                    setattr(self, 'handle_' + ems_type + '_' + name, self._get_handle(ems_type, handle_inputs))
 
-    def _get_handle(self, ems_type: str, ems_obj: list):
+    def _get_handle(self, ems_type: str, ems_obj_details):
         """
         Returns the EMS object handle to be used as its ID for calling functions on it in the running simulation.
 
         :param ems_type: The EMS object type (variable, internal variable, meter, actuator)
-        :param ems_obj: The specific object details provided by the user to attain the handle
+        :param ems_obj_details: The specific object details provided by the user to attain the handle
         """
         state = self.state
         datax = self.api.exchange
@@ -234,28 +192,29 @@ class EmsPy:
             handle = ""
             if ems_type is 'var':
                 handle = datax.get_variable_handle(state,
-                                                   ems_obj[1],  # var name
-                                                   ems_obj[2])  # var key
+                                                   ems_obj_details[0],  # var name
+                                                   ems_obj_details[1])  # var key
             elif ems_type is 'intvar':
                 handle = datax.get_internal_variable_handle(state,
-                                                            ems_obj[1],  # int var name
-                                                            ems_obj[2])  # int var key
+                                                            ems_obj_details[0],  # int var name
+                                                            ems_obj_details[1])  # int var key
             elif ems_type is 'meter':
                 handle = datax.get_meter_handle(state,
-                                                ems_obj[1])  # meter name
+                                                ems_obj_details)  # meter name
             elif ems_type is "actuator":
                 handle = datax.get_actuator_handle(state,
-                                                   ems_obj[1],  # component type
-                                                   ems_obj[2],  # control type
-                                                   ems_obj[3])  # actuator key
+                                                   ems_obj_details[0],  # component type
+                                                   ems_obj_details[1],  # control type
+                                                   ems_obj_details[2])  # actuator key
             # catch error handling by EMS E+
             if handle == -1:
-                raise Exception(str(ems_obj) + ': Either Variable (sensor) or Internal Variable handle could not be'
+                raise Exception(str(ems_obj_details) + ': The EMS sensor/actuator handle could not be'
                                                ' found. Please consult the .idf and/or your ToC for accuracy')
             else:
                 return handle
         except IndexError:
-            raise IndexError(str(ems_obj) + f': This {ems_type} object does not have all the required fields')
+            raise IndexError(str(ems_obj_details) + f': This {ems_type} object does not have all the required fields to get the'
+                                            f' EMS handle')
 
     def _update_time(self):
         """Updates all time-keeping and simulation timestep attributes of running simulation."""
@@ -304,11 +263,13 @@ class EmsPy:
 
         state = self.state
         datax = self.api.exchange
-        if self.names_var:
-            for var in self.names_var:
-                data_i = datax.get_variable_value(state, getattr(self, 'handle_var_' + var))
-                getattr(self, 'data_var_' + var).append(data_i)
-                self.ems_current_data_dict[var] = data_i
+        if self.tc_vars:
+            for var_name in self.tc_vars:
+                data_i = datax.get_variable_value(state, getattr(self, 'handle_var_' + var_name))
+                getattr(self, 'data_var_' + var_name).append(data_i)
+                self.ems_current_data_dict[var_name] = data_i
+
+
         if self.names_meter:
             for meter in self.names_meter:
                 data_i = datax.get_meter_value(state, getattr(self, 'handle_meter_' + meter))
@@ -330,8 +291,8 @@ class EmsPy:
     def _update_weather_vals(self):
         """Updates and appends given weather metric values to data lists/dicts from running simulation."""
 
-        if self.weather_tc:
-            for weather_metric in self.weather_tc:
+        if self.tc_weather:
+            for weather_metric in self.tc_weather:
                 data_i = self._get_weather('today', [weather_metric], self.hours[-1], self.zone_timestep)
                 getattr(self, 'data_weather_' + weather_metric).append(data_i)
                 self.ems_current_data_dict[weather_metric] = data_i
@@ -349,7 +310,7 @@ class EmsPy:
         :return: list of updated weather data in order of weather_metrics input list
         """
         # input error handling
-        if weather_metrics not in self.weather_tc:
+        if weather_metrics not in self.tc_weather:
             raise Exception('Invalid weather metric given. Please see your weather ToC for available weather metrics.')
         if not (when is 'today' or when is 'tomorrow'):
             raise Exception('Weather data must either be called from sometime today or tomorrow relative to current'
@@ -375,22 +336,22 @@ class EmsPy:
         else:
             self.api.exchange.set_actuator_value(self.state, actuator_handle, actuator_val)
 
-    def _actuate_from_list(self, actuator_pairs_dict: dict):
+    def _actuate_from_list(self, actuator_setpoint_dict: dict):
         """
         This iterates through list of actuator name and value setpoint pairs to be set in simulation.
 
         CAUTION: Actuation functions written by user must return an actuator_name-value pair list [[actuator1, val1],..
 
-        :param actuator_pairs_list: list of actuator name(str) & value(float) pairs [[actuator1, val1],...]
+        :param actuator_setpoint_dict: list of actuator name (str) & setpoint value key-value pairs
         """
-        if actuator_pairs_list is not None:  # in case some 'actuation functions' does not actually act
-            for actuator_name, actuator_val in actuator_pairs_list:
-                if actuator_name not in self.names_actuator:
+        if actuator_setpoint_dict is not None:  # in case some 'actuation functions' does not actually act
+            for actuator_name, actuator_setpoint in actuator_setpoint_dict.items():
+                if actuator_name not in self.tc_actuators:
                     raise Exception(f'Either this actuator {actuator_name} is not tracked, or misspelled.'
                                     f'Check your Actuator ToC.')
                 actuator_handle = getattr(self, 'handle_actuator_' + actuator_name)
-                self._actuate(actuator_handle, actuator_val)
-                self.ems_current_data_dict[actuator_name] = actuator_val
+                self._actuate(actuator_handle, actuator_setpoint)
+                self.ems_current_data_dict[actuator_name] = actuator_setpoint
         else:
             print('WARNING: No actuators/values defined for actuation function')
 
@@ -492,7 +453,7 @@ class EmsPy:
         ems_custom_dict = {'Datetime': []}
         for metric in ems_metrics:
             ems_type = ''
-            if metric not in self.ems_master_list:
+            if metric not in self.ems_names_master_list:
                 raise Exception('Incorrect EMS metric names were entered for custom dataframes.')
             # create dict to collect data for pandas dataframe
             ems_custom_dict[metric] = []
@@ -533,10 +494,10 @@ class EmsPy:
     def _create_default_dataframes(self):
         """Creates default dataframes for each ems data list, for each ems category."""
 
-        if not self.ems_dict:
+        if not self.ems_type_dict:
             return  # no ems dicts created, very unlikely
         ems_dict = {'Datetime': self.time_x}
-        for ems_type in self.ems_dict:
+        for ems_type in self.ems_type_dict:
             for ems_name in getattr(self, 'names_' + ems_type):
                 ems_data_list_name = 'data_' + ems_type + '_' + ems_name
                 ems_dict[ems_name] = getattr(self, ems_data_list_name)
@@ -593,13 +554,13 @@ class BcaEnv(EmsPy):
 
     # Building Control Agent (BCA) & Environment
     def __init__(self, ep_path: str, ep_idf_to_run: str, timesteps: int,
-                 vars_tc: list, intvars_tc: list, meters_tc: list, actuators_tc: list, weather_tc: list):
+                 tc_vars: dict, tc_intvars: dict, tc_meters: dict, tc_actuator: dict, tc_weather: dict):
+        """See EmsPy.__init__() documentation."""
         # follow same init procedure as parent class EmsPy
-        super().__init__(ep_path, ep_idf_to_run, timesteps, vars_tc, intvars_tc, meters_tc, actuators_tc, weather_tc)
+        super().__init__(ep_path, ep_idf_to_run, timesteps, tc_vars, tc_intvars, tc_meters, tc_actuator, tc_weather)
 
     def set_calling_point_and_actuation_function(self, calling_point: str, actuation_fxn, update_state: bool,
-                                                  update_state_freq: int = 1, update_act_freq: int = 1):
-        # TODO specify Warning documentation and find a way to check if only one data/timing update is done per timestep
+                                                 update_state_freq: int = 1, update_act_freq: int = 1):
         """
         Modify dict for runtime calling points and custom callback function specification with defined arguments.
 
@@ -609,6 +570,8 @@ class BcaEnv(EmsPy):
         :param update_state_freq: the number of zone timesteps per updating the simulation state
         :param update_act_freq: the number of zone timesteps per updating the actuators from the actuation function
         """
+
+        # TODO specify Warning documentation and find a way to check if only one data/timing update is done per timestep
         if update_act_freq > update_state_freq:
             print(f'WARNING: it is unusual to have your action update more frequent than your state update')
         if calling_point in self.calling_point_actuation_dict:
@@ -635,14 +598,14 @@ class BcaEnv(EmsPy):
         return_data_list = []
         full_ems_category = False
         # if only EMS category called
-        if ems_metric_list[0] in self.ems_dict and len(ems_metric_list) == 1:
+        if ems_metric_list[0] in self.ems_type_dict and len(ems_metric_list) == 1:
             ems_metric_list = getattr(self, 'names_' + ems_metric_list[0])
             full_ems_category = True
         for ems_metric in ems_metric_list:
             if not full_ems_category:
-                if ems_metric in self.ems_dict:
+                if ems_metric in self.ems_type_dict:
                     raise Exception(f'EMS categories can only be called by themselves, please only call one at a time.')
-                elif ems_metric not in self.ems_master_list:
+                elif ems_metric not in self.ems_names_master_list:
                     raise Exception(f'The EMS metric {ems_metric} is not valid. Please see your ToCs or '
                                     f'.ems_master_list for available metrics.')
 
