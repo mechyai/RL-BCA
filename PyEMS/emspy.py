@@ -330,33 +330,40 @@ class EmsPy:
     def _update_weather_vals(self):
         """Updates and appends given weather metric values to data lists/dicts from running simulation."""
 
-        if self.names_weather:
-            for weather_type in self.names_weather:
-                data_i = self._get_weather('today', weather_type, self.hours[-1], self.zone_timestep)
-                getattr(self, 'data_weather_' + weather_type).append(data_i)
-                self.ems_current_data_dict[weather_type] = data_i
+        if self.weather_tc:
+            for weather_metric in self.weather_tc:
+                data_i = self._get_weather('today', [weather_metric], self.hours[-1], self.zone_timestep)
+                getattr(self, 'data_weather_' + weather_metric).append(data_i)
+                self.ems_current_data_dict[weather_metric] = data_i
+        else:
+            raise Exception('No weather ToC has been specified by user, no available weather data to be called.')
 
-    def _get_weather(self, when: str, weather_metric: str, hour: int, zone_ts: int):
+    def _get_weather(self, when: str, weather_metrics: list, hour: int, zone_ts: int) -> list:
         """
         Gets desired weather metric data for a given hour and zone timestep, either for today or tomorrow in simulation.
 
-        :param when: the day in question, 'today' or 'tomorrow'
-        :param weather_metric: the weather metric to call from EnergyPlusAPI, only specific fields are granted
+        :param when: the day in question, 'today' or 'tomorrow', relative to current simulation time
+        :param weather_metrics: the weather metrics to call from E+ API, only specific fields from ToC are granted
         :param hour: the hour of the day to call the weather value
         :param zone_ts: the zone timestep of the given hour to call the weather value
+        :return: list of updated weather data in order of weather_metrics input list
         """
         # input error handling
-        if weather_metric not in self.available_weather_metrics:
-            raise Exception('Invalid weather metric given. Please see available weather metrics.')
+        if weather_metrics not in self.weather_tc:
+            raise Exception('Invalid weather metric given. Please see your weather ToC for available weather metrics.')
         if not (when is 'today' or when is 'tomorrow'):
-            raise ()
+            raise Exception('Weather data must either be called from sometime today or tomorrow relative to current'
+                            'simulation timestep.')
 
         # fetch weather
-        if weather_metric is not 'sun_is_up':
-            return getattr(self.api.exchange, when + '_weather_' + weather_metric + '_at_time') \
-                (self.state, hour, zone_ts)
-        elif weather_metric is 'sun_is_up':  # doesn't follow consistent naming system
-            return self.api.exchange.sun_is_up(self.state)
+        weather_data = []
+        for weather_metric in weather_metrics:
+            if weather_metric is not 'sun_is_up':
+                weather_data.append(getattr(self.api.exchange, when + '_weather_' + weather_metric + '_at_time')\
+                                    (self.state, hour, zone_ts))
+            elif weather_metric is 'sun_is_up':  # doesn't follow consistent naming system
+                weather_data.append(self.api.exchange.sun_is_up(self.state))
+        return weather_data
 
     def _actuate(self, actuator_handle: str, actuator_val):
         """ Sets value of a specific actuator in running simulator, or relinquishes control back to EnergyPlus."""
@@ -609,8 +616,6 @@ class BcaEnv(EmsPy):
         self.calling_point_actuation_dict[calling_point] = [actuation_fxn, update_state,
                                                             update_state_freq, update_act_freq]
 
-
-
     def get_ems_data(self, ems_metric_list: list, time_rev_index: list) -> list:
         """
         This takes desired EMS metric(s) (or type) & returns the entire current data set(s) or specific time indices.
@@ -653,16 +658,16 @@ class BcaEnv(EmsPy):
                 return_data_list.append(return_data_indexed)
         return return_data_list
 
-    def get_weather_forecast(self, when: str, weather_metric: str, hour: int, zone_ts: int):
+    def get_weather_forecast(self, when: str, weather_metrics: list, hour: int, zone_ts: int):
         """
         Fetches given weather metric from today/tomorrow for a given hour of the day and timestep within that hour.
 
         :param when: 'today' or 'tomorrow' relative to current timestep
-        :param weather_metric: from available weather metric list
+        :param weather_metrics: list of desired weather metric(s) (1 to all) from weather ToC dict
         :param hour: hour of day
         :param zone_ts: timestep of hour
         """
-        return self._get_weather(when, weather_metric, hour, zone_ts)
+        return self._get_weather(when, weather_metrics, hour, zone_ts)
 
     def run_env(self, weather_file: str):
         self.run_simulation(weather_file)

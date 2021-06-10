@@ -75,9 +75,9 @@ calling points:
 ```python
 agent = emspy.BcaEnv(ep_path: str, ep_idf_to_run: str, timesteps: int, vars_tc: list, intvars_tc: list, meters_tc: list, actuators_tc: list, weather_tc: list)
 ```
-- with `ep_path` set the path to your EnergyPlus 9.5 installation directory
-- with `ep_idf_to_run` set the path to your EnergyPlus building model, likely .idf file
-- with `timesteps` set the number of timesteps per hour of the simulation
+- `ep_path` set the path to your EnergyPlus 9.5 installation directory
+- `ep_idf_to_run` set the path to your EnergyPlus building model, likely .idf file
+- `timesteps` set the number of timesteps per hour of the simulation
 - define all EMS metrics you want to call or interact with in your model:
   - Build the Table of Contents (ToC) for EMS variables, internal variables, meters, actuators, and weather 
   - ***Note:*** *this requires an understanding of EnergyPlus model input and output files, especially for actuators*
@@ -89,34 +89,41 @@ agent = emspy.BcaEnv(ep_path: str, ep_idf_to_run: str, timesteps: int, vars_tc: 
     - Actuator: [component_type, control_type, actuator_key] elements of `actuators_tc` list
     - Weather: [weather_name] elements of `weather_tc` list
  
-Once this has been completed the meta-class, ***EmsPy***, has all it needs to build out your class, creating various data collection/organization and dataframes attributes, as well as find the EMS handles from the ToCs, etc. It may be helpful to run this 'agent/environment' object initialization and then review its contents to see all that the meta-class has created. 
+Once this has been completed the meta-class, ***EmsPy***, has all it needs to build out your class, implementing various data collection/organization and dataframes attributes, as well as finding the EMS handles from the ToCs, etc. It may be helpful to run this 'agent/environment' object initialization and then review its contents to see all that the meta-class has created. 
 
 ***Note:*** *At this point, the <ins>simulation can be ran</ins> but nothing useful will happen (in terms of control or data collection) as no calling points, callback functions, or actuation functions have been defined and linked.* 
  
-**2.** Next, you must define the Calling Point & Actuation Function dictionary to define and enable callback functionality at runtime. This dictionary links a calling point(s) to a callback function(s) and arguments related to data/actuation update frequencies. This dictionary should be built one key-value at a time using: 
+**2.** Next, you must define the Calling Point & Actuation Function dictionary to define and enable callback functionality at runtime. This dictionary links a calling point(s) to a callback function(s) and arguments related to data/actuation update frequencies.
+ A given <ins>calling point</ins> defines when a *linked* <ins>callback function</ins> (and optionally an <ins>actuation function </ins>) will be ran during the simulation timestep calculations.
+ The diagram above represents the simulation flow and RL integration with calling points and callback functions. The Calling Point & Actuation Function dictionary should be built one key-value at a time using the method: 
 
  ```python
- BcaEnv.get_ems_data(calling_point: str, actuation_fxn, update_state: bool, update_state_freq: int = 1, update_act_freq: int = 1)
+ BcaEnv.set_calling_point_and_actuation_function(calling_point: str, actuation_fxn, update_state: bool, update_state_freq: int = 1, update_act_freq: int = 1)
  ```
- 
-A given <ins>calling point</ins> defines when a *linked callback function* will be ran during the simulation timestep calculations. 
-
+- `calling_point` set a single calling point from the available list `EmsPy.available_calling_points`
+- `actuation_fxn` set as the control algorithm function (one of potentially many throughout a timestep), which must take no agruments and returns a dictionary (or `None`) of actuator name(s) (key) and setpoint value(s) (value) to be implemented at the linked calling point
+- `update_state` set to T/F to whether or not the entire EMS ToCs should be updated for that calling point
+- `update_state_freq` set to the number of simulation timesteps in between each state update, default is every timestep
+- `update_act_freq` set to the number of simulation timesteps in between each actuation function call and actuation, default is every timestep
+   
 ***Note:*** *that there are multiple calling points per timestep, each signifying the start/end of an event in the process. The majority of calling points occur consistently throughout the simulation, but several occur *once* before during simulation setup.* 
 
-The user-defined <ins>actuation function</ins> should encapsulate any sort of control algorithm (more than one can be created and linked to unique calling points, but it's likely that only one will be used as the entire RL algorithm). Using the 'agent/environment' object attributes, or methods `BcaEnv.get_ems_data` and `BcaEnv.get_weather_forecast`, to collect state information, a control algorithm/function can be created by the user and then passed to this method. This function should return a dictionary (???) of the actuator variables (key) and set values (value). Using a decorator function, this actuation function will automatically be attached to a base callback function and the defined calling point.
-The rest of the arguments are also automatically passed to the base-callback function to dictate the update frequency of state data and actuation. This means that data collection or actuation updates do not need to have every timestep. 
- 
- ***Note*** *: if you wish to just use callback functions just for data collection, pass `None` (???) for the actuation function.*
- 
- ***Warning*** *: EMS data (and actuation) can be updated for each calling point (and actuation function) assigned for a single timestep, you may want to avoid this and manually only implement one state update per timestep. Otherwise, you will screw up zone timestep increments (???) and may accidentally be collecting data and actuating multiple times per timestep.*
+The user-defined <ins>actuation function</ins> should encapsulate any sort of control algorithm (more than one can be created and linked to unique calling points, but it's likely that only one will be used as the entire RL algorithm). Using the 'agent/environment' object attributes, or methods `BcaEnv.get_ems_data` and `BcaEnv.get_weather_forecast`, to collect state information, a control algorithm/function can be created and passed to this method. Using a decorator function, this actuation function will automatically be attached to a base callback function and linked to the defined calling point.
+The rest of the arguments are also automatically passed to the base-callback function to dictate the update frequency of state data and actuation. This means that data collection or actuation updates do not need to happen every timestep. 
 
-The diagram above represents the simulation flow. An understanding of calling points and when to collect data or actuate is crucial - Please see the EMS Application Guide for more information on calling points. The default callback function can include a user-defined actuation function(s) (RL algorithm) and several other parameters. This is to all be defined in the Calling Point & Actuation Function dictionary. 
+```python
+BcaEnv.get_ems_data(ems_metric_list: list, time_rev_index: list) -> list
+```
 
-   - calling point at which the value tuple will be implemented
-   - the dictionary value must contain:
-   - an actuation function (or None) which returns a nested list of actuator variables and their desired value to be set
-   - True/False of whether or not the state should be updated at this calling point for a given timestep (it is recommended that this only be done once per timestep, be              carefull if implmenting multiple callbacks per timestep)
-   - frequency of timesteps when the state space should be updated.................
+```python
+BcaEnv.get_weather_forecast(when: str, weather_metrics: list, hour: int, zone_ts: int) -> list
+```
+
+ ***Note*** *: If you wish to use callback functions just for data collection and no actuation/control at a specific calling point, pass `None` as the actuation function.*
+ 
+ ***Warning*** *: EMS data (and actuation) can be updated <ins>for each calling point</ins> (and actuation function) assigned within a single timestep. You likely want to avoid this and manually only implement one state update `state_update=True` per timestep. Otherwise, you will screw up zone timestep increments (with current software design) and may accidentally be collecting data and actuating multiple times per timestep.
+ An understanding of calling points and when to collect data or actuate is ***crucial*** - Please see the [EMS Application Guide](https://energyplus.net/documentation) for more information on calling points.*
+  
            
 **TIPS**:
 
