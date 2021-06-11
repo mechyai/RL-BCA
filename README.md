@@ -68,7 +68,7 @@ information on these elements https://energyplus.net/documentation.
  
 This guide follows the design of the template Python scripts provided. The integration of the control (RL) algorithm and the flow of the calling points and callback functions at runtime is depicted in the image above. The image below loosely represents the logic of EmsPy and its usage.
 
-<img src="https://user-images.githubusercontent.com/65429130/121726021-fb5e0180-cab7-11eb-9a92-b3939c0614af.png" width = "750">
+<img src="https://user-images.githubusercontent.com/65429130/121730967-598de300-cabe-11eb-9364-051bb993e8d1.png" width = "750">
 
 **1.** First, you will create an **EmsPy object** from proper inputs (this acts as your building simulation environment/agent). The inputs include paths to the E+ directory and the
 building model file to be simulated, information about desired EMS metrics, simulation timestep, and actuation functions with 
@@ -140,7 +140,7 @@ BcaEnv.get_weather_forecast(when: str, weather_metrics: list, hour: int, zone_ts
 
  ***Note*** *: If you wish to use callback functions just for <ins>defualt data collection</ins> pass `None` as the actuation function. If you wish to use the callback functions for custom data collection and/or other actions other than any <ins>actuation/control</ins> at a specific calling point, implement an actuation function that returns `None` as the actuation dict.*
 
-Also, if there is a need to <ins>update</ins> specific EMS metrics at a certain calling point separately from the rest (all EMS ToCs), you can use the method below *within an actuation function* to update specific EMS metrics. However, this does not also exclude them from the `state_update` that updates ALL EMS metrics.
+Also, if there is a need to <ins>update</ins> specific EMS metrics at a certain calling point separately from the rest (all EMS ToCs), you can use the method below within an actuation function to update specific EMS metrics. However, this <ins>does not also exclude them</ins> from the `state_update` that updates ALL EMS metrics.
 
 ```python
 BcaEnv.update_ems_data(ems_metric_list: list, return_data: bool) -> list
