@@ -21,11 +21,11 @@ ep_weather_path = ep_path + '/WeatherData/USA_CO_Golden-NREL.724666_TMY3.epw'
 
 # TODO update to dict usage
 # define EMS sensors and actuators to be used via 'Table of Contents'
-# vars_tc = [["attr_handle_name", "variable_type", "variable_key"],[...],...]
-# int_vars_tc = [["attr_handle_name", "variable_type", "variable_key"],[...],...]
-# meters_tc = [["attr_handle_name", "meter_name",[...],...]
-# actuators_tc = [["attr_handle_name", "component_type", "control_type", "actuator_key"],[...],...]
-# weather_tc = ["sun", "rain", "snow", "wind_dir", ...]
+# vars_tc = {"attr_handle_name": ["variable_type", "variable_key"],...}
+# int_vars_tc = {"attr_handle_name": "variable_type", "variable_key"],...}
+# meters_tc = {"attr_handle_name": "meter_name",...}
+# actuators_tc = {"attr_handle_name": ["component_type", "control_type", "actuator_key"],...}
+# weather_tc = {"attr_name": "weather_metric",...}
 
 # create EMS Table of Contents (TC)
 zone = 'Thermal Zone 1'

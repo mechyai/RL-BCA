@@ -20,28 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="up to date readme, changed how weather and ems data updates, added BcaEnv methods, compressed redundancy, fixed timesteps">
-      <change beforePath="$PROJECT_DIR$/PyEMS/emspy.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/emspy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/emspy_testscript.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/emspy_testscript.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/emspy_todo" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/emspy_todo" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusmap.csv" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusmap.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.audit" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.audit" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.bnd" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.bnd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.edd" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.edd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.eio" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.eio" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.end" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.end" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.err" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.err" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.eso" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.eso" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.mdd" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.mdd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.mtd" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.mtd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.mtr" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.mtr" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.rdd" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.rdd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.shd" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.shd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.sql" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusssz.csv" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusssz.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplustbl.htm" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplustbl.htm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/out/epluszsz.csv" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/epluszsz.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/out/sqlite.err" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/sqlite.err" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyEMS/test_CJE_act.idf" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/test_CJE_act.idf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmsPy/emspy_testscript.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/emspy_testscript.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,18 +64,18 @@
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="A:\Files\PycharmProjects\RL-BCA" />
+      <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\api-example-copies\PyEMS_CJE" />
+      <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\CJE-examples" />
+      <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\api-example-copiespyEMS_jmarrec" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="A:\Files\PycharmProjects\RL-BCA\PyEMS" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\api-example-copies\PyEMS_CJE" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\CJE-examples" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\api-example-copies" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="A:\Files\PycharmProjects\RL-BCA" />
-      <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\api-example-copies\PyEMS_CJE" />
-      <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\CJE-examples" />
-      <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\api-example-copiespyEMS_jmarrec" />
     </key>
   </component>
   <component name="RunManager" selected="Python.emspy_testscript">
@@ -145,6 +125,9 @@
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PyEMS" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -626,6 +609,10 @@
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
     <state x="-1238" y="-16" width="387" height="210" key="dock-window-2/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1623382696297" />
+    <state x="-1199" y="371" key="git4idea.rebase.GitRebaseDialog" timestamp="1623382960788">
+      <screen x="-1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="-1199" y="371" key="git4idea.rebase.GitRebaseDialog/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1623382960788" />
     <state x="-1381" y="45" width="840" height="1034" key="search.everywhere.popup" timestamp="1622815190315">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
