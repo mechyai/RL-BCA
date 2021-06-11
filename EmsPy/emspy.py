@@ -11,7 +11,6 @@ Unmet Hours help forum https://unmethours.com/questions/
 import sys
 import datetime
 import pandas as pd
-# from typing import Union  # TODO check Python version compatibility
 
 
 class EmsPy:
@@ -33,7 +32,6 @@ class EmsPy:
                                 'end_zone_timestep_before_zone_reporting',
                                 'inside_system_iteration_loop']  # TODO verify correctness
 
-    # TODO restrict timesteps in known range
     def __init__(self, ep_path: str, ep_idf_to_run: str, timesteps: int,
                  tc_var: dict, tc_intvar: dict, tc_meter: dict, tc_actuator: dict, tc_weather: dict):
         """
@@ -125,8 +123,8 @@ class EmsPy:
         # timesteps and simulation iterations
         self.timestep_total_count = 0  # cnt for entire simulation # TODO how to enforce only once per ts
         self.callback_count = 0
-        self.timestep_zone_count = 1  # fluctuate from one to # of timesteps per hour # TODO how to enforce only once per ts
-        self.timestep_freq = timesteps  # sim timesteps per hour # TODO enforce via OPENSTUDIO SDK ???
+        self.timestep_zone_count = 1  # fluctuate from 1 to # of timesteps/hour # TODO how to enforce only once per ts
+        self.timestep = self._init_timestep(timesteps)  # sim timesteps per hour # TODO enforce via OPENSTUDIO SDK ???
         # TODO determine proper rounding of int timesteps interval
         self.timestep_period = 60 // timesteps  # minute duration of each timestep of simulation
 
@@ -168,6 +166,20 @@ class EmsPy:
                 self.ems_type_dict[weather_name] = 'weather'
             self.ems_num_dict['weather'] = len(self.tc_weather)
             self.df_count += 1
+
+    def _init_timestep(self, timestep) -> int:
+        """This function is used to verify timestep input correctness and report any details/changes."""
+
+        # TODO upgrade functionality
+        if type(timestep) is not int:
+            raise TypeError(f'Your input simulation timestep {timestep} must be an integer value.')
+        if timestep > 60:
+            raise ValueError(f'Your input simulation timestep {timestep} cannot exceed 60 timesteps per hour'
+                             f' (1 minute).')
+        elif timestep < 1:
+            raise ValueError(f'Your input simulation timestep {timestep} must be greater or equal than 1')
+        else:
+            return timestep
 
     def _set_ems_handles(self):
         """Gets and reassigns the gathered sensor/actuators handles to their according _handle instance attribute."""
@@ -254,7 +266,7 @@ class EmsPy:
         # manage timestep update
         # TODO make dependent on input file OR handle mistake where user enters incorrect ts
         self.timestep_total_count += 1  # TODO should this be done once per timestep or callback
-        if self.timestep_zone_count >= self.timestep_freq:
+        if self.timestep_zone_count >= self.timestep:
             self.timestep_zone_count = 1
         else:
             self.timestep_zone_count += 1
@@ -303,9 +315,9 @@ class EmsPy:
                             'simulation timestep.')
         if hour > 24 or hour < 0:
             raise Exception('The hour of the day cannot exceed 24 or be less than 0')
-        if zone_ts > self.timestep_freq:
+        if zone_ts > self.timestep:
             raise Exception(f'The desired timestep, {zone_ts} cannot exceed the subhourly simulation timestep set for'
-                            f' the model, {self.timestep_freq}.')
+                            f' the model, {self.timestep}.')
 
         # fetch weather
         weather_data = []

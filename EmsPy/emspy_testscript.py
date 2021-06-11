@@ -47,12 +47,12 @@ ts = 12
 agent = emspy.BcaEnv(ep_path, ep_idf_to_run, ts, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc)
 
 
-class test_obj:
+class test_class:
     def __init__(self):
         self.param_data = 0
 
 
-agent_params = test_obj()
+agent_params = test_class()
 
 
 def actuation_fxn1():
@@ -66,9 +66,9 @@ def actuation_fxn1():
 agent.set_calling_point_and_actuation_function(calling_point, actuation_fxn1, False, 1, 1)
 
 # create custom dict
-# agent.init_custom_dataframe_dict('df1', calling_point, 4, ['act_odb_temp', 'sun_is_up'])
-# agent.init_custom_dataframe_dict('df2', calling_point, 2, ['is_raining', 'zone_temp'])
+agent.init_custom_dataframe_dict('df1', calling_point, 4, ['act_odb_temp', 'sun'])
+agent.init_custom_dataframe_dict('df2', calling_point, 2, ['rain', 'zone_temp'])
 
 agent.run_env(ep_weather_path)
-# agent.reset_state()
+agent.reset_state()
 
