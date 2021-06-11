@@ -47,10 +47,19 @@ ts = 12
 agent = emspy.BcaEnv(ep_path, ep_idf_to_run, ts, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc)
 
 
+class test_obj:
+    def __init__(self):
+        self.param_data = 0
+
+
+agent_params = test_obj()
+
+
 def actuation_fxn1():
-    # data = 1
+    agent_params.param_data += 1
+    print(agent_params.param_data)
     data = agent.get_ems_data(['wind_dir'], [0, 1, 2])
-    print(f'working...{data}')
+    print(f'Data: {data}')
     return None
 
 
