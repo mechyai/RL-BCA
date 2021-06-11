@@ -66,7 +66,8 @@ information on these elements https://energyplus.net/documentation.
   
 ### How to use EmsPy with an E+ Model:
  
-This guide follows the design of the template Python scripts provided.
+This guide follows the design of the template Python scripts provided. The integration of the control (RL) algorithm and the flow of the calling points and callback functions at runtime is depicted in the image above. The image below loosely represents the logic of EmsPy and its usage.
+<img src="https://user-images.githubusercontent.com/65429130/121726021-fb5e0180-cab7-11eb-9a92-b3939c0614af.png" width = "750">
 
 **1.** First, you will create an **EmsPy object** from proper inputs (this acts as your simulation/environment and agent). The inputs include paths to the E+ directory and the
 building model file to be simulated, information about desired EMS metrics, simulation timestep, and actuation functions with 
