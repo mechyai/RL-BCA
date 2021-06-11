@@ -19,6 +19,7 @@ project_path = 'A:/Files/PycharmProjects/RL-BCA' + project_name
 ep_idf_to_run = project_path + 'test_CJE_act.idf'
 ep_weather_path = ep_path + '/WeatherData/USA_CO_Golden-NREL.724666_TMY3.epw'
 
+# TODO update to dict usage
 # define EMS sensors and actuators to be used via 'Table of Contents'
 # vars_tc = [["attr_handle_name", "variable_type", "variable_key"],[...],...]
 # int_vars_tc = [["attr_handle_name", "variable_type", "variable_key"],[...],...]
@@ -28,29 +29,32 @@ ep_weather_path = ep_path + '/WeatherData/USA_CO_Golden-NREL.724666_TMY3.epw'
 
 # create EMS Table of Contents (TC)
 zone = 'Thermal Zone 1'
-vars_tc = [['oa_temp', 'site outdoor air drybulb temperature', 'environment'],
-           ['zone_temp', 'zone mean air temperature', zone]]
+vars_tc = {'oa_temp': ['site outdoor air drybulb temperature', 'environment'],
+           'zone_temp': ['zone mean air temperature', zone]}
+
 int_vars_tc = None
 meters_tc = None
 # still not working
-actuators_tc = [['act_odb_temp', 'weather data', 'outdoor dry bulb', 'environment']]
-weather_tc = ['sun_is_up', 'is_raining', 'wind_direction', 'outdoor_relative_humidity']
+actuators_tc = {'act_odb_temp': ['weather data', 'outdoor dry bulb', 'environment']}
+weather_tc = {'sun': 'sun_is_up', 'rain': 'is_raining', 'wind_dir': 'wind_direction',
+              'out_rh': 'outdoor_relative_humidity'}
 
 # create calling point with actuation function and required callback fxn arguments
 calling_point = 'callback_begin_zone_timestep_after_init_heat_balance'
-
 
 ts = 12
 
 agent = emspy.BcaEnv(ep_path, ep_idf_to_run, ts, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc)
 
+
 def actuation_fxn1():
     # data = 1
-    data = agent.get_ems_data(['wind_direction'], [0, 1, 2])
+    data = agent.get_ems_data(['wind_dir'], [0, 1, 2])
     print(f'working...{data}')
     return None
 
-agent.set_calling_point_and_actuation_function(calling_point, actuation_fxn1, True, 1, 1)
+
+agent.set_calling_point_and_actuation_function(calling_point, actuation_fxn1, False, 1, 1)
 
 # create custom dict
 # agent.init_custom_dataframe_dict('df1', calling_point, 4, ['act_odb_temp', 'sun_is_up'])

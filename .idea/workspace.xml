@@ -20,8 +20,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/ceube.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/ceube.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PyEMS/emspy.py" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/emspy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyEMS/emspy_testscript.py" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/emspy_testscript.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.audit" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplusout.audit" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.bnd" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplusout.bnd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.eio" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplusout.eio" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.end" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplusout.end" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.err" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplusout.err" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.eso" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplusout.eso" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.mdd" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplusout.mdd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.mtr" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplusout.mtr" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.rdd" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplusout.rdd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplusout.sql" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplusout.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyEMS/out/eplustbl.htm" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/eplustbl.htm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PyEMS/out/sqlite.err" beforeDir="false" afterPath="$PROJECT_DIR$/PyEMS/out/sqlite.err" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -39,7 +53,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="df_to_dict" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -65,18 +79,18 @@
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="A:\Files\PycharmProjects\RL-BCA" />
-      <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\api-example-copies\PyEMS_CJE" />
-      <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\CJE-examples" />
-      <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\api-example-copiespyEMS_jmarrec" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="A:\Files\PycharmProjects\RL-BCA\PyEMS" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\api-example-copies\PyEMS_CJE" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\CJE-examples" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\api-example-copies" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="A:\Files\PycharmProjects\RL-BCA" />
+      <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\api-example-copies\PyEMS_CJE" />
+      <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\CJE-examples" />
+      <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\api-example-copiespyEMS_jmarrec" />
     </key>
   </component>
   <component name="RunManager" selected="Python.emspy_testscript">
@@ -126,9 +140,6 @@
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PyEMS" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -197,8 +208,8 @@
         <item itemvalue="Python.emspy_testscript" />
         <item itemvalue="Python.scratch_1" />
         <item itemvalue="Python.scratch" />
-        <item itemvalue="Python.emspy_testscript" />
         <item itemvalue="Python.emspy" />
+        <item itemvalue="Python.PyEMS_CJE" />
       </list>
     </recent_temporary>
   </component>
@@ -430,7 +441,49 @@
       <option name="project" value="LOCAL" />
       <updated>1623094098006</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="rearranged some attributes, added to BcaEnv, and added 'get state' funcitonality">
+      <created>1623208899948</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1623208899948</updated>
+    </task>
+    <task id="LOCAL-00033" summary="fixed get ems data function to handle all user defined errors">
+      <created>1623210594586</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1623210594586</updated>
+    </task>
+    <task id="LOCAL-00034" summary="removed cp dict from init and added method">
+      <created>1623214718120</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1623214718120</updated>
+    </task>
+    <task id="LOCAL-00035" summary="changing ToC and actuation to dicts now">
+      <created>1623348249373</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1623348249373</updated>
+    </task>
+    <task id="LOCAL-00036" summary="updated weather functions and Readme, now working on lists -&gt; dicts">
+      <created>1623351514042</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1623351514042</updated>
+    </task>
+    <task id="LOCAL-00037" summary="changed attribute lists to dicts for entire class">
+      <created>1623356666599</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1623356666599</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -446,12 +499,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="added notebooks and readme" />
-    <MESSAGE value="updated some python ems examples and began emspy library" />
-    <MESSAGE value="complete class wrapper strategy" />
-    <MESSAGE value="progress underway with EMS RL custom class/library" />
-    <MESSAGE value="added more _functions to EMS core class" />
-    <MESSAGE value="added weather calling functionality" />
     <MESSAGE value="about to finish weather, changing to getattr instead to handle today/tomorrow" />
     <MESSAGE value="weather functions v1 finalized" />
     <MESSAGE value="emspy library working on tests of weather, variables, and actuators (actuators output 0 still), but have not tested meters or internal vars." />
@@ -471,7 +518,13 @@
     <MESSAGE value="debugging, attribute var name change - reorder,&#10;custom df completed and debugged!" />
     <MESSAGE value="test script updated, working" />
     <MESSAGE value="update to readme" />
-    <option name="LAST_COMMIT_MESSAGE" value="update to readme" />
+    <MESSAGE value="rearranged some attributes, added to BcaEnv, and added 'get state' funcitonality" />
+    <MESSAGE value="fixed get ems data function to handle all user defined errors" />
+    <MESSAGE value="removed cp dict from init and added method" />
+    <MESSAGE value="changing ToC and actuation to dicts now" />
+    <MESSAGE value="updated weather functions and Readme, now working on lists -&gt; dicts" />
+    <MESSAGE value="changed attribute lists to dicts for entire class" />
+    <option name="LAST_COMMIT_MESSAGE" value="changed attribute lists to dicts for entire class" />
   </component>
   <component name="WindowStateProjectService">
     <state x="-1468" y="114" width="1016" height="911" key="#Intentions" timestamp="1621702557664">
@@ -495,22 +548,22 @@
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
     <state x="-1233" y="235" key="FileChooserDialogImpl/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1622687869939" />
-    <state width="1867" height="257" key="GridCell.Tab.0.bottom" timestamp="1621654576178">
+    <state width="1865" height="200" key="GridCell.Tab.0.bottom" timestamp="1623366230916">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1867" height="257" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621654576178" />
-    <state width="1867" height="257" key="GridCell.Tab.0.center" timestamp="1621654576177">
+    <state width="1865" height="200" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1623366230916" />
+    <state width="1865" height="200" key="GridCell.Tab.0.center" timestamp="1623366230916">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1867" height="257" key="GridCell.Tab.0.center/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621654576177" />
-    <state width="1867" height="257" key="GridCell.Tab.0.left" timestamp="1621654576177">
+    <state width="1865" height="200" key="GridCell.Tab.0.center/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1623366230916" />
+    <state width="1865" height="200" key="GridCell.Tab.0.left" timestamp="1623366230915">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1867" height="257" key="GridCell.Tab.0.left/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621654576177" />
-    <state width="1867" height="257" key="GridCell.Tab.0.right" timestamp="1621654576178">
+    <state width="1865" height="200" key="GridCell.Tab.0.left/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1623366230915" />
+    <state width="1865" height="200" key="GridCell.Tab.0.right" timestamp="1623366230916">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1867" height="257" key="GridCell.Tab.0.right/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621654576178" />
+    <state width="1865" height="200" key="GridCell.Tab.0.right/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1623366230916" />
     <state width="1867" height="257" key="GridCell.Tab.1.bottom" timestamp="1621654576178">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
@@ -531,15 +584,23 @@
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
     <state x="-1459" y="184" key="SettingsEditor/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621379101168" />
-    <state x="-1368" y="259" key="Vcs.Push.Dialog.v2" timestamp="1623094099541">
+    <state x="-1205" y="187" key="VCS.ChangeListViewerDialog" timestamp="1623208883641">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="-1368" y="259" key="Vcs.Push.Dialog.v2/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1623094099541" />
+    <state x="-1205" y="187" key="VCS.ChangeListViewerDialog/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1623208883641" />
+    <state x="-1368" y="259" key="Vcs.Push.Dialog.v2" timestamp="1623351515326">
+      <screen x="-1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="-1368" y="259" key="Vcs.Push.Dialog.v2/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1623351515326" />
     <state x="442" y="130" key="Vcs.Push.Dialog.v2/0.0.1536.824/-1920.0.1920.1080@0.0.1536.824" timestamp="1622912658496" />
     <state width="968" height="548" key="XDebugger.FullValuePopup" timestamp="1620938535020">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
     <state width="968" height="548" key="XDebugger.FullValuePopup/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1620938535020" />
+    <state x="-1185" y="432" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1623343805840">
+      <screen x="-1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="-1185" y="432" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1623343805840" />
     <state x="-1396" y="268" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1620935971857">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
@@ -549,6 +610,10 @@
     </state>
     <state x="11" y="-6" width="968" height="468" maximized="true" key="dock-window-1/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621012635740" />
     <state x="-2228" y="-25" width="1548" height="878" maximized="true" key="dock-window-1/0.0.1536.824/-1920.0.1920.1080@0.0.1536.824" timestamp="1622911050010" />
+    <state x="-1238" y="-16" width="387" height="210" maximized="true" key="dock-window-2" timestamp="1623382372469">
+      <screen x="-1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="-1238" y="-16" width="387" height="210" maximized="true" key="dock-window-2/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1623382372469" />
     <state x="-1381" y="45" width="840" height="1034" key="search.everywhere.popup" timestamp="1622815190315">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
