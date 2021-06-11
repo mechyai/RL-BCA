@@ -12,7 +12,7 @@ os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 
 # insert the repo build tree or install path into the search Path, then import the EnergyPlus API
 ep_path = 'A:/Programs/EnergyPlusV9-5-0/'
-project_name = '/PyEMS/'
+project_name = '/EmsPy/'
 project_path = 'A:/Files/PycharmProjects/RL-BCA' + project_name
 
 # ep_file_path = ''  # path to .idf file for simulation
