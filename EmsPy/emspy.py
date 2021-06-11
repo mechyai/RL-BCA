@@ -168,7 +168,7 @@ class EmsPy:
             self.df_count += 1
 
     def _init_timestep(self, timestep) -> int:
-        """This function is used to verify timestep input correctness and report any details/changes."""
+        """This function is used to verify timestep input correctness & report any details/changes."""
 
         # TODO upgrade functionality
         if type(timestep) is not int:

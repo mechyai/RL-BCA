@@ -70,5 +70,5 @@ agent.init_custom_dataframe_dict('df1', calling_point, 4, ['act_odb_temp', 'sun'
 agent.init_custom_dataframe_dict('df2', calling_point, 2, ['rain', 'zone_temp'])
 
 agent.run_env(ep_weather_path)
-agent.reset_state()
+# agent.reset_state()
 
