@@ -34,7 +34,7 @@ people, a good understanding of E+ and building modeling may still be necessary,
 - EnergyPlus EMS Python API 0.2 (included in E+ 9.5 download)
 - Python 3
 - pyenergyplus Python package (included in E+ download)
-- openstudio Python package
+- openstudio Python package (not currently used, but plan to add functionality)
 
 ### Usage Explanation:
 
@@ -159,6 +159,15 @@ BcaEnv.update_ems_data(ems_metric_list: list, return_data: bool) -> list
 **CAUTION**:
 - EMS data (and actuation) can be updated <ins>for each calling point</ins> (and actuation function) assigned within a single timestep. You likely want to avoid this and manually only implement one state update `state_update=True` per timestep. Otherwise, you will screw up zone timestep increments (with current software design) and may accidentally be collecting data and actuating multiple times per timestep.
 - Make sure your hourly timestep matches that of your EnergyPlus .idf model
+
+### Future Planned Functionality:
+- EmsPy improvements
+  - more automatic user oversight to verify that user's have not violated logical errors in calling points, callback functions, and/or EMS updates
+  - verify that given model timestep matches the .idf file, OR have it overwrite the model if not (say using openstudio somehow)
+  - assist users in understanding actuator input ranges
+  - further detailed documentation
+- Data Dashboard class to automatically compile E+ performance and RL learning data into subplots via Matplotlib
+- Openstudio wrapper class to assist in simple modifications of the .idf/.osm that impact simulation experiments (timesteps, start-end dates, etc.)
 
 ### References:
 - *(in progress)*
