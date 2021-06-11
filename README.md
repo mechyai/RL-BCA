@@ -170,5 +170,15 @@ BcaEnv.update_ems_data(ems_metric_list: list, return_data: bool) -> list
 - Openstudio wrapper class to assist in simple modifications of the .idf/.osm that impact simulation experiments (timesteps, start-end dates, etc.)
 - A handful of various building models already set up with EmsPy so that user's can just focus on control algorithms given readily available state and action space, and pre-linked calling points. 
 
+
+### Creating an E+ Building Energy Model:
+- TOOD
+
+### Setting up a E+ Model for EMS API Usage:
+- TODO
+
+### Linking EMS Metrics to Your EmsPy Script:
+- TODO
+
 ### References:
 - *(in progress)*
