@@ -103,6 +103,7 @@ Once this has been completed the meta-class, ***EmsPy***, has all it needs to bu
 - `calling_point` set a single calling point from the available list `EmsPy.available_calling_points`
 - `actuation_fxn` set as the control algorithm function (one of potentially many throughout a timestep), which must take no argument and return a dictionary (or `None` if not actuation) of actuator name(s) *(key)* and floating point setpoint value(s) *(value)* to be implemented at the linked calling point. 
     Be sure to pass the function, not its result.
+    - **Note:** due to the scope and passing of the callback function, please use a custom class and instantiate a global object in your script to encapsulate any custom data for the control algorithm (RL agent parameters) and then utilize the global object in your actuation function. The callback functions can reference object/class data at runtime.
     - ***Warning:*** *actual actuator setpoint values can be floating point, integer, and boolean values (or `None` to relinquish control back to E+) and have a variety of input domain spans. Since the API input must be floating point, the setpoint values can automatically be cast to nearest integer (1/2 rounds up) and all but ~1.0 casts to False, respective to the specific actuator's needs.
     Internal variables may be able to be used to understand an actuators input domain. You must have an understanding of the actuator(s) to function as intended.*  
 - `update_state` set to T/F to whether or not the entire EMS ToCs should be updated for that calling point
