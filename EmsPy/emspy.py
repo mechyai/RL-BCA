@@ -167,18 +167,17 @@ class EmsPy:
             self.ems_num_dict['weather'] = len(self.tc_weather)
             self.df_count += 1
 
-    def _init_timestep(self, timestep) -> int:
+    def _init_timestep(self, timestep: int) -> int:
         """This function is used to verify timestep input correctness & report any details/changes."""
 
         # TODO upgrade functionality
-        if type(timestep) is not int:
-            raise TypeError(f'Your input simulation timestep {timestep} must be an integer value.')
-        if timestep > 60:
-            raise ValueError(f'Your input simulation timestep {timestep} cannot exceed 60 timesteps per hour'
-                             f' (1 minute).')
-        elif timestep < 1:
-            raise ValueError(f'Your input simulation timestep {timestep} must be greater or equal than 1')
+        available_timesteps = [1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60]
+
+        if timestep not in available_timesteps:
+            raise ValueError(f'Your choice of number of timesteps per hour, {timestep}, must be evenly divisible into'
+                             f' 60 mins: {available_timesteps}')
         else:
+            print(f'Your simulation timestep period is {60 // timestep} minutess')
             return timestep
 
     def _set_ems_handles(self):
