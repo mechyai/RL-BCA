@@ -386,14 +386,18 @@ class EmsPy:
             #       f' timestep {self.timestep_zone_current}')
             pass
 
-    def _enclosing_callback(self, calling_point: str, actuation_fxn, update_state: bool, update_state_freq: int = 1,
+    def _enclosing_callback(self, calling_point: str, observation_fxn, actuation_fxn, update_state: bool,
+                            update_state_freq: int = 1,
                             update_act_freq: int = 1):
         """
         Decorates the main callback function to set the user-defined calling function and set timing and data params.
 
         # TODO specify Warning documentation and find a way to check if only one data/timing update is done per timestep
         :param calling_point: the calling point at which the callback function will be called during simulation runtime
-        :param actuation_fxn: the user defined actuation function to be called at runtime
+        :param observation_fxn: the user defined observation function to be called at runtime calling point and desired
+        timestep frequency
+        :param actuation_fxn: the user defined actuation function to be called at runtime calling point and desired
+        timestep frequency
         :param update_state: whether EMS and time/timestep should be updated. This should only be done once a timestep
         :param update_state_freq: the number of zone timesteps per updating the simulation state
         :param update_act_freq: the number of zone timesteps per updating the actuators from the actuation function
@@ -422,6 +426,9 @@ class EmsPy:
                 # update & append simulation data
                 self._update_time()  # note timing update is first
                 self._update_ems_vals(self.ems_names_master_list)  # update sensor/actuator/weather/etc. vals
+                # run user-defined agent state update function
+                if observation_fxn is not None:
+                    observation_fxn()
 
             # TODO verify freq robustness
             if actuation_fxn is not None and self.timestep_zone_current % update_act_freq == 0:
@@ -435,11 +442,11 @@ class EmsPy:
 
         return _callback_function
 
-    def _init_calling_points_and_actuation_functions(self):
+    def _init_calling_points_and_callback_functions(self):
         """This iterates through the Calling Point Dict{} to set runtime calling points with actuation functions."""
 
         if not self.calling_point_actuation_dict:
-            print('Warning: No calling points or callback function initiated, will just run simulation.')
+            print('Warning: No calling points or callback function initiated. Will just run simulation!')
             return  # TODO verify intentions - no callbacks, just run sim from python
 
         for calling_key in self.calling_point_actuation_dict:
@@ -449,11 +456,12 @@ class EmsPy:
                                 f' Python API documentation and available calling point list'
                                 f'EmsPy.available_calling_points class attribute.')
             else:
-                # unpack actuation and fxn arguments
+                # unpack observation & actuation fxns and callback fxn arguments
                 unpack = self.calling_point_actuation_dict[calling_key]
-                actuation_fxn, update_state, update_state_freq, update_act_freq = unpack
+                observation_fxn, actuation_fxn, update_state, update_state_freq, update_act_freq = unpack
                 # establish calling points at runtime and create/pass its custom callback function
                 getattr(self.api.runtime, calling_key)(self.state, self._enclosing_callback(calling_key,
+                                                                                            observation_fxn,
                                                                                             actuation_fxn,
                                                                                             update_state_freq,
                                                                                             update_act_freq))
@@ -534,7 +542,7 @@ class EmsPy:
     def _user_input_check(self):
         # TODO create function that checks if all user-input attributes has been specified and add help directions
         if not self.calling_point_actuation_dict:
-            print('WARNING: No calling points or actuation functions were initialized.')
+            print('WARNING: No calling points or actuation/observation functions were initialized.')
         pass
 
     def _new_state(self):
@@ -555,7 +563,7 @@ class EmsPy:
         # check valid input by user
         self._user_input_check()
 
-        self._init_calling_points_and_actuation_functions()
+        self._init_calling_points_and_callback_functions()
 
         # RUN SIMULATION
         print('* * * Running E+ Simulation * * *')
@@ -581,14 +589,25 @@ class BcaEnv(EmsPy):
         # follow same init procedure as parent class EmsPy
         super().__init__(ep_path, ep_idf_to_run, timesteps, tc_vars, tc_intvars, tc_meters, tc_actuator, tc_weather)
 
-    def set_calling_point_and_actuation_function(self, calling_point: str, actuation_fxn, update_state: bool,
-                                                 update_state_freq: int = 1, update_act_freq: int = 1):
+    def set_calling_point_and_callback_function(self, calling_point: str,
+                                                observation_fxn,
+                                                actuation_fxn,
+                                                update_state: bool,
+                                                update_state_freq: int = 1,
+                                                update_act_freq: int = 1):
         """
         Modify dict for runtime calling points and custom callback function specification with defined arguments.
 
+        This will be used to created user-defined callback functions, including an  optional observation function,
+        actuation function, state update condition, and state update and action update frequencies. This allows the user
+        to create the conventional RL agent interaction -> get state -> take action, each with desired timestep
+        frequencies of implementation.
+
         :param calling_point: the calling point at which the callback function will be called during simulation runtime
-        :param actuation_fxn: the user defined actuation function to be called at runtime, function must return dict of
-        actuator names (key) and associated setpoint (value)
+        :param observation_fxn: the user defined observation function to be called at runtime calling point and desired
+        timestep frequency, to be used to gather state data for agent before taking actions.
+        :param actuation_fxn: the user defined actuation function to be called at runtime calling point and desired
+        timestep frequency, function must return dict of actuator names (key) and associated setpoint (value)
         :param update_state: whether EMS and time/timestep should be updated. This should only be done once a timestep
         :param update_state_freq: the number of zone timesteps per updating the simulation state
         :param update_act_freq: the number of zone timesteps per updating the actuators from the actuation function
@@ -601,7 +620,7 @@ class BcaEnv(EmsPy):
             raise Exception(
                 f'You have overrided the calling point {calling_point}. Please keep calling points unique.')
         else:
-            self.calling_point_actuation_dict[calling_point] = [actuation_fxn, update_state,
+            self.calling_point_actuation_dict[calling_point] = [observation_fxn, actuation_fxn, update_state,
                                                                 update_state_freq, update_act_freq]
 
     def get_ems_data(self, ems_metric_list: list, time_rev_index: list = 0) -> list:
