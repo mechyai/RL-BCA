@@ -123,7 +123,7 @@ class EmsPy:
         # timesteps and simulation iterations
         self.timestep_total_count = 0  # cnt for entire simulation # TODO how to enforce only once per ts
         self.callback_count = 0
-        self.timestep_zone_count = 1  # fluctuate from 1 to # of timesteps/hour # TODO how to enforce only once per ts
+        self.timestep_zone_current = 1  # fluctuate from 1 to # of timesteps/hour # TODO how to enforce only once per ts
         self.timestep = self._init_timestep(timesteps)  # sim timesteps per hour # TODO enforce via OPENSTUDIO SDK ???
         # TODO determine proper rounding of int timesteps interval
         self.timestep_period = 60 // timesteps  # minute duration of each timestep of simulation
@@ -177,7 +177,7 @@ class EmsPy:
             raise ValueError(f'Your choice of number of timesteps per hour, {timestep}, must be evenly divisible into'
                              f' 60 mins: {available_timesteps}')
         else:
-            print(f'Your simulation timestep period is {60 // timestep} minutess')
+            print(f'Your simulation timestep period is {60 // timestep} minutes')
             return timestep
 
     def _set_ems_handles(self):
@@ -265,10 +265,10 @@ class EmsPy:
         # manage timestep update
         # TODO make dependent on input file OR handle mistake where user enters incorrect ts
         self.timestep_total_count += 1  # TODO should this be done once per timestep or callback
-        if self.timestep_zone_count >= self.timestep:
-            self.timestep_zone_count = 1
+        if self.timestep_zone_current >= self.timestep:
+            self.timestep_zone_current = 1
         else:
-            self.timestep_zone_count += 1
+            self.timestep_zone_current += 1
 
     def _update_ems_vals(self, ems_metrics_list: list):
         """Fetches and updates given sensor/actuator/weather values to data lists/dicts from running simulation."""
@@ -294,7 +294,7 @@ class EmsPy:
     def _update_weather_vals(self, weather_name):
         """Updates and appends given weather metric values to data lists/dicts from running simulation."""
 
-        data_i = self._get_weather([weather_name], 'today', self.hours[-1], self.timestep_zone_count)
+        data_i = self._get_weather([weather_name], 'today', self.hours[-1], self.timestep_zone_current)
         getattr(self, 'data_weather_' + weather_name).append(data_i)
         self.ems_current_data_dict[weather_name] = data_i
 
@@ -349,9 +349,9 @@ class EmsPy:
         """
         This iterates through list of actuator name and value setpoint pairs to be set in simulation.
 
-        CAUTION: Actuation functions written by user must return an actuator_name-value pair list [[actuator1, val1],..
+        CAUTION: Actuation functions written by user must return an actuator_name(key)-value pair dictionary
 
-        :param actuator_setpoint_dict: list of actuator name (str) & setpoint value key-value pairs
+        :param actuator_setpoint_dict: dict of actuator name keys (str) & associated setpoint val
         """
         if actuator_setpoint_dict is not None:  # in case some 'actuation functions' does not actually act
             for actuator_name, actuator_setpoint in actuator_setpoint_dict.items():
@@ -363,7 +363,7 @@ class EmsPy:
                 self.ems_current_data_dict[actuator_name] = actuator_setpoint
         else:
             print(f'WARNING: No actuators/values defined for actuation function at calling point {calling_point},'
-                  f' timestep {self.timestep_zone_count}')
+                  f' timestep {self.timestep_zone_current}')
 
     def _enclosing_callback(self, calling_point: str, actuation_fxn, update_state: bool, update_state_freq: int = 1,
                             update_act_freq: int = 1):
@@ -397,13 +397,13 @@ class EmsPy:
                 return
 
             # TODO verify freq robustness
-            if update_state and self.timestep_zone_count % update_state_freq == 0:
+            if update_state and self.timestep_zone_current % update_state_freq == 0:
                 # update & append simulation data
                 self._update_time()  # note timing update is first
                 self._update_ems_vals(self.ems_names_master_list)  # update sensor/actuator/weather/etc. vals
 
             # TODO verify freq robustness
-            if actuation_fxn is not None and self.timestep_zone_count % update_act_freq == 0:
+            if actuation_fxn is not None and self.timestep_zone_current % update_act_freq == 0:
                 self._actuate_from_list(calling_point, actuation_fxn())
 
             # update custom dataframes
@@ -563,7 +563,8 @@ class BcaEnv(EmsPy):
         Modify dict for runtime calling points and custom callback function specification with defined arguments.
 
         :param calling_point: the calling point at which the callback function will be called during simulation runtime
-        :param actuation_fxn: the user defined actuation function to be called at runtime
+        :param actuation_fxn: the user defined actuation function to be called at runtime, function must return dict of
+        actuator names (key) and associated setpoint (value)
         :param update_state: whether EMS and time/timestep should be updated. This should only be done once a timestep
         :param update_state_freq: the number of zone timesteps per updating the simulation state
         :param update_act_freq: the number of zone timesteps per updating the actuators from the actuation function
@@ -579,7 +580,7 @@ class BcaEnv(EmsPy):
             self.calling_point_actuation_dict[calling_point] = [actuation_fxn, update_state,
                                                                 update_state_freq, update_act_freq]
 
-    def get_ems_data(self, ems_metric_list: list, time_rev_index: list=[0]) -> list:
+    def get_ems_data(self, ems_metric_list: list, time_rev_index: list = 0) -> list:
         """
         This takes desired EMS metric(s) (or type) & returns the entire current data set(s) or specific time indices.
 
@@ -588,16 +589,18 @@ class BcaEnv(EmsPy):
         the entire data set can be returned. It is likely that the user will want the most recent data point only and
         should implement a time_index of [0].
 
-        :param ems_metric_list: list of any available EMS metric(s) to be called, or ONLY ONE entire EMS category
-        (var, intvar, meter, actuator, weather)
-        :param time_rev_index: list of timestep indexes, applied to all EMS metrics starting from index 0 as most recent
-        available data point. An empty list [] will return the entire current data list for each metric.
+        :param ems_metric_list: list (or single value) of any available EMS metric(s) to be called, or ONLY ONE entire
+        EMS category (var, intvar, meter, actuator, weather)
+        :param time_rev_index: list (or single value) of timestep indexes, applied to all EMS metrics starting from
+        index 0 as most recent available data point. An empty list [] will return the entire current data list for
+        each metric.
         :return return_data_list: nested list of data for each EMS metric at each time index specified, or entire list
         """
-        return_single = False
+        # handle single val inputs -> convert to list for rest of function
         if type(ems_metric_list) is not list:
             ems_metric_list = [ems_metric_list]
-            return_single = True
+        if type(time_rev_index) is not list:
+            time_rev_index = [time_rev_index]
 
         return_data_list = []
         full_ems_category = False
@@ -630,10 +633,7 @@ class BcaEnv(EmsPy):
 
             return_data_list.append(return_data_indexed)
 
-        if return_single:
-            return return_data_list[0]
-        else:
-            return return_data_list
+        return return_data_list
 
     def get_weather_forecast(self, weather_metrics: list, when: str, hour: int, zone_ts: int):
         """
