@@ -95,8 +95,10 @@ class EmsPy:
         self.weather = None
 
         # summary dicts and lists
-        self.ems_names_master_list = []
-        self.ems_type_dict = {} # keep track of EMS metric names and associated EMS type, quick lookup
+        self.times_master_list = ['actual_date_time', 'actual_times', 'current_times', 'years', 'months', 'days',
+                                  'hours', 'minutes', 'time_x']  # list of available time data user can call
+        self.ems_names_master_list = []  # keep track of all user-defined EMS names
+        self.ems_type_dict = {}  # keep track of EMS metric names and associated EMS type, quick lookup
         self.ems_num_dict = {} # keep track of EMS variable categories and num of vars
         self.ems_current_data_dict = {}  # collection of all ems metrics (keys) and their current values (val)
         self.calling_point_actuation_dict = {}  # links cp to actuation fxn & its needed args
@@ -125,7 +127,6 @@ class EmsPy:
         self.callback_count = 0
         self.timestep_zone_current = 1  # fluctuate from 1 to # of timesteps/hour # TODO how to enforce only once per ts
         self.timestep = self._init_timestep(timesteps)  # sim timesteps per hour # TODO enforce via OPENSTUDIO SDK ???
-        # TODO determine proper rounding of int timesteps interval
         self.timestep_period = 60 // timesteps  # minute duration of each timestep of simulation
 
     def _init_ems_handles_and_data(self):
@@ -152,6 +153,10 @@ class EmsPy:
                     self.ems_names_master_list.append(ems_name)  # all ems metrics collected
                 self.ems_num_dict[ems_type] = len(ems_tc)  # num of metrics per ems category
                 self.df_count += 1
+
+        # handle available timing data dict type
+        for t in self.times_master_list:
+            self.ems_type_dict[t] = 'time'
 
     def _init_weather_data(self):
         """Creates and initializes the necessary instance attributes given by the user for present weather metrics."""
@@ -504,7 +509,7 @@ class EmsPy:
             setattr(self, df_name, pd.DataFrame.from_dict(ems_dict))
 
     def get_ems_type(self, ems_metric: str):
-        """ Returns the EMS type (var, intvar, meter, actuator, weather) string for a given ems metric variable."""
+        """ Returns EMS (var, intvar, meter, actuator, weather) or time type string for a given ems metric variable."""
         return self.ems_type_dict[ems_metric]  # used to create attribute var names 'data_' + type
 
     def _user_input_check(self):
@@ -584,15 +589,17 @@ class BcaEnv(EmsPy):
         """
         This takes desired EMS metric(s) (or type) & returns the entire current data set(s) or specific time indices.
 
-        This function should be used to collect user-defined state space information at each timestep. One to all
-        EMS metrics can be called, or just EMS category (var, intvar, meter, actuator, weather) and one data point to
-        the entire data set can be returned. It is likely that the user will want the most recent data point only and
-        should implement a time_index of [0].
+        This function should be used to collect user-defined state space OR time information at each timestep. 1 to all
+        EMS metrics and timing can be called, or just EMS category (var, intvar, meter, actuator, weather) and one data
+        point to the entire data set can be returned. It is likely that the user will want the most recent data point
+        only and should implement a time_index of [0].
 
-        :param ems_metric_list: list (or single value) of any available EMS metric(s) to be called, or ONLY ONE entire
-        EMS category (var, intvar, meter, actuator, weather)
-        :param time_rev_index: list (or single value) of timestep indexes, applied to all EMS metrics starting from
-        index 0 as most recent available data point. An empty list [] will return the entire current data list for
+        If calling default timing data, see EmsPy.times_master_list for available default timing data.
+
+        :param ems_metric_list: list (or single value) of any available EMS/timing metric(s) to be called,
+        or ONLY ONE entire EMS category (var, intvar, meter, actuator, weather)
+        :param time_rev_index: list (or single value) of timestep indexes, applied to all EMS/timing metrics starting
+        from index 0 as most recent available data point. An empty list [] will return the entire current data list for
         each metric.
         :return return_data_list: nested list of data for each EMS metric at each time index specified, or entire list
         """
@@ -603,35 +610,41 @@ class BcaEnv(EmsPy):
             time_rev_index = [time_rev_index]
 
         return_data_list = []
-        full_ems_category = False
-        # if only EMS category called
+
+        # check if only EMS category called
         if ems_metric_list[0] in self.ems_num_dict and len(ems_metric_list) == 1:
-            ems_metric_list = list(getattr(self, 'tc_' + ems_metric_list[0]).keys())
-            full_ems_category = True
-        for ems_metric in ems_metric_list:
-            if not full_ems_category:
+            ems_metric_list = list(getattr(self, 'tc_' + ems_metric_list[0]).keys())  # reassign entire EMS type list
+        else:
+            # verify valid input
+            for ems_metric in ems_metric_list:
+                # TODO only input error check once as this gets called every callback
                 if ems_metric in self.ems_num_dict:
                     raise Exception(f'EMS categories can only be called by themselves, please only call one at a time.')
-                elif ems_metric not in self.ems_names_master_list:
-                    raise Exception(f'The EMS metric {ems_metric} is not valid. Please see your ToCs or '
-                                    f'.ems_master_list for available metrics.')
+                elif ems_metric not in self.ems_names_master_list or ems_metric not in self.times_master_list:
+                    raise Exception(f'The EMS/timing metric {ems_metric} is not valid. Please see your EMS ToCs or '
+                                    'EmsPy.ems_master_list & EmsPy.times_master_list for available EMS & timing '
+                                    'metrics')
 
-            ems_type = self.get_ems_type(ems_metric)
-            # no time index specified, return full data list
-            if not time_rev_index:
-                return_data_list.append(getattr(self, 'data_' + ems_type + '_' + ems_metric))
-            else:
-                if self.timestep_total_count > max(time_rev_index):
-                    return_data_indexed = []
-                    for time in time_rev_index:
-                        data_indexed = getattr(self, 'data_' + ems_type + '_' + ems_metric)[-1-time]
-                        return_data_indexed.append(data_indexed)
+                ems_type = self.get_ems_type(ems_metric)
+                # no time index specified, return full data list
+                if not time_rev_index:
+                    return_data_list.append(getattr(self, 'data_' + ems_type + '_' + ems_metric))
                 else:
-                    print("NOTE: Not enough simulation timesteps have elapsed to gather all time indexes"
-                          " - None returned.")
-                    return None
+                    if self.timestep_total_count > max(time_rev_index):
+                        return_data_indexed = []
+                        for time in time_rev_index:
+                            if ems_type is not 'time':
+                                ems_name = 'data_' + ems_type + '_' + ems_metric
+                            else:
+                                ems_name = ems_metric
+                            data_indexed = getattr(self, ems_name)[-1 - time]
+                            return_data_indexed.append(data_indexed)
+                        return_data_list.append(return_data_indexed)
 
-            return_data_list.append(return_data_indexed)
+                    else:
+                        print("NOTE: Not enough simulation timesteps have elapsed to gather all time indexes"
+                              " - Empty list [] returned.")
+                        return []
 
         return return_data_list
 
@@ -656,6 +669,8 @@ class BcaEnv(EmsPy):
         point update returned. This is only needed if the user wants to update specific EMS metrics at a unique calling
         point separate from ALL EMS metrics during default state update.
 
+        This also works for default timing data.
+
         :param ems_metric_list: list of any available EMS metric(s) to be called, or ONLY ONE entire EMS category
         (var, intvar, meter, actuator, weather) in a list
         :param return_data: Whether or not to return an order list of the data points fetched
@@ -668,6 +683,7 @@ class BcaEnv(EmsPy):
             ems_metric_list = list(getattr(self, 'tc_' + ems_metric_list[0]).keys())
             full_ems_category = True
         for ems_metric in ems_metric_list:
+            # TODO only input error check once as this gets called every callback
             if not full_ems_category:
                 if ems_metric in self.ems_num_dict:
                     raise Exception(f'EMS categories can only be called by themselves, please only call one at a time.')
