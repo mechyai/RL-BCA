@@ -416,12 +416,9 @@ class EmsPy:
     def _init_calling_points_and_actuation_functions(self):
         """This iterates through the Calling Point Dict{} to set runtime calling points with actuation functions."""
 
-        if self.calling_point_actuation_dict is None:
-            print('Note: No calling points or callback function initiated, will just run simulation.')
-            return  # TODO verify intentions - no callbacks, just run sim from python
         if not self.calling_point_actuation_dict:
-            raise Exception('Your Calling Point dict is empty, please see documentation and define it before running'
-                            ' simulation.')
+            print('Warning: No calling points or callback function initiated, will just run simulation.')
+            return  # TODO verify intentions - no callbacks, just run sim from python
 
         for calling_key in self.calling_point_actuation_dict:
             # check if user-specified calling point is correct and available
@@ -598,6 +595,10 @@ class BcaEnv(EmsPy):
         available data point. An empty list [] will return the entire current data list for each metric.
         :return return_data_list: nested list of data for each EMS metric at each time index specified, or entire list
         """
+        return_single = False
+        if type(ems_metric_list) is not list:
+            ems_metric_list = [ems_metric_list]
+            return_single = True
 
         return_data_list = []
         full_ems_category = False
@@ -630,7 +631,10 @@ class BcaEnv(EmsPy):
 
             return_data_list.append(return_data_indexed)
 
-        return return_data_list
+        if return_single:
+            return return_data_list[0]
+        else:
+            return return_data_list
 
     def get_weather_forecast(self, weather_metrics: list, when: str, hour: int, zone_ts: int):
         """
