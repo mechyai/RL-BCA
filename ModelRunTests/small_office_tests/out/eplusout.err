@@ -1,0 +1,120 @@
+Program Version,EnergyPlus, Version 9.5.0-de239b2e5f, YMD=2021.06.14 14:58,
+   ** Severe  ** Line: 1347 Index: 6 - Object contains more field values than maximum number of IDD fields and is not extensible.
+   ** Severe  ** Line: 1347 Index: 6 - Error parsing "FenestrationSurface:Detailed". Error in following line.
+   ** Severe  ** ~~~   3.2200,  0.0000,  2.4240;  !- X4, Y4, Z4
+   ** Severe  ** Line: 1347 Index: 14 - "2.4240" is not a valid Object Type.
+   ** Severe  ** Line: 1363 Index: 6 - Object contains more field values than maximum number of IDD fields and is not extensible.
+   ** Severe  ** Line: 1363 Index: 6 - Error parsing "FenestrationSurface:Detailed". Error in following line.
+   ** Severe  ** ~~~   7.8400,  0.0000,  2.4240;  !- X4, Y4, Z4
+   ** Severe  ** Line: 1363 Index: 14 - "2.4240" is not a valid Object Type.
+   ** Severe  ** Line: 1379 Index: 6 - Object contains more field values than maximum number of IDD fields and is not extensible.
+   ** Severe  ** Line: 1379 Index: 6 - Error parsing "FenestrationSurface:Detailed". Error in following line.
+   ** Severe  ** ~~~   12.4500,  0.0000,  2.4240;  !- X4, Y4, Z4
+   ** Severe  ** Line: 1379 Index: 14 - "2.4240" is not a valid Object Type.
+   ** Severe  ** Line: 1395 Index: 6 - Object contains more field values than maximum number of IDD fields and is not extensible.
+   ** Severe  ** Line: 1395 Index: 6 - Error parsing "FenestrationSurface:Detailed". Error in following line.
+   ** Severe  ** ~~~   17.0700,  0.0000,  2.4240;  !- X4, Y4, Z4
+   ** Severe  ** Line: 1395 Index: 14 - "2.4240" is not a valid Object Type.
+   ** Severe  ** Line: 1411 Index: 6 - Object contains more field values than maximum number of IDD fields and is not extensible.
+   ** Severe  ** Line: 1411 Index: 6 - Error parsing "FenestrationSurface:Detailed". Error in following line.
+   ** Severe  ** ~~~   21.6800,  0.0000,  2.4240;  !- X4, Y4, Z4
+   ** Severe  ** Line: 1411 Index: 14 - "2.4240" is not a valid Object Type.
+   ** Severe  ** Line: 1427 Index: 6 - Object contains more field values than maximum number of IDD fields and is not extensible.
+   ** Severe  ** Line: 1427 Index: 6 - Error parsing "FenestrationSurface:Detailed". Error in following line.
+   ** Severe  ** ~~~   26.3000,  0.0000,  2.4240;  !- X4, Y4, Z4
+   ** Severe  ** Line: 1427 Index: 14 - "2.4240" is not a valid Object Type.
+   ** Severe  ** Line: 1443 Index: 6 - Object contains more field values than maximum number of IDD fields and is not extensible.
+   ** Severe  ** Line: 1443 Index: 6 - Error parsing "FenestrationSurface:Detailed". Error in following line.
+   ** Severe  ** ~~~   14.760,  0.0000,  2.1340;  !- X4, Y4, Z4
+   ** Severe  ** Line: 1443 Index: 14 - "2.1340" is not a valid Object Type.
+   ** Severe  ** Line: 1459 Index: 6 - Object contains more field values than maximum number of IDD fields and is not extensible.
+   ** Severe  ** Line: 1459 Index: 6 - Error parsing "FenestrationSurface:Detailed". Error in following line.
+   ** Severe  ** ~~~   27.6900,  3.2200,  2.4240;  !- X4, Y4, Z4
+   ** Severe  ** Line: 1459 Index: 14 - "2.4240" is not a valid Object Type.
+   ** Severe  ** Line: 1475 Index: 6 - Object contains more field values than maximum number of IDD fields and is not extensible.
+   ** Severe  ** Line: 1475 Index: 6 - Error parsing "FenestrationSurface:Detailed". Error in following line.
+   ** Severe  ** ~~~   27.6900,  7.8400,  2.4240;  !- X4, Y4, Z4
+   ** Severe  ** Line: 1475 Index: 14 - "2.4240" is not a valid Object Type.
+   ** Severe  ** Line: 1491 Index: 6 - Object contains more field values than maximum number of IDD fields and is not extensible.
+   ** Severe  ** Line: 1491 Index: 6 - Error parsing "FenestrationSurface:Detailed". Error in following line.
+   ** Severe  ** ~~~   27.6900,  12.4500,  2.4240;  !- X4, Y4, Z4
+   ** Severe  ** Line: 1491 Index: 14 - "2.4240" is not a valid Object Type.
+   ** Severe  ** Line: 1507 Index: 6 - Object contains more field values than maximum number of IDD fields and is not extensible.
+   ** Severe  ** Line: 1507 Index: 6 - Error parsing "FenestrationSurface:Detailed". Error in following line.
+   ** Severe  ** ~~~   27.6900,  17.0700,  2.4240;  !- X4, Y4, Z4
+   ** Severe  ** Line: 1507 Index: 14 - "2.4240" is not a valid Object Type.
+   ** Severe  ** Line: 1523 Index: 6 - Object contains more field values than maximum number of IDD fields and is not extensible.
+   ** Severe  ** Line: 1523 Index: 6 - Error parsing "FenestrationSurface:Detailed". Error in following line.
+   ** Severe  ** ~~~   24.4700,  18.4600,  2.4240;  !- X4, Y4, Z4
+   ** Severe  ** Line: 1523 Index: 14 - "2.4240" is not a valid Object Type.
+   ** Severe  ** Line: 1539 Index: 6 - Object contains more field values than maximum number of IDD fields and is not extensible.
+   ** Severe  ** Line: 1539 Index: 6 - Error parsing "FenestrationSurface:Detailed". Error in following line.
+   ** Severe  ** ~~~   19.8500,  18.4600,  2.4240;  !- X4, Y4, Z4
+   ** Severe  ** Line: 1539 Index: 14 - "2.4240" is not a valid Object Type.
+   ** Severe  ** Line: 1555 Index: 6 - Object contains more field values than maximum number of IDD fields and is not extensible.
+   ** Severe  ** Line: 1555 Index: 6 - Error parsing "FenestrationSurface:Detailed". Error in following line.
+   ** Severe  ** ~~~   15.2400,  18.4600,  2.4240;  !- X4, Y4, Z4
+   ** Severe  ** Line: 1555 Index: 14 - "2.4240" is not a valid Object Type.
+   ** Severe  ** Line: 1571 Index: 6 - Object contains more field values than maximum number of IDD fields and is not extensible.
+   ** Severe  ** Line: 1571 Index: 6 - Error parsing "FenestrationSurface:Detailed". Error in following line.
+   ** Severe  ** ~~~   10.6200,  18.4600,  2.4240;  !- X4, Y4, Z4
+   ** Severe  ** Line: 1571 Index: 14 - "2.4240" is not a valid Object Type.
+   ** Severe  ** Line: 1587 Index: 6 - Object contains more field values than maximum number of IDD fields and is not extensible.
+   ** Severe  ** Line: 1587 Index: 6 - Error parsing "FenestrationSurface:Detailed". Error in following line.
+   ** Severe  ** ~~~   6.0100,  18.4600,  2.4240;  !- X4, Y4, Z4
+   ** Severe  ** Line: 1587 Index: 14 - "2.4240" is not a valid Object Type.
+   ** Severe  ** Line: 1603 Index: 6 - Object contains more field values than maximum number of IDD fields and is not extensible.
+   ** Severe  ** Line: 1603 Index: 6 - Error parsing "FenestrationSurface:Detailed". Error in following line.
+   ** Severe  ** ~~~   1.3900,  18.4600,  2.4240;  !- X4, Y4, Z4
+   ** Severe  ** Line: 1603 Index: 14 - "2.4240" is not a valid Object Type.
+   ** Severe  ** Line: 1619 Index: 6 - Object contains more field values than maximum number of IDD fields and is not extensible.
+   ** Severe  ** Line: 1619 Index: 6 - Error parsing "FenestrationSurface:Detailed". Error in following line.
+   ** Severe  ** ~~~   0.0000,  15.2400,  2.4240;  !- X4, Y4, Z4
+   ** Severe  ** Line: 1619 Index: 14 - "2.4240" is not a valid Object Type.
+   ** Severe  ** Line: 1635 Index: 6 - Object contains more field values than maximum number of IDD fields and is not extensible.
+   ** Severe  ** Line: 1635 Index: 6 - Error parsing "FenestrationSurface:Detailed". Error in following line.
+   ** Severe  ** ~~~   0.0000,  10.6200,  2.4240;  !- X4, Y4, Z4
+   ** Severe  ** Line: 1635 Index: 14 - "2.4240" is not a valid Object Type.
+   ** Severe  ** Line: 1651 Index: 6 - Object contains more field values than maximum number of IDD fields and is not extensible.
+   ** Severe  ** Line: 1651 Index: 6 - Error parsing "FenestrationSurface:Detailed". Error in following line.
+   ** Severe  ** ~~~   0.0000,  6.0100,  2.4240;  !- X4, Y4, Z4
+   ** Severe  ** Line: 1651 Index: 14 - "2.4240" is not a valid Object Type.
+   ** Severe  ** Line: 1667 Index: 6 - Object contains more field values than maximum number of IDD fields and is not extensible.
+   ** Severe  ** Line: 1667 Index: 6 - Error parsing "FenestrationSurface:Detailed". Error in following line.
+   ** Severe  ** ~~~   0.0000,  1.3900,  2.4240;  !- X4, Y4, Z4
+   ** Severe  ** Line: 1667 Index: 14 - "2.4240" is not a valid Object Type.
+   ** Severe  ** Line: 2252 Index: 16 - "Coil:Heating:Gas" is not a valid Object Type.
+   ** Severe  ** Line: 2261 Index: 16 - "Coil:Heating:Gas" is not a valid Object Type.
+   ** Severe  ** Line: 2270 Index: 16 - "Coil:Heating:Gas" is not a valid Object Type.
+   ** Severe  ** Line: 2279 Index: 16 - "Coil:Heating:Gas" is not a valid Object Type.
+   ** Severe  ** Line: 2288 Index: 16 - "Coil:Heating:Gas" is not a valid Object Type.
+   ** Severe  ** Line: 2956 Index: 27 - "AirLoopHVAC:UnitaryCoolOnly" is not a valid Object Type.
+   ** Severe  ** Line: 2965 Index: 27 - "AirLoopHVAC:UnitaryCoolOnly" is not a valid Object Type.
+   ** Severe  ** Line: 2974 Index: 27 - "AirLoopHVAC:UnitaryCoolOnly" is not a valid Object Type.
+   ** Severe  ** Line: 2983 Index: 27 - "AirLoopHVAC:UnitaryCoolOnly" is not a valid Object Type.
+   ** Severe  ** Line: 2992 Index: 27 - "AirLoopHVAC:UnitaryCoolOnly" is not a valid Object Type.
+   ** Severe  ** Line: 3083 Index: 35 - "AirTerminal:SingleDuct:Uncontrolled" is not a valid Object Type.
+   ** Severe  ** Line: 3089 Index: 35 - "AirTerminal:SingleDuct:Uncontrolled" is not a valid Object Type.
+   ** Severe  ** Line: 3095 Index: 35 - "AirTerminal:SingleDuct:Uncontrolled" is not a valid Object Type.
+   ** Severe  ** Line: 3101 Index: 35 - "AirTerminal:SingleDuct:Uncontrolled" is not a valid Object Type.
+   ** Severe  ** Line: 3107 Index: 35 - "AirTerminal:SingleDuct:Uncontrolled" is not a valid Object Type.
+   ** Severe  ** Line: 3200 Index: 10 - Field cannot be Autosize or Autocalculate
+   ** Severe  ** Line: 3225 Index: 10 - Field cannot be Autosize or Autocalculate
+   ** Severe  ** Line: 3250 Index: 10 - Field cannot be Autosize or Autocalculate
+   ** Severe  ** Line: 3275 Index: 10 - Field cannot be Autosize or Autocalculate
+   ** Severe  ** Line: 3300 Index: 10 - Field cannot be Autosize or Autocalculate
+   ** Severe  ** <root>[AvailabilityManager:NightCycle][PSZ-AC:1 Availability Manager][cycling_run_time_control_type] - "1800" - Failed to match against any enum values.
+   ** Severe  ** <root>[Branch][PSZ-AC:1 Air Loop Main Branch][components][0] - Missing required property 'component_object_type'.
+   ** Severe  ** <root>[Branch][PSZ-AC:1 Air Loop Main Branch][components][5] - Missing required property 'component_inlet_node_name'.
+   ** Severe  ** <root>[Branch][PSZ-AC:1 Air Loop Main Branch][components][5] - Missing required property 'component_name'.
+   ** Severe  ** <root>[Branch][PSZ-AC:1 Air Loop Main Branch][components][5] - Missing required property 'component_outlet_node_name'.
+   ** Severe  ** <root>[ZoneHVAC:EquipmentList][Core_ZN Equipment][equipment][0][zone_equipment_object_type] - "Core_ZN Direct Air" - Failed to match against any enum values.
+   **  Fatal  ** Errors occurred on processing input file. Preceding condition(s) cause termination.
+   ...Summary of Errors that led to program termination:
+   ..... Reference severe error count=110
+   ..... Last severe error=<root>[ZoneHVAC:EquipmentList][Core_ZN Equipment][equipment][0][zone_equipment_object_type] - "Core_ZN Direct Air" - Failed to match against any enum values.
+   ************* Warning:  Node connection errors not checked - most system input has not been read (see previous warning).
+   ************* Fatal error -- final processing.  Program exited before simulations began.  See previous error messages.
+   ************* EnergyPlus Warmup Error Summary. During Warmup: 0 Warning; 0 Severe Errors.
+   ************* EnergyPlus Sizing Error Summary. During Sizing: 0 Warning; 0 Severe Errors.
+   ************* EnergyPlus Terminated--Fatal Error Detected. 0 Warning; 110 Severe Errors; Elapsed Time=00hr 00min  0.28sec
