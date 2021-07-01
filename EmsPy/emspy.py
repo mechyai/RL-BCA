@@ -249,6 +249,7 @@ class EmsPy:
         state = self.state
         api = self.api
         # gather data
+        # TODO add current timestep ems variable by default
         year = api.exchange.year(state)
         month = api.exchange.month(state)
         day = api.exchange.day_of_month(state)
@@ -386,7 +387,8 @@ class EmsPy:
             #       f' timestep {self.timestep_zone_current}')
             pass
 
-    def _enclosing_callback(self, calling_point: str, observation_fxn, actuation_fxn, update_state: bool,
+    def _enclosing_callback(self, calling_point: str, observation_fxn, actuation_fxn,
+                            update_state: bool = False,
                             update_state_freq: int = 1,
                             update_act_freq: int = 1):
         """
@@ -398,7 +400,7 @@ class EmsPy:
         timestep frequency
         :param actuation_fxn: the user defined actuation function to be called at runtime calling point and desired
         timestep frequency
-        :param update_state: whether EMS and time/timestep should be updated. This should only be done once a timestep
+        :param update_state: whether EMS and time/timestep should be updated. This should only be done ONCE a timestep
         :param update_state_freq: the number of zone timesteps per updating the simulation state
         :param update_act_freq: the number of zone timesteps per updating the actuators from the actuation function
         """
@@ -463,6 +465,7 @@ class EmsPy:
                 getattr(self.api.runtime, calling_key)(self.state, self._enclosing_callback(calling_key,
                                                                                             observation_fxn,
                                                                                             actuation_fxn,
+                                                                                            update_state,
                                                                                             update_state_freq,
                                                                                             update_act_freq))
 

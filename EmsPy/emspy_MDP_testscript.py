@@ -47,53 +47,58 @@ cp3 = 'callback_begin_system_timestep_before_predictor'
 
 ts = 12
 
-agent = emspy.BcaEnv(ep_path, ep_idf_to_run, ts, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc)
+sim = emspy.BcaEnv(ep_path, ep_idf_to_run, ts, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc)
 
 
-class test_class:
+class Agent:
     def __init__(self):
-        self.param_data = 0
-        self.weather_db_temp_val = 20
+        pass
+
+    def observe(self):
+        pass
+
+    def take_action(self):
+        pass
 
 
-agent_params = test_class()
+class Agent:
+    def __init__(self):
+        self.weather_db_temp_val = 0
+        self.act_val = 0
+
+        pass
+
+    def observe(self):
+        dbt, dbt_actuator, timestep = sim.get_ems_data(['oa_temp', 'act_odb_temp', 'timesteps'])
+        print(f'Observe: Timestep:{timestep}, DBT Prev Act: {dbt_actuator}, DBT Current: {dbt}')
+        pass
+
+    def act(self):
+        act_dbt = self.weather_db_temp_val
+        if act_dbt > 50:
+            update_dbt = 10
+        else:
+            update_dbt = act_dbt + 1
+        self.weather_db_temp_val = update_dbt
+
+        dbt, dbt_actuator, timestep = sim.get_ems_data(['oa_temp', 'act_odb_temp', 'timesteps'])
+
+        print(f'Action:  Timestep:{timestep}, DBT Act: {update_dbt}, DBT Current: {dbt}\n')
+
+        return {'act_odb_temp': update_dbt}
 
 
-def actuation_fxn1():
-    agent_params.param_data += 1
-    print(agent_params.param_data)
-    data = agent.get_ems_data(['wind_dir'], [0, 1, 2])
-    print(f'Data: {data}')
-    return None
-
-
-def actuation_test():
-    act_dbt = agent_params.weather_db_temp_val
-    if act_dbt > 50:
-        update_dbt = 10
-    else:
-        update_dbt = act_dbt + 1
-    agent_params.weather_db_temp_val = update_dbt
-
-    dbt, dbt_actuator, timestep = agent.get_ems_data(['oa_temp', 'act_odb_temp', 'timesteps'])
-
-    print(f'A: Timestep:{timestep}, DBT Act: {update_dbt}, DBT Current Act: {dbt_actuator}, DBT Current: {dbt}')
-
-    return {'act_odb_temp': update_dbt}
-
-
-def read_data():
-    dbt, dbt_actuator, timestep = agent.get_ems_data(['oa_temp', 'act_odb_temp', 'timesteps'])
-    print(f'B: Timestep:{timestep}, DBT Act: "prev", DBT Current Act: {dbt_actuator}, DBT Current: {dbt}\n')
+agent1 = Agent()
+agent2 = Agent()
 
 # agent.set_calling_point_and_actuation_function(cp1, actuation_fxn1, False, 1, 1)
-agent.set_calling_point_and_callback_function(cp2, actuation_test, True)
+sim.set_calling_point_and_callback_function(cp2, agent1.observe, agent1.act, True)
 # agent.set_calling_point_and_actuation_function(cp3, read_data, True)
 
 # create custom dict
 # agent.init_custom_dataframe_dict('df1', cp1, 4, ['act_odb_temp', 'sun'])
 # agent.init_custom_dataframe_dict('df2', cp1, 2, ['rain', 'zone_temp'])
 
-agent.run_env(ep_weather_path)
+sim.run_env(ep_weather_path)
 # agent.reset_state()
 

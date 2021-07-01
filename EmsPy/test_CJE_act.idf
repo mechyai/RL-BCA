@@ -2783,6 +2783,7 @@ EnergyManagementSystem:Actuator,
   Temperature Setpoint;    !- Actuated Component Control Type
 
 !EnergyManagementSystem:Actuator Available,Environment,Weather Data,Outdoor Dry Bulb,[C]
+
 EnergyManagementSystem:Actuator,
   test_weather,               !- Name
   Environment, !- Actuated Component Unique Name
