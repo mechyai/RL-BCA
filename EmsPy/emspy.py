@@ -296,9 +296,9 @@ class EmsPy:
         # specific data exchange API function calls
         datax = self.api.exchange
         ems_datax_func = {'var': datax.get_variable_value,
-                            'intvar': datax.get_internal_variable_value,
-                            'meter': datax.get_meter_value,
-                            'actuator': datax.get_actuator_value}
+                          'intvar': datax.get_internal_variable_value,
+                          'meter': datax.get_meter_value,
+                          'actuator': datax.get_actuator_value}
 
         for ems_name in ems_metrics_list:
             ems_type = self.ems_type_dict[ems_name]
@@ -628,7 +628,7 @@ class BcaEnv(EmsPy):
 
     def get_ems_data(self, ems_metric_list: list, time_rev_index: list = 0) -> list:
         """
-        This takes desired EMS metric(s) (or type) & returns the entire current data set(s) or specific time indices.
+        This takes desired EMS metric(s) (or type) & returns the entire current data set(s) OR at specific time indices.
 
         This function should be used to collect user-defined state space OR time information at each timestep. 1 to all
         EMS metrics and timing can be called, or just EMS category (var, intvar, meter, actuator, weather) and one data
@@ -645,10 +645,13 @@ class BcaEnv(EmsPy):
         :return return_data_list: nested list of data for each EMS metric at each time index specified, or entire list
         """
         # handle single val inputs -> convert to list for rest of function
-        if type(ems_metric_list) is not list:
+        single_val = False
+
+        if type(ems_metric_list) is not list:  # assuming single metric
             ems_metric_list = [ems_metric_list]
-        if type(time_rev_index) is not list:
+        if type(time_rev_index) is not list:  # assuming single val
             time_rev_index = [time_rev_index]
+            single_val = True
 
         return_data_list = []
 
@@ -679,7 +682,11 @@ class BcaEnv(EmsPy):
                             else:
                                 ems_name = ems_metric
                             data_indexed = getattr(self, ems_name)[-1 - time]
-                            return_data_indexed.append(data_indexed)
+                            if single_val:
+                                # so that a single-element nested list is not returned
+                                return_data_indexed = data_indexed  # no list of vals collected
+                            else:
+                                return_data_indexed.append(data_indexed)
                         return_data_list.append(return_data_indexed)
 
                     else:
