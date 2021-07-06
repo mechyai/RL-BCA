@@ -103,9 +103,9 @@ class EmsPy:
         self.times_master_list = ['actual_date_time', 'actual_times', 'current_times', 'years', 'months', 'days',
                                   'hours', 'minutes', 'time_x', 'timesteps', 'timesteps_total'
                                   'callbacks']  # list of available time data user can call
-        self.ems_names_master_list = []  # keep track of all user-defined EMS names
+        self.ems_names_master_list = self.times_master_list  # keeps track of all user-defined and default EMS var names
         self.ems_type_dict = {}  # keep track of EMS metric names and associated EMS type, quick lookup
-        self.ems_num_dict = {} # keep track of EMS variable categories and num of vars
+        self.ems_num_dict = {} # keep track of EMS variable categories and num of vars for each
         self.ems_current_data_dict = {}  # collection of all ems metrics (keys) and their current values (val)
         self.calling_point_actuation_dict = {}  # links cp to actuation fxn & its needed args
 
@@ -138,6 +138,7 @@ class EmsPy:
         self.timestep_zone_current = 1  # fluctuate from 1 to # of timesteps/hour # TODO how to enforce only once per ts
         self.timestep = self._init_timestep(timesteps)  # sim timesteps per hour # TODO enforce via OPENSTUDIO SDK ???
         self.timestep_period = 60 // timesteps  # minute duration of each timestep of simulation
+        self.simulation_ran = False
 
     def _init_ems_handles_and_data(self):
         """
@@ -471,7 +472,7 @@ class EmsPy:
 
     def init_custom_dataframe_dict(self, df_name: str, calling_point: str, update_freq: int, ems_metrics: list):
         """
-        Used to initialize EMS metric pandas dataframe attributes and validates proper user input.
+        Used to initialize EMS metric pandas dataframe attributes.
 
         :param df_name: user-defined df variable name
         :param calling_point: the calling point at which the df should be updated
@@ -525,7 +526,7 @@ class EmsPy:
             setattr(self, df_name, pd.DataFrame.from_dict(ems_dict))
 
     def _create_default_dataframes(self):
-        """Creates default dataframes for each ems data list, for each ems category."""
+        """Creates default dataframes for each EMS data list, for each ems category."""
 
         if not self.ems_num_dict:
             return  # no ems dicts created, very unlikely
@@ -571,7 +572,7 @@ class EmsPy:
         # RUN SIMULATION
         print('* * * Running E+ Simulation * * *')
         self.api.runtime.run_energyplus(self.state, ['-w', weather_file, '-d', 'out', self.idf_file])   # cmd line args
-
+        self.simulation_ran = True
         # create default and custom ems pandas df's after simulation complete
         self._create_default_dataframes()
         self._create_custom_dataframes()
@@ -744,6 +745,29 @@ class BcaEnv(EmsPy):
             return self.get_ems_data(ems_metric_list)
         else:
             return []
+
+    def get_df(self, df_name: list):
+        """
+        Returns selected EMS-type default dataframe based on user's entered ToC(s) or custom DF.
+
+        :param df_name: default EMS metric type (var, intvar, meter, actuator, weather) OR custom df name
+        :return: pandas dataframe
+        """
+        if not self.simulation_ran:
+               raise Exception('Simulation must be run first to fetch data.')
+
+        if type(df_name) is not list:
+            df_name = [df_name]
+        return_df = []
+        for df in df_name:
+            if df in self.ems_num_dict:
+                return_df.append(getattr(self, 'df_' + df))
+            elif df in self.df_custom_dict:
+                return_df.append(getattr(self, df))
+            else:
+                raise ValueError('Either dataframe custom name or default type is not valid or was not collected during'
+                                 'simulation')
+        return return_df
 
     def run_env(self, weather_file: str):
         self.run_simulation(weather_file)
