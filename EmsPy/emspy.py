@@ -193,7 +193,7 @@ class EmsPy:
             raise ValueError(f'Your choice of number of timesteps per hour, {timestep}, must be evenly divisible into'
                              f' 60 mins: {available_timesteps}')
         else:
-            print(f'Your simulation timestep period is {60 // timestep} minutes')
+            print(f'NOTE: Your simulation timestep period is {60 // timestep} minutes')
             return timestep
 
     def _set_ems_handles(self):
@@ -449,7 +449,7 @@ class EmsPy:
         """This iterates through the Calling Point Dict{} to set runtime calling points with actuation functions."""
 
         if not self.calling_point_actuation_dict:
-            print('Warning: No calling points or callback function initiated. Will just run simulation!')
+            print('WARNING: No calling points or callback function initiated. Will just run simulation!')
             return  # TODO verify intentions - no callbacks, just run sim from python
 
         for calling_key in self.calling_point_actuation_dict:
@@ -526,7 +526,7 @@ class EmsPy:
             setattr(self, df_name, pd.DataFrame.from_dict(ems_dict))
 
     def _create_default_dataframes(self):
-        """Creates default dataframes for each EMS data list, for each ems category."""
+        """Creates default dataframes for each EMS data list, for each EMS category."""
 
         if not self.ems_num_dict:
             return  # no ems dicts created, very unlikely
