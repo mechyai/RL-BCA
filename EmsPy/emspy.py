@@ -746,28 +746,38 @@ class BcaEnv(EmsPy):
         else:
             return []
 
-    def get_df(self, df_name: list):
+    def get_df(self, df_names: list=[]):
         """
-        Returns selected EMS-type default dataframe based on user's entered ToC(s) or custom DF.
+        Returns selected EMS-type default dataframe based on user's entered ToC(s) or custom DF, or ALL df's by default.
 
-        :param df_name: default EMS metric type (var, intvar, meter, actuator, weather) OR custom df name
-        :return: pandas dataframe
+        :param df_names: default EMS metric type (var, intvar, meter, actuator, weather) OR custom df name. Leave
+        argument empty if you want to return ALL dataframes together (all default, then all custom)
+        :return: dictionary of pandas dataframes, key is df name and value is df
         """
         if not self.simulation_ran:
-               raise Exception('Simulation must be run first to fetch data.')
+            raise Exception('Simulation must be run first to fetch data.')
 
-        if type(df_name) is not list:
-            df_name = [df_name]
-        return_df = []
-        for df in df_name:
-            if df in self.ems_num_dict:
-                return_df.append(getattr(self, 'df_' + df))
-            elif df in self.df_custom_dict:
-                return_df.append(getattr(self, df))
-            else:
-                raise ValueError('Either dataframe custom name or default type is not valid or was not collected during'
-                                 'simulation')
-        return return_df
+        dfs_fetched = False
+        return_df = {}
+        # default dfs
+        for df in self.ems_num_dict:
+            if df in df_names or not df_names:
+                return_df[df] = (getattr(self, 'df_' + df))
+                if df in df_names:
+                    df_names.remove(df)
+
+        for df in self.df_custom_dict:
+            if df in df_names or not df_names:
+                return_df[df] = (getattr(self, df))
+                if df in df_names:
+                    df_names.remove(df)
+
+        # leftover dfs not fetched and returned
+        if df_names:
+            raise ValueError(f'Either dataframe custom name or default type: {df_names} is not valid or was not'
+                             ' collected during simulation.')
+        else:
+            return return_df
 
     def run_env(self, weather_file: str):
         self.run_simulation(weather_file)
