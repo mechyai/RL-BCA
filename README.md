@@ -99,10 +99,12 @@ Once this has been completed the meta-class, ***EmsPy***, has all it needs to bu
  A given <ins>calling point</ins> defines when a *linked* <ins>callback function</ins> (and optionally an embedded <ins>actuation function</ins>) will be ran during the simulation timestep calculations.
 The diagram above represents the simulation flow and RL integration with calling points and callback functions. 
  
- The Calling Point & Actuation Function dictionary should be built one key-value at a time using the method: 
+ The Calling Point & Actuation Function dictionary should be built one key-value at a time using the method:
 
+# TODO update new method arguments
  ```python
- BcaEnv.set_calling_point_and_actuation_function(calling_point: str, actuation_fxn, update_state: bool, update_state_freq: int = 1, update_act_freq: int = 1)
+ BcaEnv.set_calling_point_and_callback_function(
+    calling_point: str, actuation_fxn, update_state: bool, update_state_freq: int = 1, update_act_freq: int = 1)
  ```
 - `calling_point` a single calling point from the available list `EmsPy.available_calling_points`
 - `actuation_fxn` the control algorithm function (one of potentially many throughout a timestep), which <ins>must take no argument and return a dictionary</ins> (or `None` if no custom actuation) of actuator name(s) *(key)* and floating point setpoint value(s) *(value)* to be implemented at the linked calling point. 

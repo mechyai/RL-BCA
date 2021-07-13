@@ -19,9 +19,29 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="up to date readme, changed how weather and ems data updates, added BcaEnv methods, compressed redundancy, fixed timesteps">
+    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="added observation fxn alongside actuation function for making custom callbacks - fits MDP RL framework">
+      <change afterPath="$PROJECT_DIR$/EmsPy/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ModelRunTests/small_office_tests/RefBldgSmallOfficeNew2004_v1.3_5.0_6A_USA_MN_MINNEAPOLIS.idf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ModelRunTests/small_office_tests/emspy_testscript1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/ceube.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/ceube.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmsPy/emspy.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/emspy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmsPy/emspy_MDP_testscript.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/emspy_MDP_testscript.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EmsPy/emspy_testscript.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/emspy_testscript.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmsPy/out/eplusout.audit" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.audit" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmsPy/out/eplusout.bnd" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.bnd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmsPy/out/eplusout.eio" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.eio" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmsPy/out/eplusout.end" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.end" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmsPy/out/eplusout.err" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.err" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmsPy/out/eplusout.eso" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.eso" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmsPy/out/eplusout.mdd" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.mdd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmsPy/out/eplusout.mtr" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.mtr" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmsPy/out/eplusout.rdd" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.rdd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmsPy/out/eplusout.sql" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmsPy/out/eplustbl.htm" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplustbl.htm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmsPy/out/sqlite.err" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/sqlite.err" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmsPy/test_CJE_act.idf" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/test_CJE_act.idf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,12 +63,25 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
   <component name="GithubPullRequestsUISettings">
     <option name="hiddenUrls">
       <set>
         <option value="https://github.com/mechyai/RL-BCA.git" />
       </set>
     </option>
+  </component>
+  <component name="ProblemsViewState">
+    <hideBySeverity>
+      <option value="15" />
+    </hideBySeverity>
   </component>
   <component name="ProjectId" id="1sP8Lt4tciOZrO5Zujfx9rDgJhD" />
   <component name="ProjectViewState">
@@ -59,62 +92,39 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Python" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../PnC_HRL" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="TEXT&#10;Python" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/EmsPy" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="A:\Files\PycharmProjects\RL-BCA" />
-      <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\api-example-copies\PyEMS_CJE" />
-      <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\CJE-examples" />
-      <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\api-example-copiespyEMS_jmarrec" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="A:\Files\PycharmProjects\RL-BCA\EmsPy" />
+      <recent name="A:\Files\PycharmProjects\RL-BCA\ModelRunTests\small_office_tests" />
+      <recent name="A:\Files\PycharmProjects\RL-BCA\EmsPy\ModelRunTests" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\PyEMS" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\api-example-copies\PyEMS_CJE" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="A:\Files\PycharmProjects\RL-BCA\ModelRunTests\small_office_tests" />
+      <recent name="A:\Files\PycharmProjects\RL-BCA" />
+      <recent name="A:\Files\PycharmProjects\RL-BCA\EmsPy" />
+      <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\api-example-copies\PyEMS_CJE" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\CJE-examples" />
-      <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples" />
-      <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\api-example-copies" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.emspy_testscript">
-    <configuration name="PyEMS_CJE" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.emspy_MDP_testscript">
+    <configuration name="emspy_MDP_testscript" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/EmsPy" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/PyEMS_CJE.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/EmsPy/emspy_MDP_testscript.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="emspy" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="RL-BCA" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PyEMS" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/PyEMS/emspy.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
@@ -129,11 +139,32 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PyEMS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/EmsPy" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/PyEMS/emspy_testscript.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/EmsPy/emspy_testscript.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="emspy_testscript1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="RL-BCA" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/ModelRunTests/small_office_tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ModelRunTests/small_office_tests/emspy_testscript1.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -185,22 +216,23 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.PyEMS_CJE" />
-      <item itemvalue="Python.emspy" />
+      <item itemvalue="Python.emspy_testscript1" />
       <item itemvalue="Python.emspy_testscript" />
       <item itemvalue="Python.scratch" />
       <item itemvalue="Python.scratch_1" />
+      <item itemvalue="Python.emspy_MDP_testscript" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.emspy_testscript" />
+        <item itemvalue="Python.emspy_MDP_testscript" />
         <item itemvalue="Python.scratch_1" />
         <item itemvalue="Python.scratch" />
-        <item itemvalue="Python.emspy" />
-        <item itemvalue="Python.PyEMS_CJE" />
+        <item itemvalue="Python.emspy_testscript" />
+        <item itemvalue="Python.emspy_testscript1" />
       </list>
     </recent_temporary>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="project-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -478,7 +510,84 @@
       <option name="project" value="LOCAL" />
       <updated>1623382430000</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="smalling naming update">
+      <created>1623383221234</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1623383221234</updated>
+    </task>
+    <task id="LOCAL-00040" summary="update, create test class for actuation fxn">
+      <created>1623383721369</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1623383721369</updated>
+    </task>
+    <task id="LOCAL-00041" summary="add note about custom class in script">
+      <created>1623384052780</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1623384052780</updated>
+    </task>
+    <task id="LOCAL-00042" summary="added timestep verify, tested custom dataframes">
+      <created>1623422995596</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1623422995596</updated>
+    </task>
+    <task id="LOCAL-00043" summary="added timestep verify, tested custom dataframes">
+      <created>1623436859944</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1623436859944</updated>
+    </task>
+    <task id="LOCAL-00044" summary="update get_ems_data to handle single metric or list">
+      <created>1624553176449</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1624553176449</updated>
+    </task>
+    <task id="LOCAL-00045" summary="update timestep error handling">
+      <created>1624554255776</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1624554255776</updated>
+    </task>
+    <task id="LOCAL-00046" summary="updated documentation, actuation function inputs">
+      <created>1624555431780</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1624555431780</updated>
+    </task>
+    <task id="LOCAL-00047" summary="updated documentation, actuation function inputs, made major changes to get ems data">
+      <created>1624557915164</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1624557915164</updated>
+    </task>
+    <task id="LOCAL-00048" summary="updated error handling to custom dataframes, updated available callback list and function, added timestep data list">
+      <created>1624570333225</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1624570333225</updated>
+    </task>
+    <task id="LOCAL-00049" summary="added observation fxn alongside actuation function for making custom callbacks - fits MDP RL framework">
+      <created>1624571663074</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1624571663074</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -494,16 +603,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="weather functions v1 finalized" />
-    <MESSAGE value="emspy library working on tests of weather, variables, and actuators (actuators output 0 still), but have not tested meters or internal vars." />
-    <MESSAGE value="update to meta-class" />
-    <MESSAGE value="update, might fork soon to handle multi state instances or callbacks" />
-    <MESSAGE value="adding actuator components, modified EMS var ToC name instantiation and tracking, editing calling points soon" />
-    <MESSAGE value="update, references added" />
-    <MESSAGE value="minor update - branching soon" />
-    <MESSAGE value="added ems_dict for quick var category and count tracking, within RL branch" />
-    <MESSAGE value="fixed actuation, calling point dicts, and RL basic framework - still lots TODO" />
-    <MESSAGE value="back on main pycharm" />
     <MESSAGE value="updated df creation and updating - wop" />
     <MESSAGE value="compressed update time &amp; data into just update state to assist dataframe updates" />
     <MESSAGE value="redesigned dataframe creation, put at end, packed every input into __init__, gave callback state &amp; act update freq" />
@@ -519,104 +618,17 @@
     <MESSAGE value="updated weather functions and Readme, now working on lists -&gt; dicts" />
     <MESSAGE value="changed attribute lists to dicts for entire class" />
     <MESSAGE value="up to date readme, changed how weather and ems data updates, added BcaEnv methods, compressed redundancy, fixed timesteps" />
-    <option name="LAST_COMMIT_MESSAGE" value="up to date readme, changed how weather and ems data updates, added BcaEnv methods, compressed redundancy, fixed timesteps" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="-1468" y="114" width="1016" height="911" key="#Intentions" timestamp="1621702557664">
-      <screen x="-1920" y="0" width="1920" height="1080" />
-    </state>
-    <state x="-1468" y="114" width="1016" height="911" key="#Intentions/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621702557664" />
-    <state x="-1506" y="194" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1621478991886">
-      <screen x="-1920" y="0" width="1920" height="1080" />
-    </state>
-    <state x="-1506" y="194" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621478991886" />
-    <state x="572" y="260" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1621822006589">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="-1205" y="341" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621012802077" />
-    <state x="572" y="260" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824/-1920.0.1920.1080@0.0.1536.824" timestamp="1621822006589" />
-    <state x="-1122" y="233" key="#xdebugger.XInspectDialog" timestamp="1621380283677">
-      <screen x="-1920" y="0" width="1920" height="1080" />
-    </state>
-    <state x="-1122" y="233" key="#xdebugger.XInspectDialog/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621380283677" />
-    <state x="-1233" y="235" key="FileChooserDialogImpl" timestamp="1622687869939">
-      <screen x="-1920" y="0" width="1920" height="1080" />
-    </state>
-    <state x="-1233" y="235" key="FileChooserDialogImpl/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1622687869939" />
-    <state width="1865" height="200" key="GridCell.Tab.0.bottom" timestamp="1623366230916">
-      <screen x="-1920" y="0" width="1920" height="1080" />
-    </state>
-    <state width="1865" height="200" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1623366230916" />
-    <state width="1865" height="200" key="GridCell.Tab.0.center" timestamp="1623366230916">
-      <screen x="-1920" y="0" width="1920" height="1080" />
-    </state>
-    <state width="1865" height="200" key="GridCell.Tab.0.center/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1623366230916" />
-    <state width="1865" height="200" key="GridCell.Tab.0.left" timestamp="1623366230915">
-      <screen x="-1920" y="0" width="1920" height="1080" />
-    </state>
-    <state width="1865" height="200" key="GridCell.Tab.0.left/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1623366230915" />
-    <state width="1865" height="200" key="GridCell.Tab.0.right" timestamp="1623366230916">
-      <screen x="-1920" y="0" width="1920" height="1080" />
-    </state>
-    <state width="1865" height="200" key="GridCell.Tab.0.right/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1623366230916" />
-    <state width="1867" height="257" key="GridCell.Tab.1.bottom" timestamp="1621654576178">
-      <screen x="-1920" y="0" width="1920" height="1080" />
-    </state>
-    <state width="1867" height="257" key="GridCell.Tab.1.bottom/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621654576178" />
-    <state width="1867" height="257" key="GridCell.Tab.1.center" timestamp="1621654576178">
-      <screen x="-1920" y="0" width="1920" height="1080" />
-    </state>
-    <state width="1867" height="257" key="GridCell.Tab.1.center/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621654576178" />
-    <state width="1867" height="257" key="GridCell.Tab.1.left" timestamp="1621654576178">
-      <screen x="-1920" y="0" width="1920" height="1080" />
-    </state>
-    <state width="1867" height="257" key="GridCell.Tab.1.left/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621654576178" />
-    <state width="1867" height="257" key="GridCell.Tab.1.right" timestamp="1621654576178">
-      <screen x="-1920" y="0" width="1920" height="1080" />
-    </state>
-    <state width="1867" height="257" key="GridCell.Tab.1.right/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621654576178" />
-    <state x="-1459" y="184" key="SettingsEditor" timestamp="1621379101168">
-      <screen x="-1920" y="0" width="1920" height="1080" />
-    </state>
-    <state x="-1459" y="184" key="SettingsEditor/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621379101168" />
-    <state x="-1205" y="187" key="VCS.ChangeListViewerDialog" timestamp="1623208883641">
-      <screen x="-1920" y="0" width="1920" height="1080" />
-    </state>
-    <state x="-1205" y="187" key="VCS.ChangeListViewerDialog/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1623208883641" />
-    <state x="-1368" y="259" key="Vcs.Push.Dialog.v2" timestamp="1623382433001">
-      <screen x="-1920" y="0" width="1920" height="1080" />
-    </state>
-    <state x="-1368" y="259" key="Vcs.Push.Dialog.v2/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1623382433001" />
-    <state x="442" y="130" key="Vcs.Push.Dialog.v2/0.0.1536.824/-1920.0.1920.1080@0.0.1536.824" timestamp="1622912658496" />
-    <state width="968" height="548" key="XDebugger.FullValuePopup" timestamp="1620938535020">
-      <screen x="-1920" y="0" width="1920" height="1080" />
-    </state>
-    <state width="968" height="548" key="XDebugger.FullValuePopup/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1620938535020" />
-    <state x="-1185" y="432" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1623343805840">
-      <screen x="-1920" y="0" width="1920" height="1080" />
-    </state>
-    <state x="-1185" y="432" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1623343805840" />
-    <state x="-1396" y="268" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1620935971857">
-      <screen x="-1920" y="0" width="1920" height="1080" />
-    </state>
-    <state x="-1396" y="268" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1620935971857" />
-    <state x="-2228" y="-25" width="1548" height="878" maximized="true" key="dock-window-1" timestamp="1622911050010">
-      <screen x="-1920" y="0" width="1920" height="1080" />
-    </state>
-    <state x="11" y="-6" width="968" height="468" maximized="true" key="dock-window-1/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1621012635740" />
-    <state x="-2228" y="-25" width="1548" height="878" maximized="true" key="dock-window-1/0.0.1536.824/-1920.0.1920.1080@0.0.1536.824" timestamp="1622911050010" />
-    <state x="-1238" y="-16" width="387" height="210" key="dock-window-2" timestamp="1623382696297">
-      <screen x="-1920" y="0" width="1920" height="1080" />
-    </state>
-    <state x="-1238" y="-16" width="387" height="210" key="dock-window-2/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1623382696297" />
-    <state x="-1199" y="371" key="git4idea.rebase.GitRebaseDialog" timestamp="1623382960788">
-      <screen x="-1920" y="0" width="1920" height="1080" />
-    </state>
-    <state x="-1199" y="371" key="git4idea.rebase.GitRebaseDialog/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1623382960788" />
-    <state x="-1381" y="45" width="840" height="1034" key="search.everywhere.popup" timestamp="1622815190315">
-      <screen x="-1920" y="0" width="1920" height="1080" />
-    </state>
-    <state x="-1381" y="45" width="840" height="1034" key="search.everywhere.popup/0.0.1536.824/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1622815190315" />
+    <MESSAGE value="smalling naming update" />
+    <MESSAGE value="update, create test class for actuation fxn" />
+    <MESSAGE value="add note about custom class in script" />
+    <MESSAGE value="added timestep verify, tested custom dataframes" />
+    <MESSAGE value="update get_ems_data to handle single metric or list" />
+    <MESSAGE value="update timestep error handling" />
+    <MESSAGE value="updated documentation, actuation function inputs" />
+    <MESSAGE value="updated documentation, actuation function inputs, made major changes to get ems data" />
+    <MESSAGE value="updated error handling to custom dataframes, updated available callback list and function, added timestep data list" />
+    <MESSAGE value="added observation fxn alongside actuation function for making custom callbacks - fits MDP RL framework" />
+    <option name="LAST_COMMIT_MESSAGE" value="added observation fxn alongside actuation function for making custom callbacks - fits MDP RL framework" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
