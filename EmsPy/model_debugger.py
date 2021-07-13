@@ -10,12 +10,9 @@ os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 # OMP: Error #15: Initializing libiomp5md.dll, but found libiomp5md.dll already initialized.
 
 ep_path = 'A:/Programs/EnergyPlusV9-5-0/'
-ep_idf_to_run = ''
-ep_weather_path = ''
+ep_idf_to_run = 'A:/Files/PycharmProjects/RL-BCA/OpenStudio_Models/idf_files/5office_small_ems.idf'
+ep_weather_path = 'A:/Files/PycharmProjects/RL-BCA/Resource_Files/reference_weather/2A_USA_TX_HOUSTON_TMY2.epw'
 # ep_os_to_run = ''
-
-project_name = '5office_small_prototype_FL/'
-project_path = 'A:/Files/PycharmProjects/RL-BCA/ModelRunTests/DemoControl/'
 
 cvs_output_path = ''
 
@@ -25,17 +22,54 @@ cvs_output_path = ''
 # meters_tc = {"attr_handle_name": "meter_name",...}
 # actuators_tc = {"attr_handle_name": ["component_type", "control_type", "actuator_key"],...}
 # weather_tc = {"attr_name": "weather_metric",...}
-vars_tc = None
+vars_tc = {'zone0_oa_db_temp': ['Zone Outdoor Air Drybulb Temperature', 'Core_ZN ZN'],
+           'zone1_oa_db_temp': ['Zone Outdoor Air Drybulb Temperature', 'Perimeter_ZN_1 ZN'],
+           'zone2_oa_db_temp': ['Zone Outdoor Air Drybulb Temperature', 'Perimeter_ZN_2 ZN'],
+           'zone3_oa_db_temp': ['Zone Outdoor Air Drybulb Temperature', 'Perimeter_ZN_3 ZN'],
+           'zone4_oa_db_temp': ['Zone Outdoor Air Drybulb Temperature', 'Perimeter_ZN_4 ZN'],
+           'zone0_oa_wb_temp': ['Zone Outdoor Air Wetbulb Temperature', 'Core_ZN ZN'],
+           'zone1_oa_wb_temp': ['Zone Outdoor Air Wetbulb Temperature', 'Perimeter_ZN_1 ZN'],
+           'zone2_oa_wb_temp': ['Zone Outdoor Air Wetbulb Temperature', 'Perimeter_ZN_2 ZN'],
+           'zone3_oa_wb_temp': ['Zone Outdoor Air Wetbulb Temperature', 'Perimeter_ZN_3 ZN'],
+           'zone4_oa_wb_temp': ['Zone Outdoor Air Wetbulb Temperature', 'Perimeter_ZN_4 ZN'],
+           'zone0_mean_temp': ['Zone Mean Air Temperature', 'Core_ZN ZN'],
+           'zone1_mean_temp': ['Zone Mean Air Temperature', 'Perimeter_ZN_1 ZN'],
+           'zone2_mean_temp': ['Zone Mean Air Temperature', 'Perimeter_ZN_2 ZN'],
+           'zone3_mean_temp': ['Zone Mean Air Temperature', 'Perimeter_ZN_3 ZN'],
+           'zone4_mean_temp': ['Zone Mean Air Temperature', 'Perimeter_ZN_4 ZN'],
+           'zone0_temp': ['Zone Air Temperature', 'Core_ZN ZN'],
+           'zone1_temp': ['Zone Air Temperature', 'Perimeter_ZN_1 ZN'],
+           'zone2_temp': ['Zone Air Temperature', 'Perimeter_ZN_2 ZN'],
+           'zone3_temp': ['Zone Air Temperature', 'Perimeter_ZN_3 ZN'],
+           'zone4_temp': ['Zone Air Temperature', 'Perimeter_ZN_4 ZN'],
+           'zone0_rh': ['Zone Air Relative Humidity', 'Core_ZN ZN'],
+           'zone1_rh': ['Zone Air Relative Humidity', 'Perimeter_ZN_1 ZN'],
+           'zone2_rh': ['Zone Air Relative Humidity', 'Perimeter_ZN_2 ZN'],
+           'zone3_rh': ['Zone Air Relative Humidity', 'Perimeter_ZN_3 ZN'],
+           'zone4_rh': ['Zone Air Relative Humidity', 'Perimeter_ZN_4 ZN'],
+           }
 int_vars_tc = None
 meters_tc = None
-actuators_tc = None
+actuators_tc = {
+    'zone0_cool_sp': ['Zone Temperature Control', 'Cooling Setpoint', 'Core_ZN ZN'],
+    'zone1_cool_sp': ['Zone Temperature Control', 'Cooling Setpoint', 'Perimeter_ZN_1 ZN'],
+    'zone2_cool_sp': ['Zone Temperature Control', 'Cooling Setpoint', 'Perimeter_ZN_2 ZN'],
+    'zone3_cool_sp': ['Zone Temperature Control', 'Cooling Setpoint', 'Perimeter_ZN_3 ZN'],
+    'zone4_cool_sp': ['Zone Temperature Control', 'Cooling Setpoint', 'Perimeter_ZN_4 ZN'],
+    'zone0_heat_sp': ['Zone Temperature Control', 'Heating Setpoint', 'Core_ZN ZN'],
+    'zone1_heat_sp': ['Zone Temperature Control', 'Heating Setpoint', 'Perimeter_ZN_1 ZN'],
+    'zone2_heat_sp': ['Zone Temperature Control', 'Heating Setpoint', 'Perimeter_ZN_2 ZN'],
+    'zone3_heat_sp': ['Zone Temperature Control', 'Heating Setpoint', 'Perimeter_ZN_3 ZN'],
+    'zone4_heat_sp': ['Zone Temperature Control', 'Heating Setpoint', 'Perimeter_ZN_4 ZN'],
+}
 weather_tc = None
-timesteps = #
+timesteps = 30
 # create calling point with actuation function
-calling_point = ''
+calling_point = 'callback_after_predictor_after_hvac_managers'
 
 # create building energy simulation obj
 sim = emspy.BcaEnv(ep_path, ep_idf_to_run, timesteps, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc)
+
 
 class Agent:
     def __init__(self):
@@ -47,13 +81,16 @@ class Agent:
     def act(self):
         pass
 
+
 # create RL agent obj
 agent = Agent()
 
-sim.set_calling_point_and_callback_function(calling_point, agent.observe, agent.act, True, 1, 1)
-
+sim.set_calling_point_and_callback_function(calling_point, None, None, True, 1, 1)
 sim.run_env(ep_weather_path)
 sim.reset_state()
+
+dfs = sim.get_df()
+
 
 
 
@@ -87,9 +124,6 @@ class Agent:
     def c_to_f(self, temp_c: float):
         return 1.8 * temp_c + 32
 
-
-
-# agent2 = Agent()
 
 
 

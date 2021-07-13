@@ -101,8 +101,8 @@ class EmsPy:
 
         # summary dicts and lists
         self.times_master_list = ['actual_date_time', 'actual_times', 'current_times', 'years', 'months', 'days',
-                                  'hours', 'minutes', 'time_x', 'timesteps', 'timesteps_total'
-                                  'callbacks_total']  # list of available time data user can call
+                                  'hours', 'minutes', 'time_x', 'timesteps_zone', 'timesteps_zone_num'
+                                  'callbacks']  # list of available time data user can call
         self.ems_names_master_list = self.times_master_list  # keeps track of all user-defined and default EMS var names
         self.ems_type_dict = {}  # keep track of EMS metric names and associated EMS type, quick lookup
         self.ems_num_dict = {}  # keep track of EMS variable categories and num of vars for each
@@ -258,7 +258,7 @@ class EmsPy:
         hour = datax.hour(state)
         minute = datax.minutes(state)
         timestep_zone = datax.zone_time_step(state)
-        timestep_zone_num = datax.zone_time_step_num(state)
+        timestep_zone_num = datax.zone_time_step_number(state)
 
         # set, append
         self.actual_date_times.append(datax.actual_date_time(state))
@@ -293,9 +293,9 @@ class EmsPy:
         getattr(self, 'data_' + ems_type + '_' + ems_name).append(data_val)
         self.ems_current_data_dict[ems_name] = data_val
 
-    def _update_ems_weather_vals(self, ems_metrics_list: list):
+    def _update_ems_and_weather_vals(self, ems_metrics_list: list):
         """Fetches and updates given sensor/actuator/weather values to data lists/dicts from running simulation."""
-
+        # TODO how to handle user-specified time updates
         # specific data exchange API function calls
         datax = self.api.exchange
         ems_datax_func = {'var': datax.get_variable_value,
@@ -313,10 +313,12 @@ class EmsPy:
                     self.static_vars_gathered = True
             else:  # rest: var, meter, actuator
                 # get data from E+ sim
-                data_i = ems_datax_func[ems_type](self.state, getattr(self, 'handle_' + ems_type + '_' + ems_name))
+                if ems_type != 'time':
+                    data_i = ems_datax_func[ems_type](self.state, getattr(self, 'handle_' + ems_type + '_' + ems_name))
 
             # store data in obj attributes
-            self._update_ems_attribute_data(ems_type, ems_name, data_i)
+            if ems_type != 'time':
+                self._update_ems_attribute_data(ems_type, ems_name, data_i)
 
     def _get_weather(self, weather_metrics: list, when: str,  hour: int, zone_ts: int) -> list:
         """
@@ -426,7 +428,7 @@ class EmsPy:
             if update_state and self.timestep_zone_current % update_state_freq == 0:
                 # update & append simulation data
                 self._update_time()  # note timing update is first
-                self._update_ems_weather_vals(self.ems_names_master_list)  # update sensor/actuator/weather/etc. vals
+                self._update_ems_and_weather_vals(self.ems_names_master_list)  # update sensor/actuator/weather/etc. vals
                 # run user-defined agent state update function
                 if observation_fxn is not None:
                     observation_fxn()
@@ -447,7 +449,7 @@ class EmsPy:
 
         if not self.calling_point_actuation_dict:
             print('WARNING: No calling points or callback function initiated. Will just run simulation!')
-            return  # TODO verify intentions - no callbacks, just run sim from python
+            return
 
         for calling_key in self.calling_point_actuation_dict:
             # check if user-specified calling point is correct and available
@@ -588,6 +590,8 @@ class BcaEnv(EmsPy):
         """See EmsPy.__init__() documentation."""
         # follow same init procedure as parent class EmsPy
         super().__init__(ep_path, ep_idf_to_run, timesteps, tc_vars, tc_intvars, tc_meters, tc_actuator, tc_weather)
+        self.ems_list_get_checked = False
+        self.ems_list_update_checked = False
 
     def set_calling_point_and_callback_function(self, calling_point: str,
                                                 observation_fxn,
@@ -617,10 +621,20 @@ class BcaEnv(EmsPy):
             print(f'WARNING: it is unusual to have your action update more frequent than your state update')
         if calling_point in self.calling_point_actuation_dict:
             raise Exception(
-                f'You have overrided the calling point {calling_point}. Please keep calling points unique.')
+                f'You have overwritten the calling point \'{calling_point}\'. Please keep calling points unique.')
         else:
             self.calling_point_actuation_dict[calling_point] = [observation_fxn, actuation_fxn, update_state,
                                                                 update_state_freq, update_act_freq]
+
+    def _check_ems_metric_input(self, ems_metric):
+        """Verifies user-input of EMS metric/type list is valid"""
+        if ems_metric in self.ems_num_dict:
+            raise Exception(f'EMS categories can only be called by themselves, please only call one at a '
+                            f'time.')
+        elif ems_metric not in self.ems_names_master_list and ems_metric not in self.times_master_list:
+            raise Exception(f'The EMS/timing metric \'{ems_metric}\' is not valid. Please see your EMS ToCs'
+                            f' or EmsPy.ems_master_list & EmsPy.times_master_list for available EMS & '
+                            f'timing metrics')
 
     def get_ems_data(self, ems_metric_list: list, time_rev_index: list = 0) -> list:
         """
@@ -642,9 +656,11 @@ class BcaEnv(EmsPy):
         """
         # handle single val inputs -> convert to list for rest of function
         single_val = False
+        single_metric = False
 
         if type(ems_metric_list) is not list:  # assuming single metric
             ems_metric_list = [ems_metric_list]
+            single_metric = False
         if type(time_rev_index) is not list:  # assuming single val
             time_rev_index = [time_rev_index]
             single_val = True
@@ -655,41 +671,35 @@ class BcaEnv(EmsPy):
         if ems_metric_list[0] in self.ems_num_dict and len(ems_metric_list) == 1:
             ems_metric_list = list(getattr(self, 'tc_' + ems_metric_list[0]).keys())  # reassign entire EMS type list
         else:
-            # verify valid input
+            # verify valid input ONCE
             for ems_metric in ems_metric_list:
-                # TODO only input error check once as this gets called every callback
-                if ems_metric in self.ems_num_dict:
-                    raise Exception(f'EMS categories can only be called by themselves, please only call one at a time.')
-                elif ems_metric not in self.ems_names_master_list and ems_metric not in self.times_master_list:
-                    raise Exception(f'The EMS/timing metric \'{ems_metric}\' is not valid. Please see your EMS ToCs or '
-                                    'EmsPy.ems_master_list & EmsPy.times_master_list for available EMS & timing '
-                                    'metrics')
-
+                if not self.ems_list_get_checked:
+                    self._check_ems_metric_input(ems_metric)  # input verification
+                    self.ems_list_get_checked = True
                 ems_type = self.get_ems_type(ems_metric)
-                # no time index specified, return full data list
-                if not time_rev_index:
+                if not time_rev_index:  # no time index specified, return full data list
                     return_data_list.append(getattr(self, 'data_' + ems_type + '_' + ems_metric))
                 else:
-                    if self.timestep_total_count > max(time_rev_index):
-                        return_data_indexed = []
-                        for time in time_rev_index:
-                            if ems_type is not 'time':
-                                ems_name = 'data_' + ems_type + '_' + ems_metric
-                            else:
-                                ems_name = ems_metric
+                    return_data_indexed = []
+                    for time in time_rev_index:
+                        if ems_type is not 'time':
+                            ems_name = 'data_' + ems_type + '_' + ems_metric
+                        else:
+                            ems_name = ems_metric
+                        try:
                             data_indexed = getattr(self, ems_name)[-1 - time]
                             if single_val:
                                 # so that a single-element nested list is not returned
-                                return_data_indexed = data_indexed  # no list of vals collected
+                                return_data_indexed = data_indexed
                             else:
                                 return_data_indexed.append(data_indexed)
-                        return_data_list.append(return_data_indexed)
-
+                        except IndexError:
+                            print('NOTE: Not enough simulation time elapsed to collect data at specified index.')
+                    # no unnecessarily nested lists
+                    if single_metric:
+                        return return_data_indexed
                     else:
-                        print("NOTE: Not enough simulation timesteps have elapsed to gather all time indexes"
-                              " - Empty list [] returned.")
-                        return []
-
+                        return_data_list.append(return_data_indexed)
         return return_data_list
 
     def get_weather_forecast(self, weather_metrics: list, when: str, hour: int, zone_ts: int):
@@ -706,40 +716,35 @@ class BcaEnv(EmsPy):
 
     def update_ems_data(self, ems_metric_list: list, return_data: bool) -> list:
         """
-        This takes desired EMS metric(s) (or type) to fetch and return the value, but does not update the attributes.
+        This takes desired EMS metric(s) (or type) to fetch and return the value, AND updates the attributes.
 
         This OPTIONAL function can be used to update/collect specific EMS at each timestep for a given calling point.
         One to all EMS metrics can be called, or just EMS category (var, intvar, meter, actuator, weather) and have the
-        data point update returned. This is ONLY NEEDED if the user wants to update specific EMS metrics at a unique
-        calling point separate from ALL EMS metrics during default state update.
+        data point updated & returned. This is ONLY NEEDED if the user wants to update specific EMS metrics at a unique
+        calling point separate from ALL EMS metrics if using default state update.
 
-        This also works for default timing data.
+        This also works for default timing data.  # TODO does not work currently with _update_ems_and_weather_val
 
         :param ems_metric_list: list of any available EMS metric(s) to be called, or ONLY ONE entire EMS category
         (var, intvar, meter, actuator, weather) in a list
         :param return_data: Whether or not to return an order list of the data points fetched
-        :return return_data_list: list of fetched data for each EMS metric at each time index specified or []
+        :return return_data_list: list of fetched data for each EMS metric at each time index specified or None
         """
 
-        full_ems_category = False
         # if only EMS category called
         if ems_metric_list[0] in self.ems_num_dict and len(ems_metric_list) == 1:
             ems_metric_list = list(getattr(self, 'tc_' + ems_metric_list[0]).keys())
-            full_ems_category = True
-        for ems_metric in ems_metric_list:
-            # TODO only input error check once as this gets called every callback
-            if not full_ems_category:
-                if ems_metric in self.ems_num_dict:
-                    raise Exception(f'EMS categories can only be called by themselves, please only call one at a time.')
-                elif ems_metric not in self.ems_names_master_list:
-                    raise Exception(f'The EMS metric {ems_metric} is not valid. Please see your ToCs or '
-                                    f'.ems_master_list for available metrics.')
+        else:
+            for ems_metric in ems_metric_list:
+                if not self.ems_list_update_checked:
+                    self._check_ems_metric_input(ems_metric)
+                    self.ems_list_update_checked = True
 
-        self._update_ems_weather_vals(ems_metric_list)
+        self._update_ems_and_weather_vals(ems_metric_list)
         if return_data:
             return self.get_ems_data(ems_metric_list)
         else:
-            return []
+            return None
 
     def get_df(self, df_names: list=[]):
         """
@@ -749,6 +754,8 @@ class BcaEnv(EmsPy):
         argument empty if you want to return ALL dataframes together (all default, then all custom)
         :return: dictionary of pandas dataframes, key is df name and value is df
         """
+        if not self.calling_point_actuation_dict:
+            raise Exception('There is no dataframe data to collect and return, please specific calling point(s) first.')
         if not self.simulation_ran:
             raise Exception('Simulation must be run first to fetch data.')
 
