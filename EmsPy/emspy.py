@@ -159,7 +159,6 @@ class EmsPy:
             ems_tc = getattr(self, 'tc_' + ems_type)
             if ems_tc is not None:
                 for ems_name in ems_tc:
-                    print(ems_name)
                     if ems_name in self.ems_names_master_list:
                         raise ValueError(f'ERROR: EMS metric user-defined names must be unique, '
                                          f'{ems_name}({self.ems_type_dict[ems_name]}) != {ems_name}({ems_type})')
@@ -182,6 +181,9 @@ class EmsPy:
                 if weather_metric not in EmsPy.available_weather_metrics:
                     raise Exception(f'ERROR: {weather_metric} weather metric is misspelled or not provided by'
                                     f' EnergyPlusAPI.')
+                if weather_name in self.ems_names_master_list:
+                    raise ValueError(f'ERROR: EMS metric user-defined names must be unique, '
+                                     f'{weather_name}({self.ems_type_dict[weather_name]}) != {weather_name}(weather)')
                 setattr(self, 'data_weather_' + weather_name, [])
                 self.ems_names_master_list.append(weather_name)
                 self.ems_type_dict[weather_name] = 'weather'
@@ -534,8 +536,8 @@ class EmsPy:
 
         if not self.ems_num_dict:
             return  # no ems dicts created, very unlikely
-        ems_dict = {'Datetime': self.time_x, 'Timestep': self.timesteps_zone_num}
         for ems_type in self.ems_num_dict:
+            ems_dict = {'Datetime': self.time_x, 'Timestep': self.timesteps_zone_num}  # index columns
             for ems_name in getattr(self, 'tc_' + ems_type):
                 ems_data_list_name = 'data_' + ems_type + '_' + ems_name
                 ems_dict[ems_name] = getattr(self, ems_data_list_name)
@@ -752,19 +754,20 @@ class BcaEnv(EmsPy):
         else:
             return None
 
-    def get_df(self, df_names: list=[]):
+    def get_df(self, df_names: list=[], to_csv_file: str=''):
         """
         Returns selected EMS-type default dataframe based on user's entered ToC(s) or custom DF, or ALL df's by default.
 
         :param df_names: default EMS metric type (var, intvar, meter, actuator, weather) OR custom df name. Leave
         argument empty if you want to return ALL dataframes together (all default, then all custom)
-        :return: dictionary of pandas dataframes, key is df name and value is df
+        :return: (concatination of) pandas dataframes in order of entry or [vars, intvars, meters, weather, actuator] by
+        default.
         """
         if not self.calling_point_actuation_dict:
             raise Exception('ERROR: There is no dataframe data to collect and return, please specific calling point(s)'
                             ' first.')
         if not self.simulation_ran:
-            raise Exception('ERROR: Simulation must be run first to fetch data.')
+            raise Exception('ERROR: Simulation must be ran first to fetch data.')
 
         dfs_fetched = False
         return_df = {}
@@ -774,7 +777,7 @@ class BcaEnv(EmsPy):
                 return_df[df] = (getattr(self, 'df_' + df))
                 if df in df_names:
                     df_names.remove(df)
-
+        # custom dfs
         for df in self.df_custom_dict:
             if df in df_names or not df_names:
                 return_df[df] = (getattr(self, df))

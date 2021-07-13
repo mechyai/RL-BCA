@@ -22,32 +22,19 @@ cvs_output_path = ''
 # meters_tc = {"attr_handle_name": "meter_name",...}
 # actuators_tc = {"attr_handle_name": ["component_type", "control_type", "actuator_key"],...}
 # weather_tc = {"attr_name": "weather_metric",...}
-vars_tc = {'zone0_oa_db_temp': ['Zone Outdoor Air Drybulb Temperature', 'Core_ZN ZN'],
-           'zone1_oa_db_temp': ['Zone Outdoor Air Drybulb Temperature', 'Perimeter_ZN_1 ZN'],
-           'zone2_oa_db_temp': ['Zone Outdoor Air Drybulb Temperature', 'Perimeter_ZN_2 ZN'],
-           'zone3_oa_db_temp': ['Zone Outdoor Air Drybulb Temperature', 'Perimeter_ZN_3 ZN'],
-           'zone4_oa_db_temp': ['Zone Outdoor Air Drybulb Temperature', 'Perimeter_ZN_4 ZN'],
-           'zone0_oa_wb_temp': ['Zone Outdoor Air Wetbulb Temperature', 'Core_ZN ZN'],
-           'zone1_oa_wb_temp': ['Zone Outdoor Air Wetbulb Temperature', 'Perimeter_ZN_1 ZN'],
-           'zone2_oa_wb_temp': ['Zone Outdoor Air Wetbulb Temperature', 'Perimeter_ZN_2 ZN'],
-           'zone3_oa_wb_temp': ['Zone Outdoor Air Wetbulb Temperature', 'Perimeter_ZN_3 ZN'],
-           'zone4_oa_wb_temp': ['Zone Outdoor Air Wetbulb Temperature', 'Perimeter_ZN_4 ZN'],
-           'zone0_mean_temp': ['Zone Mean Air Temperature', 'Core_ZN ZN'],
-           'zone1_mean_temp': ['Zone Mean Air Temperature', 'Perimeter_ZN_1 ZN'],
-           'zone2_mean_temp': ['Zone Mean Air Temperature', 'Perimeter_ZN_2 ZN'],
-           'zone3_mean_temp': ['Zone Mean Air Temperature', 'Perimeter_ZN_3 ZN'],
-           'zone4_mean_temp': ['Zone Mean Air Temperature', 'Perimeter_ZN_4 ZN'],
-           'zone0_temp': ['Zone Air Temperature', 'Core_ZN ZN'],
-           'zone1_temp': ['Zone Air Temperature', 'Perimeter_ZN_1 ZN'],
-           'zone2_temp': ['Zone Air Temperature', 'Perimeter_ZN_2 ZN'],
-           'zone3_temp': ['Zone Air Temperature', 'Perimeter_ZN_3 ZN'],
-           'zone4_temp': ['Zone Air Temperature', 'Perimeter_ZN_4 ZN'],
-           'zone0_rh': ['Zone Air Relative Humidity', 'Core_ZN ZN'],
-           'zone1_rh': ['Zone Air Relative Humidity', 'Perimeter_ZN_1 ZN'],
-           'zone2_rh': ['Zone Air Relative Humidity', 'Perimeter_ZN_2 ZN'],
-           'zone3_rh': ['Zone Air Relative Humidity', 'Perimeter_ZN_3 ZN'],
-           'zone4_rh': ['Zone Air Relative Humidity', 'Perimeter_ZN_4 ZN'],
-           }
+vars_tc = {
+    'oa_wb_temp': ['Zone Outdoor Air Wetbulb Temperature', 'Core_ZN ZN'],
+    'zone0_temp': ['Zone Air Temperature', 'Core_ZN ZN'],
+    'zone1_temp': ['Zone Air Temperature', 'Perimeter_ZN_1 ZN'],
+    'zone2_temp': ['Zone Air Temperature', 'Perimeter_ZN_2 ZN'],
+    'zone3_temp': ['Zone Air Temperature', 'Perimeter_ZN_3 ZN'],
+    'zone4_temp': ['Zone Air Temperature', 'Perimeter_ZN_4 ZN'],
+    'zone0_rh': ['Zone Air Relative Humidity', 'Core_ZN ZN'],
+    'zone1_rh': ['Zone Air Relative Humidity', 'Perimeter_ZN_1 ZN'],
+    'zone2_rh': ['Zone Air Relative Humidity', 'Perimeter_ZN_2 ZN'],
+    'zone3_rh': ['Zone Air Relative Humidity', 'Perimeter_ZN_3 ZN'],
+    'zone4_rh': ['Zone Air Relative Humidity', 'Perimeter_ZN_4 ZN'],
+}
 int_vars_tc = None
 meters_tc = None
 actuators_tc = {
@@ -62,7 +49,11 @@ actuators_tc = {
     'zone3_heat_sp': ['Zone Temperature Control', 'Heating Setpoint', 'Perimeter_ZN_3 ZN'],
     'zone4_heat_sp': ['Zone Temperature Control', 'Heating Setpoint', 'Perimeter_ZN_4 ZN'],
 }
-weather_tc = None
+weather_tc = {
+    'oa_db_temp': 'outdoor_dry_bulb',
+    'oa_rh': 'outdoor_relative_humidity'
+}
+
 timesteps = 30
 # create calling point with actuation function
 calling_point = 'callback_after_predictor_after_hvac_managers'
