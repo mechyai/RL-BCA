@@ -1,3 +1,9 @@
+NEW:
+CODE:
+- figure out timestep total cnt
+README:
+- get rid of timestep warnings in README since handled
+
 - figure out best standard calling point(s)
 - RL simple wrapper
 - how to deal/allow multiple state instances and multiple API instances / simulations

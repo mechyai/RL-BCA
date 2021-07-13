@@ -19,29 +19,13 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="added observation fxn alongside actuation function for making custom callbacks - fits MDP RL framework">
-      <change afterPath="$PROJECT_DIR$/EmsPy/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ModelRunTests/small_office_tests/RefBldgSmallOfficeNew2004_v1.3_5.0_6A_USA_MN_MINNEAPOLIS.idf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ModelRunTests/small_office_tests/emspy_testscript1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/ceube.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/ceube.xml" afterDir="false" />
+    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="create all_df for get df method, fixed timstep total count">
+      <change afterPath="$PROJECT_DIR$/EmsPy/model_plotter.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OpenStudio_Models/idf_files/5office_small_ems.idf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmsPy/TODO.txt" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/TODO.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EmsPy/emspy.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/emspy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmsPy/emspy_MDP_testscript.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/emspy_MDP_testscript.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmsPy/emspy_testscript.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/emspy_testscript.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmsPy/out/eplusout.audit" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.audit" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmsPy/out/eplusout.bnd" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.bnd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmsPy/out/eplusout.eio" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.eio" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmsPy/out/eplusout.end" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.end" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmsPy/out/eplusout.err" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.err" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmsPy/out/eplusout.eso" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.eso" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmsPy/out/eplusout.mdd" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.mdd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmsPy/out/eplusout.mtr" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.mtr" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmsPy/out/eplusout.rdd" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.rdd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmsPy/out/eplusout.sql" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplusout.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmsPy/out/eplustbl.htm" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/eplustbl.htm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmsPy/out/sqlite.err" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/out/sqlite.err" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmsPy/test_CJE_act.idf" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/test_CJE_act.idf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmsPy/model_debugger.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/model_debugger.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,36 +77,39 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="TEXT&#10;Python" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/EmsPy" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/ModelRunTests" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="A:\Files\PycharmProjects\RL-BCA\ModelRunTests" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\EmsPy" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\ModelRunTests\small_office_tests" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\EmsPy\ModelRunTests" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\PyEMS" />
-      <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\api-example-copies\PyEMS_CJE" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="A:\Files\PycharmProjects\RL-BCA\ModelRunTests\small_office_tests" />
+      <recent name="A:\Files\PycharmProjects\RL-BCA\ModelRunTests" />
+      <recent name="A:\Files\PycharmProjects\RL-BCA\EmsPy\ModelRunTests" />
       <recent name="A:\Files\PycharmProjects\RL-BCA" />
-      <recent name="A:\Files\PycharmProjects\RL-BCA\EmsPy" />
-      <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\api-example-copies\PyEMS_CJE" />
-      <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples\CJE-examples" />
+      <recent name="A:\Files\PycharmProjects\RL-BCA\EmsPy\Testscripts" />
+      <recent name="A:\Files\PycharmProjects\RL-BCA\ModelRunTests\small_office_tests" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.emspy_MDP_testscript">
+  <component name="RunManager" selected="Python.model_plotter">
     <configuration name="emspy_MDP_testscript" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/EmsPy" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/EmsPy/emspy_MDP_testscript.py" />
+      <option name="SCRIPT_NAME" value="A:\Files\PycharmProjects\RL-BCA\EmsPy\Testscripts\emspy_MDP_testscript.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -131,7 +118,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="emspy_testscript" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="model_debugger" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -143,7 +130,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/EmsPy/emspy_testscript.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/EmsPy/model_debugger.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -152,7 +139,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="emspy_testscript1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="model_plotter" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -160,13 +147,13 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/ModelRunTests/small_office_tests" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/EmsPy" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ModelRunTests/small_office_tests/emspy_testscript1.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/EmsPy/model_plotter.py" />
       <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
@@ -216,19 +203,19 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.emspy_testscript1" />
-      <item itemvalue="Python.emspy_testscript" />
+      <item itemvalue="Python.emspy_MDP_testscript" />
       <item itemvalue="Python.scratch" />
       <item itemvalue="Python.scratch_1" />
-      <item itemvalue="Python.emspy_MDP_testscript" />
+      <item itemvalue="Python.model_debugger" />
+      <item itemvalue="Python.model_plotter" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.emspy_MDP_testscript" />
-        <item itemvalue="Python.scratch_1" />
-        <item itemvalue="Python.scratch" />
-        <item itemvalue="Python.emspy_testscript" />
-        <item itemvalue="Python.emspy_testscript1" />
+        <item itemvalue="Python.model_plotter" />
+        <item itemvalue="Python.model_debugger" />
+        <item itemvalue="Python.model_debugger" />
+        <item itemvalue="Python.model_debugger" />
+        <item itemvalue="Python.model_debugger" />
       </list>
     </recent_temporary>
   </component>
@@ -243,111 +230,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1620762811392</updated>
-    </task>
-    <task id="LOCAL-00001" summary="Added Python API example files">
-      <created>1620763997914</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1620763997914</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Added Python API example files">
-      <created>1620764238171</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1620764238171</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Added examples files, folder, and notebook folder">
-      <created>1620765438722</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1620765438722</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Added examples files, folder, and notebook folder">
-      <created>1620766017871</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1620766017871</updated>
-    </task>
-    <task id="LOCAL-00005" summary="added notebooks and readme">
-      <created>1620766102278</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1620766102278</updated>
-    </task>
-    <task id="LOCAL-00006" summary="updated some python ems examples and began emspy library">
-      <created>1621375032103</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1621375032103</updated>
-    </task>
-    <task id="LOCAL-00007" summary="complete class wrapper strategy">
-      <created>1621384270820</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1621384270820</updated>
-    </task>
-    <task id="LOCAL-00008" summary="progress underway with EMS RL custom class/library">
-      <created>1621534384114</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1621534384114</updated>
-    </task>
-    <task id="LOCAL-00009" summary="added more _functions to EMS core class">
-      <created>1621559919624</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1621559919625</updated>
-    </task>
-    <task id="LOCAL-00010" summary="added weather calling functionality">
-      <created>1621606950804</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1621606950804</updated>
-    </task>
-    <task id="LOCAL-00011" summary="about to finish weather, changing to getattr instead to handle today/tomorrow">
-      <created>1621621808901</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1621621808901</updated>
-    </task>
-    <task id="LOCAL-00012" summary="about to finish weather, changing to getattr instead to handle today/tomorrow">
-      <created>1621621820462</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1621621820462</updated>
-    </task>
-    <task id="LOCAL-00013" summary="weather functions v1 finalized">
-      <created>1621622561819</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1621622561819</updated>
-    </task>
-    <task id="LOCAL-00014" summary="emspy library working on tests of weather, variables, and actuators (actuators output 0 still), but have not tested meters or internal vars.">
-      <created>1621632280971</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1621632280971</updated>
-    </task>
-    <task id="LOCAL-00015" summary="update to meta-class">
-      <created>1621708589307</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1621708589307</updated>
     </task>
     <task id="LOCAL-00016" summary="update, might fork soon to handle multi state instances or callbacks">
       <created>1621818401627</created>
@@ -587,7 +469,112 @@
       <option name="project" value="LOCAL" />
       <updated>1624571663074</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="added observation fxn alongside actuation function for making custom callbacks - fits MDP RL framework">
+      <created>1625106299269</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1625106299271</updated>
+    </task>
+    <task id="LOCAL-00051" summary="folder rearagnement">
+      <created>1625106402271</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1625106402271</updated>
+    </task>
+    <task id="LOCAL-00052" summary="folder rearagnement">
+      <created>1625106417782</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1625106417782</updated>
+    </task>
+    <task id="LOCAL-00053" summary="removed list of single ems data points returned">
+      <created>1625254407756</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1625254407757</updated>
+    </task>
+    <task id="LOCAL-00054" summary="added get_df for BcaEnv, fixed some dict tracking">
+      <created>1625615629235</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1625615629236</updated>
+    </task>
+    <task id="LOCAL-00055" summary="starting base script">
+      <created>1625615651251</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1625615651251</updated>
+    </task>
+    <task id="LOCAL-00056" summary="changed get_df to return dictionary">
+      <created>1625616911770</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1625616911770</updated>
+    </task>
+    <task id="LOCAL-00057" summary="updated output messages">
+      <created>1625623149220</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1625623149220</updated>
+    </task>
+    <task id="LOCAL-00058" summary="fixing timestep method finally, added attribute update helper function">
+      <created>1626113271031</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1626113271031</updated>
+    </task>
+    <task id="LOCAL-00059" summary="minor bug fixed, model debugger running, changed get_ems_data and other related">
+      <created>1626143084009</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1626143084009</updated>
+    </task>
+    <task id="LOCAL-00060" summary="added ems input redundancy error handling">
+      <created>1626184554868</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1626184554868</updated>
+    </task>
+    <task id="LOCAL-00061" summary="added clarification to user output statements">
+      <created>1626185543437</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1626185543437</updated>
+    </task>
+    <task id="LOCAL-00062" summary="fixed default pandas df creation">
+      <created>1626188793564</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1626188793564</updated>
+    </task>
+    <task id="LOCAL-00063" summary="fixed single val weather update">
+      <created>1626198873824</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1626198873824</updated>
+    </task>
+    <task id="LOCAL-00064" summary="create all_df for get df method, fixed timstep total count">
+      <created>1626219018882</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1626219018882</updated>
+    </task>
+    <option name="localTasksCounter" value="65" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -603,19 +590,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="updated df creation and updating - wop" />
-    <MESSAGE value="compressed update time &amp; data into just update state to assist dataframe updates" />
-    <MESSAGE value="redesigned dataframe creation, put at end, packed every input into __init__, gave callback state &amp; act update freq" />
-    <MESSAGE value="debug in process, updated testscript" />
-    <MESSAGE value="debugging, attribute var name change - reorder," />
-    <MESSAGE value="debugging, attribute var name change - reorder,&#10;custom df completed and debugged!" />
-    <MESSAGE value="test script updated, working" />
-    <MESSAGE value="update to readme" />
-    <MESSAGE value="rearranged some attributes, added to BcaEnv, and added 'get state' funcitonality" />
-    <MESSAGE value="fixed get ems data function to handle all user defined errors" />
-    <MESSAGE value="removed cp dict from init and added method" />
-    <MESSAGE value="changing ToC and actuation to dicts now" />
-    <MESSAGE value="updated weather functions and Readme, now working on lists -&gt; dicts" />
     <MESSAGE value="changed attribute lists to dicts for entire class" />
     <MESSAGE value="up to date readme, changed how weather and ems data updates, added BcaEnv methods, compressed redundancy, fixed timesteps" />
     <MESSAGE value="smalling naming update" />
@@ -628,7 +602,20 @@
     <MESSAGE value="updated documentation, actuation function inputs, made major changes to get ems data" />
     <MESSAGE value="updated error handling to custom dataframes, updated available callback list and function, added timestep data list" />
     <MESSAGE value="added observation fxn alongside actuation function for making custom callbacks - fits MDP RL framework" />
-    <option name="LAST_COMMIT_MESSAGE" value="added observation fxn alongside actuation function for making custom callbacks - fits MDP RL framework" />
+    <MESSAGE value="folder rearagnement" />
+    <MESSAGE value="removed list of single ems data points returned" />
+    <MESSAGE value="added get_df for BcaEnv, fixed some dict tracking" />
+    <MESSAGE value="starting base script" />
+    <MESSAGE value="changed get_df to return dictionary" />
+    <MESSAGE value="updated output messages" />
+    <MESSAGE value="fixing timestep method finally, added attribute update helper function" />
+    <MESSAGE value="minor bug fixed, model debugger running, changed get_ems_data and other related" />
+    <MESSAGE value="added ems input redundancy error handling" />
+    <MESSAGE value="added clarification to user output statements" />
+    <MESSAGE value="fixed default pandas df creation" />
+    <MESSAGE value="fixed single val weather update" />
+    <MESSAGE value="create all_df for get df method, fixed timstep total count" />
+    <option name="LAST_COMMIT_MESSAGE" value="create all_df for get df method, fixed timstep total count" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
