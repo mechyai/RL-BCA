@@ -226,18 +226,18 @@ class EmsPy:
         datax = self.api.exchange
         try:
             handle = ""
-            if ems_type is 'var':
+            if ems_type == 'var':
                 handle = datax.get_variable_handle(state,
                                                    ems_obj_details[0],  # var name
                                                    ems_obj_details[1])  # var key
-            elif ems_type is 'intvar':
+            elif ems_type == 'intvar':
                 handle = datax.get_internal_variable_handle(state,
                                                             ems_obj_details[0],  # int var name
                                                             ems_obj_details[1])  # int var key
-            elif ems_type is 'meter':
+            elif ems_type == 'meter':
                 handle = datax.get_meter_handle(state,
                                                 ems_obj_details)  # meter name
-            elif ems_type is "actuator":
+            elif ems_type == 'actuator':
                 handle = datax.get_actuator_handle(state,
                                                    ems_obj_details[0],  # component type
                                                    ems_obj_details[1],  # control type
@@ -294,8 +294,8 @@ class EmsPy:
         self.time_x.append(dt)
         self.ems_current_data_dict['Datetime'] = dt
 
-    def _update_ems_attribute_data(self, ems_type: str, ems_name: str, data_val: float):
-        """ Helper function to update EMS attributes with current values."""
+    def _update_ems_attributes(self, ems_type: str, ems_name: str, data_val: float):
+        """Helper function to update EMS attributes with current values."""
 
         getattr(self, 'data_' + ems_type + '_' + ems_name).append(data_val)
         self.ems_current_data_dict[ems_name] = data_val
@@ -325,7 +325,7 @@ class EmsPy:
 
             # store data in obj attributes
             if ems_type != 'time':
-                self._update_ems_attribute_data(ems_type, ems_name, data_i)
+                self._update_ems_attributes(ems_type, ems_name, data_i)
 
     def _get_weather(self, weather_metrics: list, when: str,  hour: int, zone_ts: int) -> list:
         """
@@ -346,6 +346,9 @@ class EmsPy:
         if zone_ts > self.timestep_per_hour:
             raise Exception(f'ERROR: The desired timestep, {zone_ts} cannot exceed the subhourly simulation timestep set'
                             f' for the model, {self.timestep_per_hour}.')
+        single_metric = False
+        if len(weather_metrics) is 1:
+            single_metric = True
 
         # fetch weather
         weather_data = []
@@ -362,7 +365,10 @@ class EmsPy:
                                     (self.state, hour, zone_ts))
             elif weather_metric is 'sun_is_up':
                 weather_data.append(self.api.exchange.sun_is_up(self.state))
-        return weather_data
+        if single_metric:
+            return weather_data[0]
+        else:
+            return weather_data
 
     def _actuate(self, actuator_handle: str, actuator_val):
         """ Sets value of a specific actuator in running simulator, or relinquishes control back to EnergyPlus."""
@@ -391,7 +397,7 @@ class EmsPy:
                 # actuate and update data tracking
                 actuator_handle = getattr(self, 'handle_actuator_' + actuator_name)
                 self._actuate(actuator_handle, actuator_setpoint)
-                self._update_ems_attribute_data('actuator', actuator_name, actuator_setpoint)
+                self._update_ems_attributes('actuator', actuator_name, actuator_setpoint)
 
         else:
             print(f'*NOTE: No actuators/values defined for actuation function at calling point {calling_point},'
