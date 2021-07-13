@@ -89,7 +89,7 @@ agent = emspy.BcaEnv(ep_path: str, ep_idf_to_run: str, timesteps: int, tc_var: d
     - Internal Variables: `'user_intvar_name': ['variable_type', 'variable_key']` elements of `tc_intvars` dict
     - Meters: `'user_meter_name': 'meter_name'` element of `tc_meter` dict
     - Actuators: `'user_actuator_name': ['component_type', 'control_type', 'actuator_key']` elements of `tc_actuator` dict
-    - Weathers: `'user_weather_name': ['weather_name']` elements of `tc_weather` dict
+    - Weathers: `'user_weather_name': 'weather_name'` elements of `tc_weather` dict
  
 Once this has been completed the meta-class, ***EmsPy***, has all it needs to build out your basic class - implementing various data collection/organization and dataframes attributes, as well as finding the EMS handles from the ToCs, etc. It may be helpful to run this 'agent/environment' object initialization and then review its contents to see all that the meta-class has created. 
 
