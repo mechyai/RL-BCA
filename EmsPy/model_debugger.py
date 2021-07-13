@@ -12,9 +12,7 @@ os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 ep_path = 'A:/Programs/EnergyPlusV9-5-0/'
 ep_idf_to_run = 'A:/Files/PycharmProjects/RL-BCA/OpenStudio_Models/idf_files/5office_small_ems.idf'
 ep_weather_path = 'A:/Files/PycharmProjects/RL-BCA/Resource_Files/reference_weather/2A_USA_TX_HOUSTON_TMY2.epw'
-# ep_os_to_run = ''
-
-cvs_output_path = ''
+cvs_output_path = 'default_dfs'
 
 # --- create EMS Table of Contents (TC) for sensors/actuators ---
 # vars_tc = {"attr_handle_name": ["variable_type", "variable_key"],...}
@@ -60,27 +58,14 @@ calling_point = 'callback_after_predictor_after_hvac_managers'
 
 # create building energy simulation obj
 sim = emspy.BcaEnv(ep_path, ep_idf_to_run, timesteps, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc)
-
-
-class Agent:
-    def __init__(self):
-        pass
-
-    def observe(self):
-        pass
-
-    def act(self):
-        pass
-
-
 # create RL agent obj
-agent = Agent()
+# agent = Agent()
 
 sim.set_calling_point_and_callback_function(calling_point, None, None, True, 1, 1)
 sim.run_env(ep_weather_path)
 sim.reset_state()
 
-dfs = sim.get_df()
+dfs = sim.get_df(to_csv_file=cvs_output_path)
 
 
 

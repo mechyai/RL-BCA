@@ -126,18 +126,17 @@ class EmsPy:
         self.hours = []
         self.minutes = []
         self.time_x = []
-        # timestep, callback data
+        # timestep
         self.timesteps_zone = []
         self.timesteps_zone_num = []
-        self.callbacks = []
-        self.callback_count = 0
         self.timestep_zone_current = 0
         self.timestep_zone_num_current = 0  # fluctuate from 1 to # of timesteps/hour
         self.timestep_per_hour = self._init_timestep(timesteps)  # sim timesteps per hour
         self.timestep_period = 60 // timesteps  # minute duration of each timestep of simulation
-
-        # callback and simulation iterations, etc.
         self.timestep_total_count = 0  # cnt for entire simulation # TODO not updated, how to enforce only once per ts
+        # callback data
+        self.callbacks = []
+        self.callback_count = 0
 
         self.simulation_ran = False
 
@@ -276,10 +275,12 @@ class EmsPy:
         self.days.append(day)
         self.hours.append(hour)
         self.minutes.append(minute)
+        # timesteps
         self.timesteps_zone.append(timestep_zone)
         self.timestep_zone_current = timestep_zone
         self.timesteps_zone_num.append(timestep_zone_num)
         self.timestep_zone_num_current = timestep_zone_num
+
         # manage time  tracking
         timedelta = datetime.timedelta()
         if hour >= 24.0:
@@ -292,7 +293,13 @@ class EmsPy:
         dt = datetime.datetime(year=year, month=month, day=day, hour=hour, minute=minute)
         dt += timedelta
         self.time_x.append(dt)
-        self.ems_current_data_dict['Datetime'] = dt
+        self.ems_current_data_dict['Datetime'] = dt  # TODO not used
+
+        # timesteps total
+        if len(self.time_x) < 2 or \
+                self.time_x[-1] != self.time_x[-2] or self.timesteps_zone_num[-1] != self.timesteps_zone_num[-2]:
+            # verify new timestep if current & previous timestep num and datetime are different
+            self.timestep_total_count += 1
 
     def _update_ems_attributes(self, ems_type: str, ems_name: str, data_val: float):
         """Helper function to update EMS attributes with current values."""
@@ -447,7 +454,7 @@ class EmsPy:
                 if observation_fxn is not None:
                     observation_fxn()
 
-            if actuation_fxn is not None and self.timestep_num_zone_current % update_act_freq == 0:
+            if actuation_fxn is not None and self.timestep_zone_num_current % update_act_freq == 0:
                 self._actuate_from_list(calling_point, actuation_fxn())
 
             # update custom dataframes
@@ -485,7 +492,7 @@ class EmsPy:
 
     def init_custom_dataframe_dict(self, df_name: str, calling_point: str, update_freq: int, ems_metrics: list):
         """
-        Used to initialize EMS metric pandas dataframe attributes.
+        Used by user to initialize custom EMS metric dataframes attributes at specific calling points & frequencies.
 
         :param df_name: user-defined df variable name
         :param calling_point: the calling point at which the df should be updated
@@ -497,7 +504,7 @@ class EmsPy:
             raise Exception(f'ERROR: Invalid Calling Point name \'{calling_point}\'. Please see your declared available'
                             f' calling points {self.calling_point_actuation_dict.keys()}.')
         # metric names must align with the EMS metric names assigned in var, intvar, meters, actuators, weather ToC's
-        ems_custom_dict = {'Datetime': []}
+        ems_custom_dict = {'Datetime': [], 'Timestep': []}
         for metric in ems_metrics:
             ems_type = ''
             if metric not in self.ems_names_master_list:
@@ -516,11 +523,13 @@ class EmsPy:
         # iterate through and update all default and user-defined dataframes
         for df_name in self.df_custom_dict:
             ems_dict, cp, update_freq = self.df_custom_dict[df_name]  # unpack value
-            if cp is calling_point and self.timestep_total_count % update_freq == 0:
+            if cp is calling_point and self.timestep_total_count % update_freq == 0:  # TODO verify working
                 for ems_metric in ems_dict:
                     # get most recent data point
                     if ems_metric is 'Datetime':
                         data_i = self.time_x[-1]
+                    elif ems_metric is 'Timestep':
+                        data_i = self.timesteps_zone_num[-1]
                     else:
                         ems_type = self.get_ems_type(ems_metric)
                         data_list_name = 'data_' + ems_type + '_' + ems_metric
@@ -586,6 +595,7 @@ class EmsPy:
         self.api.runtime.run_energyplus(self.state, ['-w', weather_file, '-d', 'out', self.idf_file])   # cmd line args
         self.simulation_ran = True
         # create default and custom ems pandas df's after simulation complete
+        print('* * * Simulation Done * * *')
         self._create_default_dataframes()
         self._create_custom_dataframes()
 
@@ -775,26 +785,39 @@ class BcaEnv(EmsPy):
         if not self.simulation_ran:
             raise Exception('ERROR: Simulation must be ran first to fetch data.')
 
-        dfs_fetched = False
+        all_df = pd.DataFrame()  # merge all into 1 df
         return_df = {}
-        # default dfs
-        for df in self.ems_num_dict:
-            if df in df_names or not df_names:
-                return_df[df] = (getattr(self, 'df_' + df))
-                if df in df_names:
-                    df_names.remove(df)
+        for df_name in self.ems_num_dict:  # iterate thru available EMS types
+            if df_name in df_names or not df_names:  # specific or ALL dfs
+                df = (getattr(self, 'df_' + df_name))
+                return_df[df_name] = df
+                # create complete DF of all default vars with only 1 set of time/index columns
+                if all_df.empty:
+                    all_df = df.copy(deep=True)
+                else:
+                    all_df = pd.merge(all_df, df, on=['Datetime', 'Timestep'])
+                if df_name in df_names:
+                    df_names.remove(df_name)
         # custom dfs
-        for df in self.df_custom_dict:
-            if df in df_names or not df_names:
-                return_df[df] = (getattr(self, df))
-                if df in df_names:
-                    df_names.remove(df)
+        for df_name in self.df_custom_dict:
+            if df_name in df_names or not df_names:
+                df = (getattr(self, df_name))
+                return_df[df_name] = df
+                if all_df.empty:
+                    all_df = df.copy(deep=True)
+                else:
+                    all_df = pd.concat([all_df, df], axis=1)
+                if df_name in df_names:
+                    df_names.remove(df_name)
 
         # leftover dfs not fetched and returned
         if df_names:
             raise ValueError(f'ERROR: Either dataframe custom name or default type: {df_names} is not valid or was not'
                              ' collected during simulation.')
         else:
+            if to_csv_file:
+                all_df.to_csv(to_csv_file)
+            return_df['all'] = all_df
             return return_df
 
     def run_env(self, weather_file: str):
