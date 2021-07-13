@@ -103,7 +103,7 @@ class EmsPy:
         self.times_master_list = ['actual_date_time', 'actual_times', 'current_times', 'years', 'months', 'days',
                                   'hours', 'minutes', 'time_x', 'timesteps_zone', 'timesteps_zone_num'
                                   'callbacks']  # list of available time data user can call
-        self.ems_names_master_list = self.times_master_list  # keeps track of all user-defined and default EMS var names
+        self.ems_names_master_list = self.times_master_list[:]  # keeps track of all user & default EMS var names
         self.ems_type_dict = {}  # keep track of EMS metric names and associated EMS type, quick lookup
         self.ems_num_dict = {}  # keep track of EMS variable categories and num of vars for each
         self.ems_current_data_dict = {}  # collection of all ems metrics (keys) and their current values (val)
@@ -132,7 +132,7 @@ class EmsPy:
         self.callbacks = []
         self.callback_count = 0
         self.timestep_zone_current = 0
-        self.timestep_zone_num_current = 1  # fluctuate from 1 to # of timesteps/hour
+        self.timestep_zone_num_current = 0  # fluctuate from 1 to # of timesteps/hour
         self.timestep_per_hour = self._init_timestep(timesteps)  # sim timesteps per hour
         self.timestep_period = 60 // timesteps  # minute duration of each timestep of simulation
 
@@ -159,13 +159,15 @@ class EmsPy:
             ems_tc = getattr(self, 'tc_' + ems_type)
             if ems_tc is not None:
                 for ems_name in ems_tc:
+                    if ems_name in self.ems_names_master_list:
+                        raise ValueError(f'ERROR: EMS metric user-defined names must be unique, '
+                                         f'{ems_name}({self.ems_type_dict[ems_name]}) != {ems_name}({ems_type})')
                     setattr(self, 'handle_' + ems_type + '_' + ems_name, None)
                     setattr(self, 'data_' + ems_type + '_' + ems_name, [])
                     self.ems_type_dict[ems_name] = ems_type
                     self.ems_names_master_list.append(ems_name)  # all ems metrics collected
                 self.ems_num_dict[ems_type] = len(ems_tc)  # num of metrics per ems category
                 self.df_count += 1
-
         # handle available timing data dict type
         for t in self.times_master_list:
             self.ems_type_dict[t] = 'time'
@@ -207,6 +209,7 @@ class EmsPy:
                 for name in ems_tc:
                     handle_inputs = ems_tc[name]
                     setattr(self, 'handle_' + ems_type + '_' + name, self._get_handle(ems_type, handle_inputs))
+        print('NOTE: Got all EMS handles.')
 
     def _get_handle(self, ems_type: str, ems_obj_details):
         """
@@ -425,15 +428,16 @@ class EmsPy:
             if self.api.exchange.warmup_flag(state_arg):
                 return
 
-            if update_state and self.timestep_zone_current % update_state_freq == 0:
+            self.timestep_zone_num_current = self.api.exchange.zone_time_step_number(state_arg)  # for update entries
+            if update_state and self.timestep_zone_num_current % update_state_freq == 0:
                 # update & append simulation data
                 self._update_time()  # note timing update is first
-                self._update_ems_and_weather_vals(self.ems_names_master_list)  # update sensor/actuator/weather/etc. vals
+                self._update_ems_and_weather_vals(self.ems_names_master_list)  # update sensor/actuator/weather/ vals
                 # run user-defined agent state update function
                 if observation_fxn is not None:
                     observation_fxn()
 
-            if actuation_fxn is not None and self.timestep_zone_current % update_act_freq == 0:
+            if actuation_fxn is not None and self.timestep_num_zone_current % update_act_freq == 0:
                 self._actuate_from_list(calling_point, actuation_fxn())
 
             # update custom dataframes
@@ -528,7 +532,7 @@ class EmsPy:
 
         if not self.ems_num_dict:
             return  # no ems dicts created, very unlikely
-        ems_dict = {'Datetime': self.time_x}
+        ems_dict = {'Datetime': self.time_x, 'Timestep': self.timesteps_zone_num}
         for ems_type in self.ems_num_dict:
             for ems_name in getattr(self, 'tc_' + ems_type):
                 ems_data_list_name = 'data_' + ems_type + '_' + ems_name
