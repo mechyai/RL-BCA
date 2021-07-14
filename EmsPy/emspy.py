@@ -163,6 +163,8 @@ class EmsPy:
                                          f'{ems_name}({self.ems_type_dict[ems_name]}) != {ems_name}({ems_type})')
                     setattr(self, 'handle_' + ems_type + '_' + ems_name, None)
                     setattr(self, 'data_' + ems_type + '_' + ems_name, [])
+                    if ems_type == 'actuator':
+                        setattr(self, 'setpoint_' + '_' + ems_name, [])  # what user/control sets
                     self.ems_type_dict[ems_name] = ems_type
                     self.ems_names_master_list.append(ems_name)  # all ems metrics collected
                 self.ems_num_dict[ems_type] = len(ems_tc)  # num of metrics per ems category
@@ -192,12 +194,12 @@ class EmsPy:
     def _init_timestep(self, timestep: int) -> int:
         """This function is used to verify timestep input correctness & report any details/changes."""
 
-        # TODO pull from idf
+        # TODO pull from idf api.exchange.num_time_steps_in_hour
         available_timesteps = [1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60]
 
         if timestep not in available_timesteps:
             raise ValueError(f'ERROR: Your choice of number of timesteps per hour, {timestep}, must be evenly divisible'
-                             f' into 60 mins: {available_timesteps}')
+                             f' into 60 minutes: {available_timesteps}')
         else:
             print(f'*NOTE: Your simulation timestep period is {60 // timestep} minutes')
             return timestep
@@ -404,8 +406,7 @@ class EmsPy:
                 # actuate and update data tracking
                 actuator_handle = getattr(self, 'handle_actuator_' + actuator_name)
                 self._actuate(actuator_handle, actuator_setpoint)
-                self._update_ems_attributes('actuator', actuator_name, actuator_setpoint)
-
+                getattr(self, 'setpoint_' + '_' + actuator_name).append(actuator_setpoint)
         else:
             print(f'*NOTE: No actuators/values defined for actuation function at calling point {calling_point},'
                   f' timestep {self.timestep_zone_num_current}')
@@ -506,7 +507,6 @@ class EmsPy:
         # metric names must align with the EMS metric names assigned in var, intvar, meters, actuators, weather ToC's
         ems_custom_dict = {'Datetime': [], 'Timestep': []}
         for metric in ems_metrics:
-            ems_type = ''
             if metric not in self.ems_names_master_list:
                 raise Exception('ERROR: Incorrect EMS metric names were entered for custom dataframes.')
             # create dict to collect data for pandas dataframe
@@ -816,7 +816,7 @@ class BcaEnv(EmsPy):
                              ' collected during simulation.')
         else:
             if to_csv_file:
-                all_df.to_csv(to_csv_file)
+                all_df.to_csv(to_csv_file, index=False)
             return_df['all'] = all_df
             return return_df
 
