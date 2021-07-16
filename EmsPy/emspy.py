@@ -450,20 +450,35 @@ class EmsPy:
             if self.api.exchange.warmup_flag(state_arg):
                 return
 
-            self.timestep_zone_num_current = self.api.exchange.zone_time_step_number(state_arg)  # for update entries
+            # get most recent timestep for update frequency
+            self.timestep_zone_num_current = self.api.exchange.zone_time_step_number(state_arg)
+
+            # state update & observation (optionally)
             if update_state and self.timestep_zone_num_current % update_state_freq == 0:
                 # update & append simulation data
                 self._update_time()  # note timing update is first
                 self._update_ems_and_weather_vals(self.ems_names_master_list)  # update sensor/actuator/weather/ vals
                 # run user-defined agent state update function
                 if observation_fxn is not None:
-                    observation_fxn()
+                    reward = observation_fxn()
+                    if reward is not None:
+                        if type(reward) is not float and type(reward) is not int:
+                            raise TypeError(f'ERROR: Reward returned from the observation function, {reward} must be of'
+                                            f' type float or int.')
+                        if self.callback_count == 0:  # first iteration, do once
+                            # establish reward attributes
+                            setattr(self, 'rewards', [])
+                            setattr(self, 'reward_current', 0)
+                        self.rewards.append(reward)
+                        self.reward_current = reward
 
+            # action update
             if actuation_fxn is not None and self.timestep_zone_num_current % update_act_freq == 0:
                 self._actuate_from_list(calling_point, actuation_fxn())
 
             # update custom dataframes
             self._update_custom_dataframe_dicts(calling_point)
+
             # update callback count data
             self.callback_count += 1
             self.callbacks.append(self.callback_count)
@@ -499,7 +514,7 @@ class EmsPy:
         """
         Used by user to initialize custom EMS metric dataframes attributes at specific calling points & frequencies.
 
-        Desired setpoint data from actuation actions can be acquired and compared to system setpoints - Use
+        Desired setpoint data from actuation actions can be acquired and compared to updated system setpoints - Use
         'setpoint' + your_actuator_name as the EMS metric name.
 
         :param df_name: user-defined df variable name

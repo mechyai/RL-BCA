@@ -77,21 +77,10 @@ calling_point = 'callback_after_predictor_after_hvac_managers'
 
 class Agent:
     def __init__(self):
-        self.day = ''
         pass
 
     def observe(self):
-        oa_temp, z_temp, heat_sp, cool_sp, timestep, datetime = sim.get_ems_data(['oa_temp', 'zone_temp', 'heating_sp', 'cooling_sp', 'timesteps', 'time_x'])
-
-        current_day = datetime.strftime('%d')
-        if current_day != self.day:
-            print('--- New Day ---')
-
-        print(f'Time: {datetime.strftime("%m/%d, %I:%M %p")}, TS:{round(timestep,2)}, '
-              f'Act: {[round(self.c_to_f(heat_sp),2), round(self.c_to_f(cool_sp),2)]}, Zone T: {round(self.c_to_f(z_temp),2)} f, Outdoor T: {round(self.c_to_f(oa_temp),2)} f')
-        self.day = datetime.strftime('%d')
-
-        pass
+        return 5
 
     def act(self):
 
@@ -116,7 +105,7 @@ sim = emspy.BcaEnv(ep_path, ep_idf_to_run, timesteps, vars_tc, int_vars_tc, mete
 # create RL agent obj
 agent = Agent()
 
-sim.set_calling_point_and_callback_function(calling_point, None, agent.act, True, 1, 1)
+sim.set_calling_point_and_callback_function(calling_point, agent.observe, agent.act, True, 1, 1)
 sim.init_custom_dataframe_dict('setpoints', calling_point, 1, ['z0_cool_sp', 'setpoint_z0_cool_sp'])
 # RUN
 sim.run_env(ep_weather_path)
