@@ -163,8 +163,11 @@ class EmsPy:
                                          f'{ems_name}({self.ems_type_dict[ems_name]}) != {ems_name}({ems_type})')
                     setattr(self, 'handle_' + ems_type + '_' + ems_name, None)
                     setattr(self, 'data_' + ems_type + '_' + ems_name, [])
-                    if ems_type == 'actuator':
-                        setattr(self, 'setpoint_' + '_' + ems_name, [])  # what user/control sets
+                    if ems_type == 'actuator':  # handle associated actuator setpoints
+                        setpnt_name = 'setpoint_' + ems_name
+                        setattr(self, setpnt_name, [])  # what user/control sets
+                        self.ems_type_dict[setpnt_name] = 'setpoint'
+                        self.ems_names_master_list.append(setpnt_name)
                     self.ems_type_dict[ems_name] = ems_type
                     self.ems_names_master_list.append(ems_name)  # all ems metrics collected
                 self.ems_num_dict[ems_type] = len(ems_tc)  # num of metrics per ems category
@@ -321,20 +324,21 @@ class EmsPy:
 
         for ems_name in ems_metrics_list:
             ems_type = self.ems_type_dict[ems_name]
-            if ems_type is 'weather':
+            # SKIP time and setpoint updates, each have their own updates
+            if ems_type == 'time' or ems_type == 'setpoint':
+                continue
+            if ems_type == 'weather':
                 data_i = self._get_weather([ems_name], 'today', self.hours[-1], self.timestep_zone_num_current)
-            elif ems_type is 'intvar':  # internal(static) vars updated once, separately
+            elif ems_type == 'intvar':  # internal(static) vars updated ONCE, separately
                 if not self.static_vars_gathered:
                     data_i = ems_datax_func[ems_type](self.state, getattr(self, 'handle_' + ems_type + '_' + ems_name))
                     self.static_vars_gathered = True
             else:  # rest: var, meter, actuator
                 # get data from E+ sim
-                if ems_type != 'time':
-                    data_i = ems_datax_func[ems_type](self.state, getattr(self, 'handle_' + ems_type + '_' + ems_name))
+                data_i = ems_datax_func[ems_type](self.state, getattr(self, 'handle_' + ems_type + '_' + ems_name))
 
             # store data in obj attributes
-            if ems_type != 'time':
-                self._update_ems_attributes(ems_type, ems_name, data_i)
+            self._update_ems_attributes(ems_type, ems_name, data_i)
 
     def _get_weather(self, weather_metrics: list, when: str,  hour: int, zone_ts: int) -> list:
         """
@@ -406,7 +410,7 @@ class EmsPy:
                 # actuate and update data tracking
                 actuator_handle = getattr(self, 'handle_actuator_' + actuator_name)
                 self._actuate(actuator_handle, actuator_setpoint)
-                getattr(self, 'setpoint_' + '_' + actuator_name).append(actuator_setpoint)
+                getattr(self, 'setpoint_' + actuator_name).append(actuator_setpoint)
         else:
             print(f'*NOTE: No actuators/values defined for actuation function at calling point {calling_point},'
                   f' timestep {self.timestep_zone_num_current}')
@@ -495,6 +499,9 @@ class EmsPy:
         """
         Used by user to initialize custom EMS metric dataframes attributes at specific calling points & frequencies.
 
+        Desired setpoint data from actuation actions can be acquired and compared to system setpoints - Use
+        'setpoint' + your_actuator_name as the EMS metric name.
+
         :param df_name: user-defined df variable name
         :param calling_point: the calling point at which the df should be updated
         :param update_freq: how often data will be posted, it will be posted every X timesteps
@@ -511,7 +518,7 @@ class EmsPy:
                 raise Exception('ERROR: Incorrect EMS metric names were entered for custom dataframes.')
             # create dict to collect data for pandas dataframe
             ems_custom_dict[metric] = []
-        # add to dataframe dict
+        # add to dataframe  to fetch & track data during sim
         self.df_custom_dict[df_name] = (ems_custom_dict, calling_point, update_freq)
         self.df_count += 1
 
@@ -524,18 +531,21 @@ class EmsPy:
         for df_name in self.df_custom_dict:
             ems_dict, cp, update_freq = self.df_custom_dict[df_name]  # unpack value
             if cp is calling_point and self.timestep_total_count % update_freq == 0:  # TODO verify working
-                for ems_metric in ems_dict:
+                for ems_name in ems_dict:
                     # get most recent data point
-                    if ems_metric is 'Datetime':
+                    if ems_name is 'Datetime':
                         data_i = self.time_x[-1]
-                    elif ems_metric is 'Timestep':
+                    elif ems_name is 'Timestep':
                         data_i = self.timesteps_zone_num[-1]
                     else:
-                        ems_type = self.get_ems_type(ems_metric)
-                        data_list_name = 'data_' + ems_type + '_' + ems_metric
+                        ems_type = self.get_ems_type(ems_name)
+                        if ems_type == 'setpoint':
+                            data_list_name = ems_name  # setpoint is redundant, user must input themselves
+                        else:  # all other
+                            data_list_name = 'data_' + ems_type + '_' + ems_name
                         data_i = getattr(self, data_list_name)[-1]
                         # append to dict list
-                    self.df_custom_dict[df_name][0][ems_metric].append(data_i)
+                    self.df_custom_dict[df_name][0][ems_name].append(data_i)
 
     def _create_custom_dataframes(self):
         """Creates custom dataframes for specifically tracked ems data list, for each ems category."""
@@ -740,7 +750,7 @@ class BcaEnv(EmsPy):
 
     def update_ems_data(self, ems_metric_list: list, return_data: bool) -> list:
         """
-        This takes desired EMS metric(s) (or type) to fetch and return the value, AND updates the attributes.
+        This takes desired EMS metric(s) (or type) to update from the sim (and opt return val) at calliing point.
 
         This OPTIONAL function can be used to update/collect specific EMS at each timestep for a given calling point.
         One to all EMS metrics can be called, or just EMS category (var, intvar, meter, actuator, weather) and have the
@@ -776,7 +786,8 @@ class BcaEnv(EmsPy):
 
         :param df_names: default EMS metric type (var, intvar, meter, actuator, weather) OR custom df name. Leave
         argument empty if you want to return ALL dataframes together (all default, then all custom)
-        :return: (concatination of) pandas dataframes in order of entry or [vars, intvars, meters, weather, actuator] by
+        :param to_csv_file: path/file name you want the dataframe to be written to
+        :return: (concatenation of) pandas dataframes in order of entry or [vars, intvars, meters, weather, actuator] by
         default.
         """
         if not self.calling_point_actuation_dict:
@@ -805,7 +816,7 @@ class BcaEnv(EmsPy):
                 return_df[df_name] = df
                 if all_df.empty:
                     all_df = df.copy(deep=True)
-                else:
+                else:  # TODO verify robustness of merging of custom df with default, can it be compressed for same time indexes
                     all_df = pd.concat([all_df, df], axis=1)
                 if df_name in df_names:
                     df_names.remove(df_name)

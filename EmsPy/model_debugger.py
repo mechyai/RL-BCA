@@ -10,7 +10,7 @@ os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 # OMP: Error #15: Initializing libiomp5md.dll, but found libiomp5md.dll already initialized.
 
 ep_path = 'A:/Programs/EnergyPlusV9-5-0/'
-ep_idf_to_run = 'A:/Files/PycharmProjects/RL-BCA/OpenStudio_Models/idf_files/5office_small_ems_all_on.idf'
+ep_idf_to_run = 'A:/Files/PycharmProjects/RL-BCA/OpenStudio_Models/idf_files/5office_small_ems.idf'
 ep_weather_path = 'A:/Files/PycharmProjects/RL-BCA/OpenStudio_Models/5office_small_ems/files/USA_FL_Tampa-MacDill.AFB.747880_TMY3.epw'
 cvs_output_path = 'electricity_dfs'
 
@@ -36,23 +36,23 @@ vars_tc = {
     'z3_rh': ['Zone Air Relative Humidity', 'Perimeter_ZN_3 ZN'],
     'z4_rh': ['Zone Air Relative Humidity', 'Perimeter_ZN_4 ZN'],
     # people count
-    'z0_ppl': ['Zone People Occupant Count', 'Core_ZN ZN'],
-    'z1_ppl': ['Zone People Occupant Count', 'Perimeter_ZN_1 ZN'],
-    'z2_ppl': ['Zone People Occupant Count', 'Perimeter_ZN_2 ZN'],
-    'z3_ppl': ['Zone People Occupant Count', 'Perimeter_ZN_3 ZN'],
-    'z4_ppl': ['Zone People Occupant Count', 'Perimeter_ZN_4 ZN'],
-    # energy
-    'z0_e': ['Unitary System Electricity Energy', 'Core_ZN ZN'],
-    'z1_e': ['Unitary System Electricity Energy', 'Perimeter_ZN_1 ZN'],
-    'z2_e': ['Unitary System Electricity Energy', 'Perimeter_ZN_2 ZN'],
-    'z3_e': ['Unitary System Electricity Energy', 'Perimeter_ZN_3 ZN'],
-    'z4_e': ['Unitary System Electricity Energy', 'Perimeter_ZN_4 ZN'],
-    # energy rate
-    'z0_e_rate': ['Unitary System Electricity Rate', 'Core_ZN ZN'],
-    'z1_e_rate': ['Unitary System Electricity Rate', 'Perimeter_ZN_1 ZN'],
-    'z2_e_rate': ['Unitary System Electricity Rate', 'Perimeter_ZN_2 ZN'],
-    'z3_e_rate': ['Unitary System Electricity Rate', 'Perimeter_ZN_3 ZN'],
-    'z4_e_rate': ['Unitary System Electricity Rate', 'Perimeter_ZN_4 ZN']
+    # 'z0_ppl': ['Zone People Occupant Count', 'Core_ZN ZN'],
+    # 'z1_ppl': ['Zone People Occupant Count', 'Perimeter_ZN_1 ZN'],
+    # 'z2_ppl': ['Zone People Occupant Count', 'Perimeter_ZN_2 ZN'],
+    # 'z3_ppl': ['Zone People Occupant Count', 'Perimeter_ZN_3 ZN'],
+    # 'z4_ppl': ['Zone People Occupant Count', 'Perimeter_ZN_4 ZN'],
+    # # energy
+    # 'z0_e': ['Unitary System Electricity Energy', 'Core_ZN ZN'],
+    # 'z1_e': ['Unitary System Electricity Energy', 'Perimeter_ZN_1 ZN'],
+    # 'z2_e': ['Unitary System Electricity Energy', 'Perimeter_ZN_2 ZN'],
+    # 'z3_e': ['Unitary System Electricity Energy', 'Perimeter_ZN_3 ZN'],
+    # 'z4_e': ['Unitary System Electricity Energy', 'Perimeter_ZN_4 ZN'],
+    # # energy rate
+    # 'z0_e_rate': ['Unitary System Electricity Rate', 'Core_ZN ZN'],
+    # 'z1_e_rate': ['Unitary System Electricity Rate', 'Perimeter_ZN_1 ZN'],
+    # 'z2_e_rate': ['Unitary System Electricity Rate', 'Perimeter_ZN_2 ZN'],
+    # 'z3_e_rate': ['Unitary System Electricity Rate', 'Perimeter_ZN_3 ZN'],
+    # 'z4_e_rate': ['Unitary System Electricity Rate', 'Perimeter_ZN_4 ZN']
 }
 actuators_tc = {
     'z0_cool_sp': ['Zone Temperature Control', 'Cooling Setpoint', 'Core_ZN ZN'],
@@ -117,6 +117,8 @@ sim = emspy.BcaEnv(ep_path, ep_idf_to_run, timesteps, vars_tc, int_vars_tc, mete
 agent = Agent()
 
 sim.set_calling_point_and_callback_function(calling_point, None, agent.act, True, 1, 1)
+sim.init_custom_dataframe_dict('setpoints', calling_point, 1, ['z0_cool_sp', 'setpoint_z0_cool_sp'])
+# RUN
 sim.run_env(ep_weather_path)
 sim.reset_state()
 
