@@ -1161,7 +1161,8 @@ OS:RunPeriod,
 OS:YearDescription,
   {c909b14d-25f4-4587-81ac-13c1e4bb0508}, !- Handle
   ,                                       !- Calendar Year
-  Sunday;                                 !- Day of Week for Start Day
+  Sunday,                                 !- Day of Week for Start Day
+  ;                                       !- Is Leap Year
 
 OS:Surface,
   {6846f3e0-5f3c-4764-857d-efef5d44c707}, !- Handle
@@ -8467,4 +8468,25 @@ OS:Output:Table:SummaryReports,
 
 OS:Output:Diagnostics,
   {1cb1a8bc-8e2c-4ae5-87db-75cdd10ff35f}; !- Handle
+
+OS:Output:Variable,
+  {de0fbb45-9f10-4509-91fc-5fb5d7bb782d}, !- Handle
+  Output Variable 1,                      !- Name
+  *,                                      !- Key Value
+  Zone People Occupant Count,             !- Variable Name
+  Timestep;                               !- Reporting Frequency
+
+OS:Output:Variable,
+  {a7fb375b-5b39-4836-9fa3-3ef652dd59f9}, !- Handle
+  Output Variable 2,                      !- Name
+  *,                                      !- Key Value
+  Unitary System Electricity Energy,      !- Variable Name
+  Timestep;                               !- Reporting Frequency
+
+OS:Output:Variable,
+  {6c8dca1d-a21d-4581-b803-90cdabff1f78}, !- Handle
+  Output Variable 3,                      !- Name
+  *,                                      !- Key Value
+  Unitary System Electricity Rate,        !- Variable Name
+  Timestep;                               !- Reporting Frequency
 

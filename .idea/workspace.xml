@@ -19,13 +19,19 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="create all_df for get df method, fixed timstep total count">
-      <change afterPath="$PROJECT_DIR$/EmsPy/model_plotter.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OpenStudio_Models/idf_files/5office_small_ems.idf" afterDir="false" />
+    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="v1 of model plotter">
+      <change afterPath="$PROJECT_DIR$/EmsPy/people_dfs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/EmsPy/z0_always_on_dfs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OpenStudio_Models/5office_small_ems_modified.osm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OpenStudio_Models/idf_files/5office_small_ems_all_on.idf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OpenStudio_Models/idf_files/5office_small_ems_extra.idf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OpenStudio_Models/idf_files/5office_small_ems_z0_on.idf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmsPy/TODO.txt" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/TODO.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmsPy/emspy.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/emspy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmsPy/default_dfs" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/default_dfs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EmsPy/model_debugger.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/model_debugger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmsPy/model_plotter.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/model_plotter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenStudio_Models/5office_small_ems.osm" beforeDir="false" afterPath="$PROJECT_DIR$/OpenStudio_Models/5office_small_ems.osm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenStudio_Models/idf_files/5office_small_ems.idf" beforeDir="false" afterPath="$PROJECT_DIR$/OpenStudio_Models/idf_files/5office_small_ems.idf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +48,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="getState_takeAction" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -97,19 +103,16 @@
     </key>
   </component>
   <component name="RunManager" selected="Python.model_plotter">
-    <configuration name="emspy_MDP_testscript" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="emspy" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/EmsPy" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="A:\Files\PycharmProjects\RL-BCA\EmsPy\Testscripts\emspy_MDP_testscript.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/EmsPy/emspy.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -122,9 +125,6 @@
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/EmsPy" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -143,9 +143,6 @@
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/EmsPy" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -153,7 +150,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/EmsPy/model_plotter.py" />
       <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
@@ -203,19 +200,19 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.emspy_MDP_testscript" />
       <item itemvalue="Python.scratch" />
       <item itemvalue="Python.scratch_1" />
       <item itemvalue="Python.model_debugger" />
       <item itemvalue="Python.model_plotter" />
+      <item itemvalue="Python.emspy" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.model_plotter" />
-        <item itemvalue="Python.model_debugger" />
-        <item itemvalue="Python.model_debugger" />
-        <item itemvalue="Python.model_debugger" />
-        <item itemvalue="Python.model_debugger" />
+        <item itemvalue="Python.emspy" />
+        <item itemvalue="Python.model_plotter" />
+        <item itemvalue="Python.model_plotter" />
+        <item itemvalue="Python.model_plotter" />
       </list>
     </recent_temporary>
   </component>
@@ -230,20 +227,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1620762811392</updated>
-    </task>
-    <task id="LOCAL-00016" summary="update, might fork soon to handle multi state instances or callbacks">
-      <created>1621818401627</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1621818401627</updated>
-    </task>
-    <task id="LOCAL-00017" summary="adding actuator components, modified EMS var ToC name instantiation and tracking, editing calling points soon">
-      <created>1621872181969</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1621872181969</updated>
     </task>
     <task id="LOCAL-00018" summary="update, references added">
       <created>1621885935708</created>
@@ -574,7 +557,21 @@
       <option name="project" value="LOCAL" />
       <updated>1626219018882</updated>
     </task>
-    <option name="localTasksCounter" value="65" />
+    <task id="LOCAL-00065" summary="fixed double actuator update">
+      <created>1626231553918</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1626231553919</updated>
+    </task>
+    <task id="LOCAL-00066" summary="v1 of model plotter">
+      <created>1626355148467</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1626355148467</updated>
+    </task>
+    <option name="localTasksCounter" value="67" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -590,8 +587,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="changed attribute lists to dicts for entire class" />
-    <MESSAGE value="up to date readme, changed how weather and ems data updates, added BcaEnv methods, compressed redundancy, fixed timesteps" />
     <MESSAGE value="smalling naming update" />
     <MESSAGE value="update, create test class for actuation fxn" />
     <MESSAGE value="add note about custom class in script" />
@@ -615,7 +610,9 @@
     <MESSAGE value="fixed default pandas df creation" />
     <MESSAGE value="fixed single val weather update" />
     <MESSAGE value="create all_df for get df method, fixed timstep total count" />
-    <option name="LAST_COMMIT_MESSAGE" value="create all_df for get df method, fixed timstep total count" />
+    <MESSAGE value="fixed double actuator update" />
+    <MESSAGE value="v1 of model plotter" />
+    <option name="LAST_COMMIT_MESSAGE" value="v1 of model plotter" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

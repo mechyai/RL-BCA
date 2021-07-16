@@ -2269,7 +2269,7 @@ SimulationControl,
   Yes,                                    !- Do Plant Sizing Calculation
   No,                                     !- Run Simulation for Sizing Periods
   Yes,                                    !- Run Simulation for Weather File Run Periods
-  Yes,                                    !- Do HVAC Sizing Simulation for Sizing Periods
+  No,                                    !- Do HVAC Sizing Simulation for Sizing Periods {CJE}
   1;                                      !- Maximum Number of HVAC Sizing Simulation Passes
 
 ConvergenceLimits,
