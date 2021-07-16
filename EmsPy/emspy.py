@@ -138,6 +138,11 @@ class EmsPy:
         self.callbacks = []
         self.callback_count = 0
 
+        # reward data
+        self.rewards_created = False
+        self.rewards = []
+        self.reward_current = None
+
         self.simulation_ran = False
 
     def _init_ems_handles_and_data(self):
@@ -204,7 +209,7 @@ class EmsPy:
             raise ValueError(f'ERROR: Your choice of number of timesteps per hour, {timestep}, must be evenly divisible'
                              f' into 60 minutes: {available_timesteps}')
         else:
-            print(f'*NOTE: Your simulation timestep period is {60 // timestep} minutes')
+            print(f'*NOTE: Your simulation timestep period is {60 // timestep} minutes @ {timestep} timesteps an hour.')
             return timestep
 
     def _set_ems_handles(self):
@@ -255,6 +260,34 @@ class EmsPy:
         except IndexError:
             raise IndexError(f'ERROR: {str(ems_obj_details)}: This {ems_type} object does not have all the '
                              f'required fields to get the EMS handle')
+
+    def _update_reward(self, reward):
+        """ Updates attributes related to the reward. Works for single-obj(scalar) and multi-obj(vector) reward fxns."""
+
+        single_reward = False
+        if type(reward) is not list:  # if single reward tracked
+            reward = [reward]
+            single_reward = True
+        reward_cnt = len(reward)
+
+        if not self.rewards_created:  # first iteration, do once
+            # adjust default to multi reward tracking
+            if not single_reward:
+                self.rewards = [[] for _ in range(reward_cnt)]
+                self.reward_current = [0] * reward_cnt
+            self.rewards_created = True
+
+        for i, reward_i in enumerate(reward):
+            if type(reward_i) is not float and type(reward_i) is not int:
+                raise TypeError(f'ERROR: Reward returned from the observation function, {reward_i} must be of'
+                                f' type float or int.')
+            else:
+                if not single_reward:
+                    self.rewards[i].append(reward_i)
+                    self.reward_current[i] = reward_i
+                else:
+                    self.rewards.append(reward_i)
+                    self.reward_current = reward_i
 
     def _update_time(self):
         """Updates all time-keeping and simulation timestep attributes of running simulation."""
@@ -462,15 +495,7 @@ class EmsPy:
                 if observation_fxn is not None:
                     reward = observation_fxn()
                     if reward is not None:
-                        if type(reward) is not float and type(reward) is not int:
-                            raise TypeError(f'ERROR: Reward returned from the observation function, {reward} must be of'
-                                            f' type float or int.')
-                        if self.callback_count == 0:  # first iteration, do once
-                            # establish reward attributes
-                            setattr(self, 'rewards', [])
-                            setattr(self, 'reward_current', 0)
-                        self.rewards.append(reward)
-                        self.reward_current = reward
+                        self._update_reward(reward)
 
             # action update
             if actuation_fxn is not None and self.timestep_zone_num_current % update_act_freq == 0:
@@ -515,7 +540,7 @@ class EmsPy:
         Used by user to initialize custom EMS metric dataframes attributes at specific calling points & frequencies.
 
         Desired setpoint data from actuation actions can be acquired and compared to updated system setpoints - Use
-        'setpoint' + your_actuator_name as the EMS metric name.
+        'setpoint' + your_actuator_name as the EMS metric name. Rewards can also be fetched.
 
         :param df_name: user-defined df variable name
         :param calling_point: the calling point at which the df should be updated
@@ -529,8 +554,8 @@ class EmsPy:
         # metric names must align with the EMS metric names assigned in var, intvar, meters, actuators, weather ToC's
         ems_custom_dict = {'Datetime': [], 'Timestep': []}
         for metric in ems_metrics:
-            if metric not in self.ems_names_master_list:
-                raise Exception('ERROR: Incorrect EMS metric names were entered for custom dataframes.')
+            if metric not in self.ems_names_master_list + ['rewards']:
+                raise Exception(f'ERROR: Incorrect EMS metric name, {metric}, was entered for custom dataframes.')
             # create dict to collect data for pandas dataframe
             ems_custom_dict[metric] = []
         # add to dataframe  to fetch & track data during sim
@@ -552,6 +577,8 @@ class EmsPy:
                         data_i = self.time_x[-1]
                     elif ems_name is 'Timestep':
                         data_i = self.timesteps_zone_num[-1]
+                    elif ems_name is 'rewards':
+                        data_i = self.rewards[-1]
                     else:
                         ems_type = self.get_ems_type(ems_name)
                         if ems_type == 'setpoint':
@@ -559,7 +586,8 @@ class EmsPy:
                         else:  # all other
                             data_list_name = 'data_' + ems_type + '_' + ems_name
                         data_i = getattr(self, data_list_name)[-1]
-                        # append to dict list
+
+                    # append to dict list
                     self.df_custom_dict[df_name][0][ems_name].append(data_i)
 
     def _create_custom_dataframes(self):
