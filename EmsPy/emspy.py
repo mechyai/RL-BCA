@@ -140,9 +140,11 @@ class EmsPy:
 
         # reward data
         self.rewards_created = False
+        self.rewards_multi = False
         self.rewards = []
         self.reward_current = None
 
+        # simulation data
         self.simulation_ran = False
 
     def _init_ems_handles_and_data(self):
@@ -264,17 +266,16 @@ class EmsPy:
     def _update_reward(self, reward):
         """ Updates attributes related to the reward. Works for single-obj(scalar) and multi-obj(vector) reward fxns."""
 
-        single_reward = False
-        if type(reward) is not list:  # if single reward tracked
-            reward = [reward]
-            single_reward = True
-        reward_cnt = len(reward)
-
         if not self.rewards_created:  # first iteration, do once
+            rewards_cnt = len(reward)
+            if rewards_cnt > 1:
+                self.rewards_multi = True
             # adjust default to multi reward tracking
-            if not single_reward:
-                self.rewards = [[] for _ in range(reward_cnt)]
-                self.reward_current = [0] * reward_cnt
+            if self.rewards_multi:
+                self.rewards = [[] for _ in range(rewards_cnt)]
+                self.reward_current = [0] * rewards_cnt
+            else:
+                reward = [reward]  # make single reward iterable
             self.rewards_created = True
 
         for i, reward_i in enumerate(reward):
@@ -282,10 +283,10 @@ class EmsPy:
                 raise TypeError(f'ERROR: Reward returned from the observation function, {reward_i} must be of'
                                 f' type float or int.')
             else:
-                if not single_reward:
+                if self.rewards_multi:
                     self.rewards[i].append(reward_i)
                     self.reward_current[i] = reward_i
-                else:
+                else:  # no nested lists
                     self.rewards.append(reward_i)
                     self.reward_current = reward_i
 
@@ -540,12 +541,13 @@ class EmsPy:
         Used by user to initialize custom EMS metric dataframes attributes at specific calling points & frequencies.
 
         Desired setpoint data from actuation actions can be acquired and compared to updated system setpoints - Use
-        'setpoint' + your_actuator_name as the EMS metric name. Rewards can also be fetched.
+        'setpoint' + your_actuator_name as the EMS metric name. Rewards can also be fetched. These are NOT collected
+        by default dataframes.
 
         :param df_name: user-defined df variable name
         :param calling_point: the calling point at which the df should be updated
         :param update_freq: how often data will be posted, it will be posted every X timesteps
-        :param ems_metrics: list of EMS metric var names to store their data points in df
+        :param ems_metrics: list of EMS metric names, 'setpoint+...', or 'rewards', to store their data points in df
         """
 
         if calling_point not in self.calling_point_actuation_dict:
@@ -568,9 +570,10 @@ class EmsPy:
         if not self.df_custom_dict:
             return  # no custom dicts created
         # iterate through and update all default and user-defined dataframes
+        # TODO handle redundant data collection when cp and freq are identical to default (may not always be applicable)
         for df_name in self.df_custom_dict:
             ems_dict, cp, update_freq = self.df_custom_dict[df_name]  # unpack value
-            if cp is calling_point and self.timestep_total_count % update_freq == 0:  # TODO verify working
+            if cp is calling_point and self.timestep_total_count % update_freq == 0:
                 for ems_name in ems_dict:
                     # get most recent data point
                     if ems_name is 'Datetime':
@@ -594,10 +597,27 @@ class EmsPy:
         """Creates custom dataframes for specifically tracked ems data list, for each ems category."""
 
         if not self.df_custom_dict:
-            return  # no ems dicts created, very unlikely
+            print('*NOTE: No custom dataframes created.')
+            return  # no ems dicts created
         for df_name in self.df_custom_dict:
             ems_dict, _, _ = self.df_custom_dict[df_name]
-            setattr(self, df_name, pd.DataFrame.from_dict(ems_dict))
+            if 'rewards' in ems_dict.keys() and self.rewards_multi:
+                # break up nested list of multi rewards into multi columns
+                print('reward df start')
+                rewards_collected = ems_dict['rewards']
+                del ems_dict['rewards']  # remove unoptimal value
+                rewards_cnt = len(rewards_collected[0])
+                rewards_list = self.rewards = [[] for _ in range(rewards_cnt)]
+                for rewards_i_list in rewards_collected:
+                    for i, rewards_i in enumerate(rewards_i_list):  # must transfer into dict key/list for each reward
+                        rewards_list[i].append(rewards_i)  # rk = [[r1,r2,r3], [r1,r2,r3],...]
+                for n, reward_n in enumerate(rewards_list):
+                    key = 'reward' + str(n + 1)
+                    ems_dict[key] = reward_n
+            print('reward ended')
+            # create df
+            # setattr(self, df_name, pd.DataFrame.from_dict(ems_dict))
+            print('reward df')
 
     def _create_default_dataframes(self):
         """Creates default dataframes for each EMS data list, for each EMS category."""
@@ -651,6 +671,7 @@ class EmsPy:
         print('* * * Simulation Done * * *')
         self._create_default_dataframes()
         self._create_custom_dataframes()
+        print('* * * DF Creation Done * * *')
 
 
 class BcaEnv(EmsPy):
@@ -841,6 +862,7 @@ class BcaEnv(EmsPy):
 
         all_df = pd.DataFrame()  # merge all into 1 df
         return_df = {}
+        print('start df')
         for df_name in self.ems_num_dict:  # iterate thru available EMS types
             if df_name in df_names or not df_names:  # specific or ALL dfs
                 df = (getattr(self, 'df_' + df_name))
@@ -852,6 +874,7 @@ class BcaEnv(EmsPy):
                     all_df = pd.merge(all_df, df, on=['Datetime', 'Timestep'])
                 if df_name in df_names:
                     df_names.remove(df_name)
+        print('end default df')
         # custom dfs
         for df_name in self.df_custom_dict:
             if df_name in df_names or not df_names:
@@ -863,7 +886,7 @@ class BcaEnv(EmsPy):
                     all_df = pd.concat([all_df, df], axis=1)
                 if df_name in df_names:
                     df_names.remove(df_name)
-
+        print('end custom dfs')
         # leftover dfs not fetched and returned
         if df_names:
             raise ValueError(f'ERROR: Either dataframe custom name or default type: {df_names} is not valid or was not'
