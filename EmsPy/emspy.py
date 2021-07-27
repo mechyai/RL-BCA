@@ -37,7 +37,7 @@ class EmsPy:
                                 'callback_end_zone_timestep_before_zone_reporting',
                                 'callback_inside_system_iteration_loop']
 
-    def __init__(self, ep_path: str, ep_idf_to_run: str, timesteps: int,
+    def __init__(self, ep_path: str, ep_idf_to_run: str,
                  tc_var: dict, tc_intvar: dict, tc_meter: dict, tc_actuator: dict, tc_weather: dict):
         """
         Establish connection to EnergyPlusAPI and initializes desired EMS sensors, actuators, and weather data.
@@ -50,7 +50,6 @@ class EmsPy:
 
         :param ep_path: absolute path to EnergyPlus download directory in user's file system
         :param ep_idf_to_run: absolute/relative path to EnergyPlus building energy model to be simulated, .idf file
-        :param timesteps: number of timesteps per hour set in EnergyPlus model .idf file
         :param tc_var: dict of desired output Variables, with each EMS object provided as
         'user_var_name': ['variable_name', 'variable_key'] within the dict
         :param tc_intvar: list of desired Internal Variables (static), with each object provided as
@@ -131,9 +130,9 @@ class EmsPy:
         self.timesteps_zone_num = []
         self.timestep_zone_current = 0
         self.timestep_zone_num_current = 0  # fluctuate from 1 to # of timesteps/hour
-        self.timestep_per_hour = self._init_timestep(timesteps)  # sim timesteps per hour
+        self.timestep_per_hour = self._init_timestep()  # sim timesteps per hour
         self.timestep_period = 60 // timesteps  # minute duration of each timestep of simulation
-        self.timestep_total_count = 0  # cnt for entire simulation # TODO not updated, how to enforce only once per ts
+        self.timestep_total_count = 0  # cnt for entire simulation # TODO not updated, how to enforce only once per ts, use a set, update length
         # callback data
         self.callbacks = []
         self.callback_count = 0
@@ -202,22 +201,17 @@ class EmsPy:
             self.ems_num_dict['weather'] = len(self.tc_weather)
             self.df_count += 1
 
-    def _init_timestep(self, timestep: int) -> int:
-        """This function is used to verify timestep input correctness & report any details/changes."""
+    def _init_timestep(self) -> int:
+        """Fetches the simulation timestep from .idf, available timesteps are {1,2,3,4,5,6,10,12,15,20,30,60} mins."""
 
-        # TODO pull from idf api.exchange.num_time_steps_in_hour
-        available_timesteps = [1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60]
+        timestep = self.api.exchange.num_time_steps_in_hour(self.state)
 
-        if timestep not in available_timesteps:
-            raise ValueError(f'ERROR: Your choice of number of timesteps per hour, {timestep}, must be evenly divisible'
-                             f' into 60 minutes: {available_timesteps}')
-        else:
-            print(f'*NOTE: Your simulation timestep period is {60 // timestep} minutes @ {timestep} timesteps an hour.')
-            return timestep
+        print(f'*NOTE: Your simulation timestep period is {60 // timestep} minutes @ {timestep} timesteps an hour.')
+        return timestep
 
     def _init_reward(self, reward):
         """This updates the reward attributes to the needs set by user."""
-        # self.ems_names_master_list.append('rewards')  # TODO
+
         # attribute creation
         if not self.rewards_created:  # first iteration, do once
             try:  # multi obj rewards
@@ -229,7 +223,6 @@ class EmsPy:
                 self.rewards = []
             self.rewards_created = True
             self.reward_current = [0] * self.rewards_cnt
-            self.ems_num_dict['reward'] = self.rewards_cnt
 
     def _set_ems_handles(self):
         """Gets and reassigns the gathered sensor/actuators handles to their according _handle instance attribute."""
@@ -564,8 +557,12 @@ class EmsPy:
                                 f' calling points {self.calling_point_actuation_dict.keys()}.')
             # metric names must align with the EMS metric names assigned in var, intvar, meters, actuators, weather ToC
             ems_custom_dict = {'Datetime': [], 'Timestep': []}
+            if self.rewards:
+                is_reward = 'rewards'
+            else:
+                is_reward = ''
             for metric in ems_metrics:
-                if metric not in self.ems_names_master_list: # TODO what about reward
+                if metric not in self.ems_names_master_list + [is_reward]:
                     raise Exception(f'ERROR: Incorrect EMS metric name, \'{metric}\', was entered for custom '
                                     f'dataframes.')
                 # create dict to collect data for pandas dataframe
@@ -624,7 +621,7 @@ class EmsPy:
             setattr(self, df_name, pd.DataFrame.from_dict(ems_dict))
 
     def _create_default_dataframes(self):
-        """Creates default dataframes for each EMS data list, for each EMS category."""
+        """Creates default dataframes for each EMS data list, for each EMS category (and rewards if included in sim)."""
         if not self.ems_num_dict:
             return  # no ems dicts created, very unlikely
         for ems_type in self.ems_num_dict:
@@ -635,18 +632,17 @@ class EmsPy:
             # create default df
             df_name = 'df_' + ems_type
             setattr(self, df_name, pd.DataFrame.from_dict(ems_dict))
-        # TODO include rewards as default
         if self.rewards:
+            col_names = ['reward']  # single reward
             if self.rewards_multi:
-                reward_columns = [[] for _ in range(self.rewards_cnt)]
-                for rewards_row_i in self.rewards:
-                    for i, reward_i in enumerate(rewards_row_i):
-                        reward_columns[i].append(reward_i)
-                for n, reward_column in enumerate(reward_columns):
-                    name = 'df_reward' + str(n)
-                    setattr(self, name, pd.DataFrame(reward_column, columns=[name]))
-            else:
-                setattr(self, 'df_reward', pd.DataFrame(self.rewards, columns=['reward']))
+                col_names = []
+                for n in range(self.rewards_cnt):
+                    col_names.append('reward' + str(n + 1))
+            self.df_reward = pd.DataFrame(self.rewards, columns=col_names)
+            # self.df_reward = self.df_reward.dropna()  # drop NA vals # TODO figure out why these are here at the start
+            # add times to df
+            self.df_reward['Datetime'] = self.time_x
+            self.df_reward['Timestep'] = self.timesteps_zone_num
 
     def get_ems_type(self, ems_metric: str):
         """ Returns EMS (var, intvar, meter, actuator, weather) or time type string for a given ems metric variable."""
@@ -894,19 +890,22 @@ class BcaEnv(EmsPy):
         all_df = pd.DataFrame()  # merge all into 1 df
         return_df = {}
         # default
-        for df_name in self.ems_num_dict:  # iterate thru available EMS types  # TODO how to include reward
+        if self.rewards:
+            df_default_names = list(self.ems_num_dict.keys()) + ['reward']
+        else:
+            df_default_names = self.ems_num_dict.keys()
+        for df_name in df_default_names:  # iterate thru available EMS types
             if df_name in df_names or not df_names:  # specific or ALL dfs
-                df = (getattr(self, 'df_' + df_name))  # TODO handle reward#
+                df = (getattr(self, 'df_' + df_name))
                 return_df[df_name] = df
                 # create complete DF of all default vars with only 1 set of time/index columns
                 if all_df.empty:
                     all_df = df.copy(deep=True)
                 else:
-                    all_df = pd.merge(all_df, df, on=['Datetime', 'Timestep'])
+                    all_df = pd.merge(all_df, df, on=['Datetime', 'Timestep'])  # TODO causes issue
                 if df_name in df_names:
                     df_names.remove(df_name)
 
-        # TODO add reward as default
         # custom dfs
         for df_name in self.df_custom_dict:
             if df_name in df_names or not df_names:
