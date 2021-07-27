@@ -37,7 +37,7 @@ class EmsPy:
                                 'callback_end_zone_timestep_before_zone_reporting',
                                 'callback_inside_system_iteration_loop']
 
-    def __init__(self, ep_path: str, ep_idf_to_run: str,
+    def __init__(self, ep_path: str, ep_idf_to_run: str, timesteps: int,
                  tc_var: dict, tc_intvar: dict, tc_meter: dict, tc_actuator: dict, tc_weather: dict):
         """
         Establish connection to EnergyPlusAPI and initializes desired EMS sensors, actuators, and weather data.
@@ -50,6 +50,7 @@ class EmsPy:
 
         :param ep_path: absolute path to EnergyPlus download directory in user's file system
         :param ep_idf_to_run: absolute/relative path to EnergyPlus building energy model to be simulated, .idf file
+        :param timesteps: number of timesteps per hour set in EnergyPlus model .idf file
         :param tc_var: dict of desired output Variables, with each EMS object provided as
         'user_var_name': ['variable_name', 'variable_key'] within the dict
         :param tc_intvar: list of desired Internal Variables (static), with each object provided as
@@ -130,8 +131,8 @@ class EmsPy:
         self.timesteps_zone_num = []
         self.timestep_zone_current = 0
         self.timestep_zone_num_current = 0  # fluctuate from 1 to # of timesteps/hour
-        self.timestep_per_hour = self._init_timestep()  # sim timesteps per hour
-        self.timestep_period = 60 // timesteps  # minute duration of each timestep of simulation
+        self.timestep_per_hour = self._init_timestep(timesteps)  # sim timesteps per hour
+        self.timestep_period = 60 // self.timestep_per_hour  # minute duration of each timestep of simulation
         self.timestep_total_count = 0  # cnt for entire simulation # TODO not updated, how to enforce only once per ts, use a set, update length
         # callback data
         self.callbacks = []
@@ -171,7 +172,7 @@ class EmsPy:
                     setattr(self, 'handle_' + ems_type + '_' + ems_name, None)
                     setattr(self, 'data_' + ems_type + '_' + ems_name, [])
                     if ems_type == 'actuator':  # handle associated actuator setpoints
-                        setpnt_name = 'setpoint_' + ems_name
+                        setpnt_name = 'data_setpoint_' + ems_name
                         setattr(self, setpnt_name, [])  # what user/control sets
                         self.ems_type_dict[setpnt_name] = 'setpoint'
                         self.ems_names_master_list.append(setpnt_name)
@@ -201,13 +202,18 @@ class EmsPy:
             self.ems_num_dict['weather'] = len(self.tc_weather)
             self.df_count += 1
 
-    def _init_timestep(self) -> int:
-        """Fetches the simulation timestep from .idf, available timesteps are {1,2,3,4,5,6,10,12,15,20,30,60} mins."""
+    def _init_timestep(self, timestep: int) -> int:
+        """This function is used to verify timestep input correctness & report any details/changes."""
 
-        timestep = self.api.exchange.num_time_steps_in_hour(self.state)
+        # TODO pull from idf api.exchange.num_time_steps_in_hour
+        available_timesteps = [1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60]
 
-        print(f'*NOTE: Your simulation timestep period is {60 // timestep} minutes @ {timestep} timesteps an hour.')
-        return timestep
+        if timestep not in available_timesteps:
+            raise ValueError(f'ERROR: Your choice of number of timesteps per hour, {timestep}, must be evenly divisible'
+                             f' into 60 minutes: {available_timesteps}')
+        else:
+            print(f'*NOTE: Your simulation timestep period is {60 // timestep} minutes @ {timestep} timesteps an hour.')
+            return timestep
 
     def _init_reward(self, reward):
         """This updates the reward attributes to the needs set by user."""
@@ -447,7 +453,7 @@ class EmsPy:
                 # actuate and update data tracking
                 actuator_handle = getattr(self, 'handle_actuator_' + actuator_name)
                 self._actuate(actuator_handle, actuator_setpoint)
-                getattr(self, 'setpoint_' + actuator_name).append(actuator_setpoint)
+                getattr(self, 'data_setpoint_' + actuator_name).append(actuator_setpoint)
         else:
             print(f'*NOTE: No actuators/values defined for actuation function at calling point {calling_point},'
                   f' timestep {self.timestep_zone_num_current}')
@@ -602,7 +608,7 @@ class EmsPy:
                         # normal ems types
                         ems_type = self.get_ems_type(ems_name)
                         if ems_type == 'setpoint':  # actuator setpoints
-                            data_list_name = ems_name  # setpoint is redundant, user must input themselves
+                            data_list_name = 'data_' + ems_name  # setpoint is redundant, user must input themselves
                         else:  # all other
                             data_list_name = 'data_' + ems_type + '_' + ems_name
                         data_i = getattr(self, data_list_name)[-1]
