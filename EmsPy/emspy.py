@@ -172,8 +172,8 @@ class EmsPy:
                     setattr(self, 'handle_' + ems_type + '_' + ems_name, None)
                     setattr(self, 'data_' + ems_type + '_' + ems_name, [])
                     if ems_type == 'actuator':  # handle associated actuator setpoints
-                        setpnt_name = 'data_setpoint_' + ems_name
-                        setattr(self, setpnt_name, [])  # what user/control sets
+                        setpnt_name = 'setpoint_' + ems_name
+                        setattr(self, 'data_' + setpnt_name, [])  # what user/control sets
                         self.ems_type_dict[setpnt_name] = 'setpoint'
                         self.ems_names_master_list.append(setpnt_name)
                     self.ems_type_dict[ems_name] = ems_type

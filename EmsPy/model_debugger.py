@@ -1,6 +1,7 @@
 import os
 import matplotlib.pyplot as plt
 import pandas as pd
+import shutil
 
 import openstudio  # ver 3.2.0 !pip list
 from EmsPy import emspy
@@ -10,9 +11,11 @@ os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 # OMP: Error #15: Initializing libiomp5md.dll, but found libiomp5md.dll already initialized.
 
 ep_path = 'A:/Programs/EnergyPlusV9-5-0/'
-ep_idf_to_run = 'A:/Files/PycharmProjects/RL-BCA/OpenStudio_Models/idf_files/5office_small_ems.idf'
+idf_file = 'ems_base'
+os_folder = 'A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models'
+ep_idf_to_run = os_folder + '/Test_Unitary/idf_files/' + idf_file + '.idf'
 ep_weather_path = 'A:/Files/PycharmProjects/RL-BCA/OpenStudio_Models/5office_small_ems/files/USA_FL_Tampa-MacDill.AFB.747880_TMY3.epw'
-cvs_output_path = 'electricity_dfs'
+cvs_output_path = 'Test_DFs/' + idf_file + '_control_df'
 
 # --- create EMS Table of Contents (TC) for sensors/actuators ---
 # vars_tc = {"attr_handle_name": ["variable_type", "variable_key"],...}
@@ -71,7 +74,7 @@ weather_tc = {
     'oa_rh': 'outdoor_relative_humidity'
 }
 
-timesteps = 30
+timesteps = 20
 # create calling point with actuation function
 calling_point = 'callback_after_predictor_after_hvac_managers'
 
@@ -80,7 +83,7 @@ class Agent:
         pass
 
     def observe(self):
-        return 5
+        pass
 
     def act(self):
 
@@ -105,13 +108,17 @@ sim = emspy.BcaEnv(ep_path, ep_idf_to_run, timesteps, vars_tc, int_vars_tc, mete
 # create RL agent obj
 agent = Agent()
 
-sim.set_calling_point_and_callback_function(calling_point, agent.observe, agent.act, True, 1, 1)
-sim.init_custom_dataframe_dict('setpoints', calling_point, 1, ['z0_cool_sp', 'setpoint_z0_cool_sp'])
+sim.set_calling_point_and_callback_function(calling_point, None, agent.act, True, 1, 1)
+sim.init_custom_dataframe_dict('custom_df', calling_point, 1, ['z0_cool_sp', 'setpoint_z0_cool_sp'])  # TODO
 # RUN
 sim.run_env(ep_weather_path)
 sim.reset_state()
 
-dfs = sim.get_df(to_csv_file=cvs_output_path)
+dfs = sim.get_df()
+# dfs = sim.get_df(to_csv_file=cvs_output_path)
+
+# move out folder to openstudio folder
+# shutil.move('out', os_folder + '5office_small_ems' + '/out')
 
 
 

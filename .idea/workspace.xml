@@ -19,10 +19,21 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="fixed actuator setpoints, all working">
+    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="updated actuator setpoint name, got rid of timestep as obj input. no longer fetch timestep">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmsPy/default_dfs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/EmsPy/emspy.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/emspy.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EmsPy/model_debugger.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/model_debugger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmsPy/model_plotter.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/model_plotter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmsPy/people_dfs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmsPy/z0_always_on_dfs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenStudio_Models/5office_small_base_model.osm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenStudio_Models/5office_small_ems.osm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenStudio_Models/5office_small_ems_modified.osm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenStudio_Models/idf_files/5office_small_ems.idf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenStudio_Models/idf_files/5office_small_ems_all_on.idf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenStudio_Models/idf_files/5office_small_ems_extra.idf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenStudio_Models/idf_files/5office_small_ems_z0_on.idf" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,11 +97,11 @@
       <recent name="A:\Files\PycharmProjects\RL-BCA\PyEMS" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\BEM_Custom\Base" />
+      <recent name="A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\Test_Unitary\DFs" />
+      <recent name="A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\Test_Unitary\idf_files" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\ModelRunTests" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\EmsPy\ModelRunTests" />
-      <recent name="A:\Files\PycharmProjects\RL-BCA" />
-      <recent name="A:\Files\PycharmProjects\RL-BCA\EmsPy\Testscripts" />
-      <recent name="A:\Files\PycharmProjects\RL-BCA\ModelRunTests\small_office_tests" />
     </key>
   </component>
   <component name="RunManager" selected="Python.model_plotter">
@@ -98,6 +109,9 @@
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/EmsPy" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -191,16 +205,16 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.scratch" />
-      <item itemvalue="Python.scratch_1" />
+      <item itemvalue="Python.emspy" />
       <item itemvalue="Python.model_debugger" />
       <item itemvalue="Python.model_plotter" />
-      <item itemvalue="Python.emspy" />
+      <item itemvalue="Python.scratch" />
+      <item itemvalue="Python.scratch_1" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.model_plotter" />
-        <item itemvalue="Python.emspy" />
+        <item itemvalue="Python.model_debugger" />
         <item itemvalue="Python.model_plotter" />
         <item itemvalue="Python.model_plotter" />
         <item itemvalue="Python.model_plotter" />
@@ -218,55 +232,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1620762811392</updated>
-    </task>
-    <task id="LOCAL-00020" summary="added ems_dict for quick var category and count tracking, within RL branch">
-      <created>1622135018387</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1622135018387</updated>
-    </task>
-    <task id="LOCAL-00021" summary="fixed actuation, calling point dicts, and RL basic framework - still lots TODO">
-      <created>1622153091209</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1622153091209</updated>
-    </task>
-    <task id="LOCAL-00022" summary="back on main pycharm">
-      <created>1622564212725</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1622564212725</updated>
-    </task>
-    <task id="LOCAL-00023" summary="updated df creation and updating - wop">
-      <created>1622693785964</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1622693785964</updated>
-    </task>
-    <task id="LOCAL-00024" summary="compressed update time &amp; data into just update state to assist dataframe updates">
-      <created>1622746570832</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1622746570832</updated>
-    </task>
-    <task id="LOCAL-00025" summary="redesigned dataframe creation, put at end, packed every input into __init__, gave callback state &amp; act update freq">
-      <created>1622815322749</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1622815322749</updated>
-    </task>
-    <task id="LOCAL-00026" summary="debug in process, updated testscript">
-      <created>1622816993331</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1622816993331</updated>
     </task>
     <task id="LOCAL-00027" summary="debugging, attribute var name change - reorder,">
       <created>1622865565587</created>
@@ -562,7 +527,56 @@
       <option name="project" value="LOCAL" />
       <updated>1626406639416</updated>
     </task>
-    <option name="localTasksCounter" value="69" />
+    <task id="LOCAL-00069" summary="added simple scalar reward tracker to sim">
+      <created>1626408399117</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1626408399117</updated>
+    </task>
+    <task id="LOCAL-00070" summary="fixed single and multi reward tracking attributes">
+      <created>1626454667944</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1626454667945</updated>
+    </task>
+    <task id="LOCAL-00071" summary="reward df not working">
+      <created>1626622425229</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1626622425231</updated>
+    </task>
+    <task id="LOCAL-00072" summary="finally fixed custom dfs with reward, not ideal robustness">
+      <created>1626646553778</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1626646553778</updated>
+    </task>
+    <task id="LOCAL-00073" summary="updated init timestep to fetch from idf">
+      <created>1627349284891</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1627349284892</updated>
+    </task>
+    <task id="LOCAL-00074" summary="updated init timestep to fetch from idf">
+      <created>1627349337538</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1627349337538</updated>
+    </task>
+    <task id="LOCAL-00075" summary="updated actuator setpoint name, got rid of timestep as obj input. no longer fetch timestep">
+      <created>1627349975437</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1627349975437</updated>
+    </task>
+    <option name="localTasksCounter" value="76" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -578,12 +592,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="add note about custom class in script" />
-    <MESSAGE value="added timestep verify, tested custom dataframes" />
-    <MESSAGE value="update get_ems_data to handle single metric or list" />
-    <MESSAGE value="update timestep error handling" />
-    <MESSAGE value="updated documentation, actuation function inputs" />
-    <MESSAGE value="updated documentation, actuation function inputs, made major changes to get ems data" />
     <MESSAGE value="updated error handling to custom dataframes, updated available callback list and function, added timestep data list" />
     <MESSAGE value="added observation fxn alongside actuation function for making custom callbacks - fits MDP RL framework" />
     <MESSAGE value="folder rearagnement" />
@@ -603,7 +611,13 @@
     <MESSAGE value="v1 of model plotter" />
     <MESSAGE value="various idfs and plots" />
     <MESSAGE value="fixed actuator setpoints, all working" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed actuator setpoints, all working" />
+    <MESSAGE value="added simple scalar reward tracker to sim" />
+    <MESSAGE value="fixed single and multi reward tracking attributes" />
+    <MESSAGE value="reward df not working" />
+    <MESSAGE value="finally fixed custom dfs with reward, not ideal robustness" />
+    <MESSAGE value="updated init timestep to fetch from idf" />
+    <MESSAGE value="updated actuator setpoint name, got rid of timestep as obj input. no longer fetch timestep" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated actuator setpoint name, got rid of timestep as obj input. no longer fetch timestep" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
