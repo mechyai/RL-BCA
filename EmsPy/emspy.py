@@ -127,9 +127,7 @@ class EmsPy:
         self.minutes = []
         self.time_x = []
         # timestep
-        self.timesteps_zone = []
         self.timesteps_zone_num = []
-        self.timestep_zone_current = 0
         self.timestep_zone_num_current = 0  # fluctuate from 1 to # of timesteps/hour
         self.timestep_per_hour = self._init_timestep(timesteps)  # sim timesteps per hour
         self.timestep_period = 60 // self.timestep_per_hour  # minute duration of each timestep of simulation
@@ -205,7 +203,7 @@ class EmsPy:
     def _init_timestep(self, timestep: int) -> int:
         """This function is used to verify timestep input correctness & report any details/changes."""
 
-        # TODO pull from idf api.exchange.num_time_steps_in_hour
+        # TODO pull from idf api.exchange.num_time_steps_in_hour, must happen once simulation runs
         available_timesteps = [1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60]
 
         if timestep not in available_timesteps:
@@ -291,7 +289,6 @@ class EmsPy:
         day = datax.day_of_month(state)
         hour = datax.hour(state)
         minute = datax.minutes(state)
-        timestep_zone = datax.zone_time_step(state)
         timestep_zone_num = datax.zone_time_step_number(state)
 
         # set, append
@@ -304,8 +301,6 @@ class EmsPy:
         self.hours.append(hour)
         self.minutes.append(minute)
         # timesteps
-        self.timesteps_zone.append(timestep_zone)
-        self.timestep_zone_current = timestep_zone
         self.timesteps_zone_num.append(timestep_zone_num)
         self.timestep_zone_num_current = timestep_zone_num
 
@@ -551,9 +546,8 @@ class EmsPy:
                                                                                             update_act_freq))
 
     def _init_custom_dataframe_dict(self):
-        """
-        Initializes custom EMS metric dataframes attributes at specific calling points & frequencies.
-        """
+        """Initializes custom EMS metric dataframes attributes at specific calling points & frequencies."""
+
         # add to dataframe  to fetch & track data during sim
         for df_name in self.df_custom_dict:
             ems_metrics, calling_point, update_freq = self.df_custom_dict[df_name]
@@ -578,20 +572,20 @@ class EmsPy:
                         ems_custom_dict[metric] = []
                 else:
                     ems_custom_dict[metric] = []  # single reward
-            # udpate custom df tracking list
+            # update custom df tracking list
             self.df_custom_dict[df_name][0] = ems_custom_dict
 
     def _update_custom_dataframe_dicts(self, calling_point):
         """Updates dataframe data based on desired calling point, timestep frequency, and specific ems vars."""
 
+        # TODO handle redundant data collection when cp and freq are identical to default (may not always be applicable)
         if not self.df_custom_dict:
             return  # no custom dicts created
         # iterate through and update all default and user-defined dataframes
-        # TODO handle redundant data collection when cp and freq are identical to default (may not always be applicable)
         for df_name in self.df_custom_dict:
             ems_dict, cp, update_freq = self.df_custom_dict[df_name]  # unpack value
-            if cp is calling_point and self.timestep_total_count % update_freq == 0:
-                reward_index = 0  # TODO make not dependent on perfect order of reward, make robust to reward name int
+            if cp is calling_point and self.timestep_zone_num_current % update_freq == 0:
+                reward_index = 0  # TODO make independent of perfect order of reward, make robust to reward name int
                 for ems_name in ems_dict:
                     # get most recent data point
                     if ems_name is 'Datetime':
@@ -682,13 +676,16 @@ class EmsPy:
 
         # RUN SIMULATION
         print('* * * Running E+ Simulation * * *')
-        self.api.runtime.run_energyplus(self.state, ['-w', weather_file, '-d', 'out', self.idf_file])   # cmd line args
-        self.simulation_ran = True
-        # create default and custom ems pandas df's after simulation complete
-        print('* * * Simulation Done * * *')
-        self._create_default_dataframes()
-        self._create_custom_dataframes()
-        print('* * * DF Creation Done * * *')
+        sim_success = self.api.runtime.run_energyplus(self.state, ['-w', weather_file, '-d', 'out', self.idf_file])   # cmd line args
+        if sim_success != 0:
+            print('* * * Simulation FAILED * * *')
+        else:  # simulation successful
+            self.simulation_ran = True
+            print('* * * Simulation Done * * *')
+            # create default and custom ems pandas df's after simulation complete
+            self._create_default_dataframes()
+            self._create_custom_dataframes()
+            print('* * * DF Creation Done * * *')
 
 
 class BcaEnv(EmsPy):
