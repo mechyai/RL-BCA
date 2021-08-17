@@ -162,7 +162,7 @@ class EmsPy:
         ems_types = ['var', 'intvar', 'meter', 'actuator']
         for ems_type in ems_types:
             ems_tc = getattr(self, 'tc_' + ems_type)
-            if ems_tc is not None:
+            if ems_tc is not None and ems_tc:  # catch 'None' and '{}' input for TC:
                 for ems_name in ems_tc:
                     if ems_name in self.ems_names_master_list:
                         raise ValueError(f'ERROR: EMS metric user-defined names must be unique, '
@@ -185,7 +185,7 @@ class EmsPy:
     def _init_weather_data(self):
         """Creates and initializes the necessary instance attributes given by the user for present weather metrics."""
 
-        if self.tc_weather is not None:
+        if self.tc_weather is not None and self.tc_weather:  # catch 'None' and '{}' input for Weather TC
             # verify provided weather ToC is accurate/acceptable
             for weather_name, weather_metric in self.tc_weather.items():
                 if weather_metric not in EmsPy.available_weather_metrics:
