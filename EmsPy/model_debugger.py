@@ -14,7 +14,7 @@ ep_path = 'A:/Programs/EnergyPlusV9-5-0/'
 idf_file = 'ems_base'
 os_folder = 'A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models'
 ep_idf_to_run = os_folder + '/Test_Unitary/idf_files/' + idf_file + '.idf'
-ep_weather_path = 'A:/Files/PycharmProjects/RL-BCA/OpenStudio_Models/5office_small_ems/files/USA_FL_Tampa-MacDill.AFB.747880_TMY3.epw'
+ep_weather_path = r'A:\Files\PycharmProjects\RL-BCA\Resource_Files\reference_weather\5A_USA_IL_CHICAGO-OHARE_TMY2.epw'
 cvs_output_path = 'Test_DFs/' + idf_file + '_control_df'
 
 # --- create EMS Table of Contents (TC) for sensors/actuators ---
@@ -24,7 +24,10 @@ cvs_output_path = 'Test_DFs/' + idf_file + '_control_df'
 # actuators_tc = {"attr_handle_name": ["component_type", "control_type", "actuator_key"],...}
 # weather_tc = {"attr_name": "weather_metric",...}
 int_vars_tc = None
-meters_tc = None
+meters_tc = {
+    'z0_e_hr': 'Electricity:Zone:CORE_ZN ZN',
+    'z0_hvac_electricity': 'z0_hvac_electricity'
+}
 vars_tc = {
     # zones temps
     'z0_temp': ['Zone Air Temperature', 'Core_ZN ZN'],
@@ -108,8 +111,10 @@ sim = emspy.BcaEnv(ep_path, ep_idf_to_run, timesteps, vars_tc, int_vars_tc, mete
 # create RL agent obj
 agent = Agent()
 
-sim.set_calling_point_and_callback_function(calling_point, None, agent.act, True, 1, 1)
-sim.init_custom_dataframe_dict('custom_df', calling_point, 1, ['z0_cool_sp', 'setpoint_z0_cool_sp'])  # TODO
+sim.set_calling_point_and_callback_function(calling_point, None, None, True, 1, 1)
+# sim.init_custom_dataframe_dict('custom_df', calling_point, 1, ['z0_cool_sp', 'setpoint_z0_cool_sp'])  # actuator lag
+sim.init_custom_dataframe_dict('meters_hourly_df', calling_point, timesteps, meters_tc.keys())  # hourly meter
+
 # RUN
 sim.run_env(ep_weather_path)
 sim.reset_state()

@@ -19,21 +19,16 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="updated actuator setpoint name, got rid of timestep as obj input. no longer fetch timestep">
+    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="simulation success check added">
+      <change afterPath="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_Sched/model_sched_debug.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/epresults/epsql.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmsPy/default_dfs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/EmsPy/emspy.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/emspy.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EmsPy/model_debugger.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/model_debugger.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmsPy/model_plotter.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/model_plotter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmsPy/people_dfs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmsPy/z0_always_on_dfs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenStudio_Models/5office_small_base_model.osm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenStudio_Models/5office_small_ems.osm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenStudio_Models/5office_small_ems_modified.osm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenStudio_Models/idf_files/5office_small_ems.idf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenStudio_Models/idf_files/5office_small_ems_all_on.idf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenStudio_Models/idf_files/5office_small_ems_extra.idf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenStudio_Models/idf_files/5office_small_ems_z0_on.idf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ModelRunTests/small_office_tests/RefBldgSmallOfficeNew2004_v1.3_5.0_6A_USA_MN_MINNEAPOLIS.idf" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/ModelRunTests/small_office_tests/RefBldgSmallOfficeNew2004_v1.3_5.0_6A_USA_MN_MINNEAPOLIS.idf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ModelRunTests/small_office_tests/emspy_testscript1.py" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/ModelRunTests/small_office_tests/emspy_testscript1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ModelRunTests/small_office_tests/out/eplusout.end" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/ModelRunTests/small_office_tests/out/eplusout.end" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ModelRunTests/small_office_tests/out/eplusout.err" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/ModelRunTests/small_office_tests/out/eplusout.err" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,39 +80,36 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="TEXT&#10;Python" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/ModelRunTests" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_Sched" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\BEM_Custom\Base_Sched" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\ModelRunTests" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\EmsPy" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\ModelRunTests\small_office_tests" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\EmsPy\ModelRunTests" />
-      <recent name="A:\Files\PycharmProjects\RL-BCA\PyEMS" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="A:\Files\PycharmProjects\RL-BCA\epresults" />
+      <recent name="A:\Files\PycharmProjects\RL-BCA\EmsPy" />
+      <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples" />
+      <recent name="A:\Files\PycharmProjects\RL-BCA\EmsPy\Testscripts" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\BEM_Custom\Base" />
-      <recent name="A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\Test_Unitary\DFs" />
-      <recent name="A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\Test_Unitary\idf_files" />
-      <recent name="A:\Files\PycharmProjects\RL-BCA\ModelRunTests" />
-      <recent name="A:\Files\PycharmProjects\RL-BCA\EmsPy\ModelRunTests" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.model_plotter">
-    <configuration name="emspy" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.model_sched_debug">
+    <configuration name="epsql" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/EmsPy" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/epresults" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/EmsPy/emspy.py" />
+      <option name="SCRIPT_NAME" value="A:\Files\PycharmProjects\RL-BCA\epresults\epsql.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -144,16 +136,16 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="model_plotter" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="model_sched_debug" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/EmsPy" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_Sched" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/EmsPy/model_plotter.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_Sched/model_sched_debug.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -205,19 +197,19 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.emspy" />
       <item itemvalue="Python.model_debugger" />
-      <item itemvalue="Python.model_plotter" />
       <item itemvalue="Python.scratch" />
       <item itemvalue="Python.scratch_1" />
+      <item itemvalue="Python.epsql" />
+      <item itemvalue="Python.model_sched_debug" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.model_plotter" />
+        <item itemvalue="Python.model_sched_debug" />
         <item itemvalue="Python.model_debugger" />
-        <item itemvalue="Python.model_plotter" />
-        <item itemvalue="Python.model_plotter" />
-        <item itemvalue="Python.model_plotter" />
+        <item itemvalue="Python.epsql" />
+        <item itemvalue="Python.epsql" />
+        <item itemvalue="Python.epsql" />
       </list>
     </recent_temporary>
   </component>
@@ -232,20 +224,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1620762811392</updated>
-    </task>
-    <task id="LOCAL-00027" summary="debugging, attribute var name change - reorder,">
-      <created>1622865565587</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1622865565587</updated>
-    </task>
-    <task id="LOCAL-00028" summary="debugging, attribute var name change - reorder,&#10;custom df completed and debugged!">
-      <created>1622909180668</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1622909180668</updated>
     </task>
     <task id="LOCAL-00029" summary="test script updated, working">
       <created>1622909201552</created>
@@ -576,7 +554,21 @@
       <option name="project" value="LOCAL" />
       <updated>1627349975437</updated>
     </task>
-    <option name="localTasksCounter" value="76" />
+    <task id="LOCAL-00076" summary="updated actuator setpoint name, got rid of timestep as obj input. no longer fetch timestep">
+      <created>1627608510740</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1627608510740</updated>
+    </task>
+    <task id="LOCAL-00077" summary="simulation success check added">
+      <created>1628799986916</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1628799986918</updated>
+    </task>
+    <option name="localTasksCounter" value="78" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -592,7 +584,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="updated error handling to custom dataframes, updated available callback list and function, added timestep data list" />
     <MESSAGE value="added observation fxn alongside actuation function for making custom callbacks - fits MDP RL framework" />
     <MESSAGE value="folder rearagnement" />
     <MESSAGE value="removed list of single ems data points returned" />
@@ -617,7 +608,8 @@
     <MESSAGE value="finally fixed custom dfs with reward, not ideal robustness" />
     <MESSAGE value="updated init timestep to fetch from idf" />
     <MESSAGE value="updated actuator setpoint name, got rid of timestep as obj input. no longer fetch timestep" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated actuator setpoint name, got rid of timestep as obj input. no longer fetch timestep" />
+    <MESSAGE value="simulation success check added" />
+    <option name="LAST_COMMIT_MESSAGE" value="simulation success check added" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

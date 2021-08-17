@@ -17,7 +17,7 @@ project_path = 'A:/Files/PycharmProjects/RL-BCA' + project_name
 
 # ep_file_path = ''  # path to .idf file for simulation
 ep_idf_to_run = project_path + 'RefBldgSmallOfficeNew2004_v1.3_5.0_6A_USA_MN_MINNEAPOLIS.idf'
-ep_weather_path = 'A:\\Files\\PycharmProjects\\RL-BCA\\Resource_Files\\reference_weather\\6A_USA_MN_MINNEAPOLIS_TMY2.epw'
+ep_weather_path = '/Resource_Files/reference_weather/6A_USA_MN_MINNEAPOLIS_TMY2.epw'
 
 # TODO update to dict usage
 # define EMS sensors and actuators to be used via 'Table of Contents'

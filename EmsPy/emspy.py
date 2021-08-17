@@ -131,7 +131,7 @@ class EmsPy:
         self.timestep_zone_num_current = 0  # fluctuate from 1 to # of timesteps/hour
         self.timestep_per_hour = self._init_timestep(timesteps)  # sim timesteps per hour
         self.timestep_period = 60 // self.timestep_per_hour  # minute duration of each timestep of simulation
-        self.timestep_total_count = 0  # cnt for entire simulation # TODO not updated, how to enforce only once per ts, use a set, update length
+        self.timestep_total_count = 0  # cnt for entire simulation
         # callback data
         self.callbacks = []
         self.callback_count = 0
@@ -332,7 +332,7 @@ class EmsPy:
 
     def _update_ems_and_weather_vals(self, ems_metrics_list: list):
         """Fetches and updates given sensor/actuator/weather values to data lists/dicts from running simulation."""
-        # TODO how to handle user-specified TIMING updates
+        # TODO how to handle user-specified TIMING updates separate from state, right now they are joint
         # specific data exchange API function calls
         datax = self.api.exchange
         ems_datax_func = {'var': datax.get_variable_value,
