@@ -130,9 +130,10 @@ class EmsPy:
         # timestep
         self.timesteps_zone_num = []
         self.timestep_zone_num_current = 0  # fluctuate from 1 to # of timesteps/hour
-        self.timestep_per_hour = self._init_timestep(timesteps)  # sim timesteps per hour
-        self.timestep_period = 60 // self.timestep_per_hour  # minute duration of each timestep of simulation
         self.timestep_total_count = 0  # cnt for entire simulation
+        self.timestep_per_hour = None  # sim timesteps per hour, initialized later
+        self.timestep_period = None  # minute duration of each timestep of simulation, initialized later
+        self.timestep_params_initialized = False
         # callback data
         self.callbacks = []
         self.callback_count = 0
@@ -201,17 +202,19 @@ class EmsPy:
             self.ems_num_dict['weather'] = len(self.tc_weather)
             self.df_count += 1
 
-    def _init_timestep(self, timestep: int) -> int:
-        """This function is used to verify timestep input correctness & report any details/changes."""
+    def _init_timestep(self) -> int:
+        """This function is used to fetch the timestep input from the IDF model & report basic details."""
 
-        # TODO pull from idf api.exchange.num_time_steps_in_hour, must happen once simulation runs
+        # returns fractional hour, convert to timestep/hr TODO determine robustness of the api.exchange function
+        timestep = int(1 // self.api.exchange.zone_time_step(self.state))
         available_timesteps = [1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60]
-
         if timestep not in available_timesteps:
             raise ValueError(f'ERROR: Your choice of number of timesteps per hour, {timestep}, must be evenly divisible'
                              f' into 60 minutes: {available_timesteps}')
         else:
-            print(f'*NOTE: Your simulation timestep period is {60 // timestep} minutes @ {timestep} timesteps an hour.')
+            self.timestep_period = 60 // timestep
+            print(f'*NOTE: Your simulation timestep period is {self.timestep_period} minutes @ {timestep} timesteps an'
+                  f' hour.')
             return timestep
 
     def _init_reward(self, reward):
@@ -477,7 +480,13 @@ class EmsPy:
 
             :param state_arg: NOT USED by this API - passed to and used internally by EnergyPlus simulation
             """
-            # get ems handles once
+            # TODO handle the "ONCE" actions once in a seperate/automatic callback, will issues arise if user wants to use the CP for their own purposes
+            # init Timestep params ONCE
+            if not self.timestep_params_initialized:
+                self._init_timestep()
+                self.timestep_params_initialized = True
+
+            # get EMS handles ONCE
             if not self.got_ems_handles:
                 # verify ems objects are ready for access, skip until
                 if not self.api.exchange.api_data_fully_ready(state_arg):
@@ -541,7 +550,6 @@ class EmsPy:
         for calling_key in self.calling_point_actuation_dict:
             # check if user-specified calling point is correct and available
             if calling_key not in self.available_calling_points:
-                print(calling_key)
                 raise Exception(f'ERROR: This calling point \'{calling_key}\' is not a valid calling point. Please see'
                                 f' the Python API documentation and available calling point list: '
                                 f'EmsPy.available_calling_points class attribute.')

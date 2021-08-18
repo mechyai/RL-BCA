@@ -46,8 +46,8 @@ weather_tc = {
 
 timesteps = 6
 # create calling point with actuation function
-# calling_point = 'callback_after_predictor_after_hvac_managers'
-calling_point = 'callback_end_system_timestep_before_hvac_reporting'
+calling_point = 'callback_after_predictor_after_hvac_managers'  # system timestep
+# calling_point = 'callback_end_system_timestep_after_hvac_reporting'  # HVAC iteration loop
 # calling_point = 'callback_begin_zone_timestep_before_init_heat_balance'
 
 class Agent:

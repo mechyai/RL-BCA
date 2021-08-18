@@ -19,8 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="reenabled redundant callback catch">
-      <change afterPath="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_Sched/People_Sched_Control_Test/eplusout.edd" afterDir="false" />
+    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="rearange calling point order, changed simulation success attribute and dependent post-sim functions">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EmsPy/emspy.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/emspy.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_Sched/model_sched_debug.py" beforeDir="false" afterPath="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_Sched/model_sched_debug.py" afterDir="false" />
@@ -219,13 +218,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1620762811392</updated>
-    </task>
-    <task id="LOCAL-00034" summary="removed cp dict from init and added method">
-      <created>1623214718120</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1623214718120</updated>
     </task>
     <task id="LOCAL-00035" summary="changing ToC and actuation to dicts now">
       <created>1623348249373</created>
@@ -563,7 +555,14 @@
       <option name="project" value="LOCAL" />
       <updated>1629304453158</updated>
     </task>
-    <option name="localTasksCounter" value="83" />
+    <task id="LOCAL-00083" summary="rearange calling point order, changed simulation success attribute and dependent post-sim functions">
+      <created>1629310453269</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1629310453270</updated>
+    </task>
+    <option name="localTasksCounter" value="84" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -579,7 +578,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="changed get_df to return dictionary" />
     <MESSAGE value="updated output messages" />
     <MESSAGE value="fixing timestep method finally, added attribute update helper function" />
     <MESSAGE value="minor bug fixed, model debugger running, changed get_ems_data and other related" />
@@ -604,7 +602,8 @@
     <MESSAGE value="added callback code to skip sub-timestep callback" />
     <MESSAGE value="update callback list" />
     <MESSAGE value="reenabled redundant callback catch" />
-    <option name="LAST_COMMIT_MESSAGE" value="reenabled redundant callback catch" />
+    <MESSAGE value="rearange calling point order, changed simulation success attribute and dependent post-sim functions" />
+    <option name="LAST_COMMIT_MESSAGE" value="rearange calling point order, changed simulation success attribute and dependent post-sim functions" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
