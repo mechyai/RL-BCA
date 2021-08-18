@@ -11,7 +11,7 @@ os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 # OMP: Error #15: Initializing libiomp5md.dll, but found libiomp5md.dll already initialized.
 
 ep_path = 'A:/Programs/EnergyPlusV9-5-0/'
-idf_file = r'\in_modified.idf'
+idf_file = r'\People_Sched_Control_Test\in_modified_scheds_test.idf'
 os_folder = r'A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\BEM_Custom\Base_Sched'
 ep_idf_to_run = os_folder + idf_file
 ep_weather_path = os_folder + r'\BEM_5z_Unitary_base_sched\files\USA_NY_Buffalo.Niagara.Intl.AP.725280_TMY3.epw'
@@ -47,7 +47,8 @@ weather_tc = {
 timesteps = 6
 # create calling point with actuation function
 # calling_point = 'callback_after_predictor_after_hvac_managers'
-calling_point = 'callback_end_system_timestep_after_hvac_reporting'
+calling_point = 'callback_end_system_timestep_before_hvac_reporting'
+# calling_point = 'callback_begin_zone_timestep_before_init_heat_balance'
 
 class Agent:
     def __init__(self):

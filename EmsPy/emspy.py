@@ -22,17 +22,18 @@ class EmsPy:
                                  'sky_temperature', 'wind_direction', 'wind_speed']
 
     available_calling_points = ['callback_after_component_get_input',
+                                'callback_end_zone_sizing',
+                                'callback_end_system_sizing',
+                                'callback_begin_new_environment',
                                 'callback_after_new_environment_warmup_complete',
+                                'callback_begin_zone_timestep_before_init_heat_balance',
+                                'callback_begin_zone_timestep_after_init_heat_balance',
                                 'callback_after_predictor_after_hvac_managers',
                                 'callback_after_predictor_before_hvac_managers',
-                                'callback_begin_new_environment',
                                 'callback_begin_system_timestep_before_predictor',
-                                'callback_begin_zone_timestep_after_init_heat_balance',
                                 'callback_begin_zone_timestep_before_set_current_weather',
-                                'callback_end_system_sizing',
                                 'callback_end_system_timestep_after_hvac_reporting',
-                                'callback_end_system_timestep_before_hvac_reporting'
-                                'callback_end_zone_sizing',
+                                'callback_end_system_timestep_before_hvac_reporting',
                                 'callback_end_zone_timestep_after_zone_reporting',
                                 'callback_end_zone_timestep_before_zone_reporting',
                                 'callback_inside_system_iteration_loop']
@@ -144,7 +145,7 @@ class EmsPy:
         self.rewards_cnt = None
 
         # simulation data
-        self.simulation_ran = False
+        self.simulation_success = 1  # 1 fail, 0 success
 
     def _init_ems_handles_and_data(self):
         """
@@ -497,7 +498,7 @@ class EmsPy:
                 if self.timesteps_zone_num[-1] == self.timestep_zone_num_current:
                     # verify with (timestep/hr) * (24 hrs) * (# of days of sim) == data/df length
                     print('-- Sub-Timestep Callback --')
-                    return  # skip callback
+                    # return  # skip callback
             except IndexError:
                 pass  # catch first iter when no data available
 
@@ -540,8 +541,9 @@ class EmsPy:
         for calling_key in self.calling_point_actuation_dict:
             # check if user-specified calling point is correct and available
             if calling_key not in self.available_calling_points:
+                print(calling_key)
                 raise Exception(f'ERROR: This calling point \'{calling_key}\' is not a valid calling point. Please see'
-                                f' the Python API documentation and available calling point list'
+                                f' the Python API documentation and available calling point list: '
                                 f'EmsPy.available_calling_points class attribute.')
             else:
                 # unpack observation & actuation fxns and callback fxn arguments
@@ -686,11 +688,10 @@ class EmsPy:
 
         # RUN SIMULATION
         print('* * * Running E+ Simulation * * *')
-        sim_success = self.api.runtime.run_energyplus(self.state, ['-w', weather_file, '-d', 'out', self.idf_file])   # cmd line args
-        if sim_success != 0:
+        self.simulation_success = self.api.runtime.run_energyplus(self.state, ['-w', weather_file, '-d', 'out', self.idf_file])   # cmd line args
+        if self.simulation_success != 0:
             print('* * * Simulation FAILED * * *')
         else:  # simulation successful
-            self.simulation_ran = True
             print('* * * Simulation Done * * *')
             # create default and custom ems pandas df's after simulation complete
             self._create_default_dataframes()
@@ -897,8 +898,9 @@ class BcaEnv(EmsPy):
         if not self.calling_point_actuation_dict:
             raise Exception('ERROR: There is no dataframe data to collect and return, please specific calling point(s)'
                             ' first.')
-        if not self.simulation_ran:
-            raise Exception('ERROR: Simulation must be ran first to fetch data.')
+        if self.simulation_success != 0:
+            raise Exception('ERROR: Simulation must be run successfully first to fetch data. See EnergyPlus errors,'
+                            ' eplusout.err')
 
         all_df = pd.DataFrame()  # merge all into 1 df
         return_df = {}

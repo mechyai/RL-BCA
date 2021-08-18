@@ -19,7 +19,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="update callback list">
+    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="reenabled redundant callback catch">
+      <change afterPath="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_Sched/People_Sched_Control_Test/eplusout.edd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EmsPy/emspy.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/emspy.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_Sched/model_sched_debug.py" beforeDir="false" afterPath="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_Sched/model_sched_debug.py" afterDir="false" />
     </list>
@@ -73,23 +75,23 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="TEXT&#10;Python" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_Sched" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_Sched/Sched_Control_Test" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\BEM_Custom\Base_Sched\Sched_Control_Test" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\BEM_Custom\Base_Sched" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\ModelRunTests" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\EmsPy" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\ModelRunTests\small_office_tests" />
-      <recent name="A:\Files\PycharmProjects\RL-BCA\EmsPy\ModelRunTests" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\BEM_Custom\Base_Sched\Sched_Control_Test" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\epresults" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\EmsPy" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\EmsPy\Testscripts" />
-      <recent name="A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\BEM_Custom\Base" />
     </key>
   </component>
   <component name="RunManager" selected="Python.model_sched_debug">
@@ -217,13 +219,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1620762811392</updated>
-    </task>
-    <task id="LOCAL-00033" summary="fixed get ems data function to handle all user defined errors">
-      <created>1623210594586</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1623210594586</updated>
     </task>
     <task id="LOCAL-00034" summary="removed cp dict from init and added method">
       <created>1623214718120</created>
@@ -561,7 +556,14 @@
       <option name="project" value="LOCAL" />
       <updated>1629304044265</updated>
     </task>
-    <option name="localTasksCounter" value="82" />
+    <task id="LOCAL-00082" summary="reenabled redundant callback catch">
+      <created>1629304453158</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1629304453158</updated>
+    </task>
+    <option name="localTasksCounter" value="83" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -577,7 +579,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="starting base script" />
     <MESSAGE value="changed get_df to return dictionary" />
     <MESSAGE value="updated output messages" />
     <MESSAGE value="fixing timestep method finally, added attribute update helper function" />
@@ -602,7 +603,8 @@
     <MESSAGE value="catch {} and None ToC input from user, don't create default DFs" />
     <MESSAGE value="added callback code to skip sub-timestep callback" />
     <MESSAGE value="update callback list" />
-    <option name="LAST_COMMIT_MESSAGE" value="update callback list" />
+    <MESSAGE value="reenabled redundant callback catch" />
+    <option name="LAST_COMMIT_MESSAGE" value="reenabled redundant callback catch" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -629,18 +631,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/EmsPy/emspy.py</url>
-          <line>636</line>
-          <option name="timeStamp" value="12" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/EmsPy/emspy.py</url>
-          <line>634</line>
-          <option name="timeStamp" value="13" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/EmsPy/emspy.py</url>
-          <line>490</line>
-          <option name="timeStamp" value="14" />
+          <line>499</line>
+          <option name="timeStamp" value="17" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
