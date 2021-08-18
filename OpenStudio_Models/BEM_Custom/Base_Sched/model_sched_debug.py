@@ -11,10 +11,10 @@ os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 # OMP: Error #15: Initializing libiomp5md.dll, but found libiomp5md.dll already initialized.
 
 ep_path = 'A:/Programs/EnergyPlusV9-5-0/'
-idf_file = r'\run\in.idf'
-os_folder = r'A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\BEM_Custom\Base_Sched\BEM_5z_Unitary_base_sched'
-ep_idf_to_run = os_folder +  idf_file
-ep_weather_path = os_folder + r'\files\USA_NY_Buffalo.Niagara.Intl.AP.725280_TMY3.epw'
+idf_file = r'\in_modified.idf'
+os_folder = r'A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\BEM_Custom\Base_Sched'
+ep_idf_to_run = os_folder + idf_file
+ep_weather_path = os_folder + r'\BEM_5z_Unitary_base_sched\files\USA_NY_Buffalo.Niagara.Intl.AP.725280_TMY3.epw'
 cvs_output_path = ''
 
 # --- create EMS Table of Contents (TC) for sensors/actuators ---
@@ -23,10 +23,15 @@ cvs_output_path = ''
 # meters_tc = {"attr_handle_name": "meter_name",...}
 # actuators_tc = {"attr_handle_name": ["component_type", "control_type", "actuator_key"],...}
 # weather_tc = {"attr_name": "weather_metric",...}
-int_vars_tc = {}
-meters_tc = {}
+int_vars_tc = {
+}
+meters_tc = {
+}
 vars_tc = {
     # people count
+    'z0_ppl_sched_dummy': ['Schedule Value', 'OfficeSmall BLDG_OCC_SCH DUMMY'],  # occupancy dummy sched
+    'z0_ppl_sched': ['Schedule Value', 'OfficeSmall BLDG_OCC_SCH'],
+    # EMS output
     'z0_ppl': ['Zone People Occupant Count', 'Core_ZN ZN'],
     'z1_ppl': ['Zone People Occupant Count', 'Perimeter_ZN_1 ZN'],
     'z2_ppl': ['Zone People Occupant Count', 'Perimeter_ZN_2 ZN'],
@@ -34,6 +39,7 @@ vars_tc = {
     'z4_ppl': ['Zone People Occupant Count', 'Perimeter_ZN_4 ZN'],
 }
 actuators_tc = {
+    'ppl_sched': ['Schedule:Year', 'Schedule Value', 'OfficeSmall Bldg_Occ_Sch']
 }
 weather_tc = {
 }
@@ -50,7 +56,7 @@ class Agent:
         pass
 
     def act(self):
-        return None
+        return {'ppl_sched': 1}
 
 
 # create building energy simulation obj
@@ -58,7 +64,7 @@ sim = emspy.BcaEnv(ep_path, ep_idf_to_run, timesteps, vars_tc, int_vars_tc, mete
 # create RL agent obj
 agent = Agent()
 
-sim.set_calling_point_and_callback_function(calling_point, None, None, True, 1, 1)
+sim.set_calling_point_and_callback_function(calling_point, None, agent.act, True, 1, 1)
 # sim.init_custom_dataframe_dict('custom_df', calling_point, 1, ['z0_cool_sp', 'setpoint_z0_cool_sp'])  # actuator lag
 
 # RUN

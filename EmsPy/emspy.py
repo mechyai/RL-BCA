@@ -491,6 +491,16 @@ class EmsPy:
             # get most recent timestep for update frequency
             self.timestep_zone_num_current = self.api.exchange.zone_time_step_number(state_arg)
 
+            # TODO verify this is proper way to prevent sub-timestep callbacks
+            # catch and skip subtimestep callbacks, when the timestep num is the same as before
+            try:
+                if self.timesteps_zone_num[-1] == self.timestep_zone_num_current:
+                    # verify with (timestep/hr) * (24 hrs) * (# of days of sim) == data/df length
+                    # print('-- Sub-Timestep Callback --')
+                    return  # skip callback
+            except IndexError:
+                pass  # catch first iter when no data available
+
             # state update & observation (optionally)
             if update_state and self.timestep_zone_num_current % update_state_freq == 0:
                 # update & append simulation data

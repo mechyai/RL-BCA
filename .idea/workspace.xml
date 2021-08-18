@@ -19,16 +19,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="simulation success check added">
-      <change afterPath="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_Sched/model_sched_debug.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/epresults/epsql.py" afterDir="false" />
+    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="catch {} and None ToC input from user, don't create default DFs">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EmsPy/emspy.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/emspy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmsPy/model_debugger.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/model_debugger.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ModelRunTests/small_office_tests/RefBldgSmallOfficeNew2004_v1.3_5.0_6A_USA_MN_MINNEAPOLIS.idf" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/ModelRunTests/small_office_tests/RefBldgSmallOfficeNew2004_v1.3_5.0_6A_USA_MN_MINNEAPOLIS.idf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ModelRunTests/small_office_tests/emspy_testscript1.py" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/ModelRunTests/small_office_tests/emspy_testscript1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ModelRunTests/small_office_tests/out/eplusout.end" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/ModelRunTests/small_office_tests/out/eplusout.end" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ModelRunTests/small_office_tests/out/eplusout.err" beforeDir="false" afterPath="$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/ModelRunTests/small_office_tests/out/eplusout.err" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_Sched/model_sched_debug.py" beforeDir="false" afterPath="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_Sched/model_sched_debug.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -224,20 +218,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1620762811392</updated>
-    </task>
-    <task id="LOCAL-00029" summary="test script updated, working">
-      <created>1622909201552</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1622909201552</updated>
-    </task>
-    <task id="LOCAL-00030" summary="update to readme">
-      <created>1622912632207</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1622912632207</updated>
     </task>
     <task id="LOCAL-00031" summary="update to readme">
       <created>1623094098006</created>
@@ -568,7 +548,21 @@
       <option name="project" value="LOCAL" />
       <updated>1628799986918</updated>
     </task>
-    <option name="localTasksCounter" value="78" />
+    <task id="LOCAL-00078" summary="added various files and models">
+      <created>1629165224999</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1629165225000</updated>
+    </task>
+    <task id="LOCAL-00079" summary="catch {} and None ToC input from user, don't create default DFs">
+      <created>1629166814991</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1629166814991</updated>
+    </task>
+    <option name="localTasksCounter" value="80" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -584,8 +578,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="added observation fxn alongside actuation function for making custom callbacks - fits MDP RL framework" />
-    <MESSAGE value="folder rearagnement" />
     <MESSAGE value="removed list of single ems data points returned" />
     <MESSAGE value="added get_df for BcaEnv, fixed some dict tracking" />
     <MESSAGE value="starting base script" />
@@ -609,7 +601,9 @@
     <MESSAGE value="updated init timestep to fetch from idf" />
     <MESSAGE value="updated actuator setpoint name, got rid of timestep as obj input. no longer fetch timestep" />
     <MESSAGE value="simulation success check added" />
-    <option name="LAST_COMMIT_MESSAGE" value="simulation success check added" />
+    <MESSAGE value="added various files and models" />
+    <MESSAGE value="catch {} and None ToC input from user, don't create default DFs" />
+    <option name="LAST_COMMIT_MESSAGE" value="catch {} and None ToC input from user, don't create default DFs" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -633,6 +627,21 @@
           <url>file://$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/PyEMS_CJE.py</url>
           <line>91</line>
           <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EmsPy/emspy.py</url>
+          <line>636</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EmsPy/emspy.py</url>
+          <line>634</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EmsPy/emspy.py</url>
+          <line>490</line>
+          <option name="timeStamp" value="14" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
