@@ -30,7 +30,7 @@ class EmsPy:
                                 'callback_begin_zone_timestep_after_init_heat_balance',
                                 'callback_begin_zone_timestep_before_set_current_weather',
                                 'callback_end_system_sizing',
-                                'callback_end_system_after_hvac_reporting',
+                                'callback_end_system_timestep_after_hvac_reporting',
                                 'callback_end_system_timestep_before_hvac_reporting'
                                 'callback_end_zone_sizing',
                                 'callback_end_zone_timestep_after_zone_reporting',
@@ -492,11 +492,11 @@ class EmsPy:
             self.timestep_zone_num_current = self.api.exchange.zone_time_step_number(state_arg)
 
             # TODO verify this is proper way to prevent sub-timestep callbacks
-            # catch and skip subtimestep callbacks, when the timestep num is the same as before
+            # catch and skip sub-timestep callbacks, when the timestep num is the same as before
             try:
                 if self.timesteps_zone_num[-1] == self.timestep_zone_num_current:
                     # verify with (timestep/hr) * (24 hrs) * (# of days of sim) == data/df length
-                    # print('-- Sub-Timestep Callback --')
+                    print('-- Sub-Timestep Callback --')
                     return  # skip callback
             except IndexError:
                 pass  # catch first iter when no data available

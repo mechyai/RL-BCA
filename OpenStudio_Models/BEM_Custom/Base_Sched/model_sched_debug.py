@@ -46,7 +46,8 @@ weather_tc = {
 
 timesteps = 6
 # create calling point with actuation function
-calling_point = 'callback_after_predictor_after_hvac_managers'
+# calling_point = 'callback_after_predictor_after_hvac_managers'
+calling_point = 'callback_end_system_timestep_after_hvac_reporting'
 
 class Agent:
     def __init__(self):

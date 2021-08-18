@@ -19,8 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="added callback code to skip sub-timestep callback">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="update callback list">
       <change beforePath="$PROJECT_DIR$/EmsPy/emspy.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/emspy.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_Sched/model_sched_debug.py" beforeDir="false" afterPath="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_Sched/model_sched_debug.py" afterDir="false" />
     </list>
@@ -218,13 +217,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1620762811392</updated>
-    </task>
-    <task id="LOCAL-00032" summary="rearranged some attributes, added to BcaEnv, and added 'get state' funcitonality">
-      <created>1623208899948</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1623208899948</updated>
     </task>
     <task id="LOCAL-00033" summary="fixed get ems data function to handle all user defined errors">
       <created>1623210594586</created>
@@ -562,7 +554,14 @@
       <option name="project" value="LOCAL" />
       <updated>1629296443515</updated>
     </task>
-    <option name="localTasksCounter" value="81" />
+    <task id="LOCAL-00081" summary="update callback list">
+      <created>1629304044265</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1629304044265</updated>
+    </task>
+    <option name="localTasksCounter" value="82" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -578,7 +577,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="added get_df for BcaEnv, fixed some dict tracking" />
     <MESSAGE value="starting base script" />
     <MESSAGE value="changed get_df to return dictionary" />
     <MESSAGE value="updated output messages" />
@@ -603,7 +601,8 @@
     <MESSAGE value="added various files and models" />
     <MESSAGE value="catch {} and None ToC input from user, don't create default DFs" />
     <MESSAGE value="added callback code to skip sub-timestep callback" />
-    <option name="LAST_COMMIT_MESSAGE" value="added callback code to skip sub-timestep callback" />
+    <MESSAGE value="update callback list" />
+    <option name="LAST_COMMIT_MESSAGE" value="update callback list" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
