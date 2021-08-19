@@ -19,7 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="rearange calling point order, changed simulation success attribute and dependent post-sim functions">
+    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="pulled timestep info from running simulation automatically, no more user input">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EmsPy/emspy.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/emspy.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_Sched/model_sched_debug.py" beforeDir="false" afterPath="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_Sched/model_sched_debug.py" afterDir="false" />
@@ -218,13 +218,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1620762811392</updated>
-    </task>
-    <task id="LOCAL-00035" summary="changing ToC and actuation to dicts now">
-      <created>1623348249373</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1623348249373</updated>
     </task>
     <task id="LOCAL-00036" summary="updated weather functions and Readme, now working on lists -&gt; dicts">
       <created>1623351514042</created>
@@ -562,7 +555,14 @@
       <option name="project" value="LOCAL" />
       <updated>1629310453270</updated>
     </task>
-    <option name="localTasksCounter" value="84" />
+    <task id="LOCAL-00084" summary="pulled timestep info from running simulation automatically, no more user input">
+      <created>1629321595058</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1629321595058</updated>
+    </task>
+    <option name="localTasksCounter" value="85" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -578,7 +578,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="updated output messages" />
     <MESSAGE value="fixing timestep method finally, added attribute update helper function" />
     <MESSAGE value="minor bug fixed, model debugger running, changed get_ems_data and other related" />
     <MESSAGE value="added ems input redundancy error handling" />
@@ -603,7 +602,8 @@
     <MESSAGE value="update callback list" />
     <MESSAGE value="reenabled redundant callback catch" />
     <MESSAGE value="rearange calling point order, changed simulation success attribute and dependent post-sim functions" />
-    <option name="LAST_COMMIT_MESSAGE" value="rearange calling point order, changed simulation success attribute and dependent post-sim functions" />
+    <MESSAGE value="pulled timestep info from running simulation automatically, no more user input" />
+    <option name="LAST_COMMIT_MESSAGE" value="pulled timestep info from running simulation automatically, no more user input" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -627,11 +627,6 @@
           <url>file://$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/PyEMS_CJE.py</url>
           <line>91</line>
           <option name="timeStamp" value="11" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/EmsPy/emspy.py</url>
-          <line>499</line>
-          <option name="timeStamp" value="17" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

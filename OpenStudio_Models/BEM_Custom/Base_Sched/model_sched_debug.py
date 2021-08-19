@@ -39,16 +39,17 @@ vars_tc = {
     'z4_ppl': ['Zone People Occupant Count', 'Perimeter_ZN_4 ZN'],
 }
 actuators_tc = {
-    'ppl_sched': ['Schedule:Year', 'Schedule Value', 'OfficeSmall Bldg_Occ_Sch']
+    'ppl_sched': ['Schedule:Year', 'Schedule Value', 'OfficeSmall Bldg_Occ_Sch'],
+    'ppl_cnt': ['People', 'Number of People', 'Core_Zn Zn Office WholeBuilding - Sm Office People']
 }
 weather_tc = {
 }
 
 timesteps = 6
 # create calling point with actuation function
-calling_point = 'callback_after_predictor_after_hvac_managers'  # system timestep
+# calling_point = 'callback_after_predictor_after_hvac_managers'  # system timestep
 # calling_point = 'callback_end_system_timestep_after_hvac_reporting'  # HVAC iteration loop
-# calling_point = 'callback_begin_zone_timestep_before_init_heat_balance'
+calling_point = 'callback_begin_zone_timestep_before_init_heat_balance'
 
 class Agent:
     def __init__(self):
@@ -58,7 +59,7 @@ class Agent:
         pass
 
     def act(self):
-        return {'ppl_sched': 1}
+        return {'ppl_cnt': 1}
 
 
 # create building energy simulation obj

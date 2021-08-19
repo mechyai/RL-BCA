@@ -206,16 +206,18 @@ class EmsPy:
         """This function is used to fetch the timestep input from the IDF model & report basic details."""
 
         # returns fractional hour, convert to timestep/hr TODO determine robustness of the api.exchange function
-        timestep = int(1 // self.api.exchange.zone_time_step(self.state))
-        available_timesteps = [1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60]
-        if timestep not in available_timesteps:
-            raise ValueError(f'ERROR: Your choice of number of timesteps per hour, {timestep}, must be evenly divisible'
-                             f' into 60 minutes: {available_timesteps}')
-        else:
-            self.timestep_period = 60 // timestep
-            print(f'*NOTE: Your simulation timestep period is {self.timestep_period} minutes @ {timestep} timesteps an'
-                  f' hour.')
-            return timestep
+        try:
+            timestep = int(1 // self.api.exchange.zone_time_step(self.state))
+            available_timesteps = [1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60]
+            if timestep in available_timesteps:
+                self.timestep_period = 60 // timestep
+                print(f'\n*NOTE: Your simulation timestep period is {self.timestep_period} minutes @ {timestep}'
+                      f' timestep(s) an hour.\n')
+                self.timestep_params_initialized = True
+                return timestep
+        except ZeroDivisionError:
+            pass
+
 
     def _init_reward(self, reward):
         """This updates the reward attributes to the needs set by user."""
@@ -484,7 +486,6 @@ class EmsPy:
             # init Timestep params ONCE
             if not self.timestep_params_initialized:
                 self._init_timestep()
-                self.timestep_params_initialized = True
 
             # get EMS handles ONCE
             if not self.got_ems_handles:
@@ -501,7 +502,7 @@ class EmsPy:
             # get most recent timestep for update frequency
             self.timestep_zone_num_current = self.api.exchange.zone_time_step_number(state_arg)
 
-            # TODO verify this is proper way to prevent sub-timestep callbacks
+            # TODO verify this is proper way to prevent sub-timestep callbacks, make seperate function
             # catch and skip sub-timestep callbacks, when the timestep num is the same as before
             try:
                 if self.timesteps_zone_num[-1] == self.timestep_zone_num_current:
