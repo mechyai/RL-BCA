@@ -172,10 +172,10 @@ class EmsPy:
                     setattr(self, 'handle_' + ems_type + '_' + ems_name, None)
                     setattr(self, 'data_' + ems_type + '_' + ems_name, [])
                     if ems_type == 'actuator':  # handle associated actuator setpoints
-                        setpnt_name = 'setpoint_' + ems_name
-                        setattr(self, 'data_' + setpnt_name, [])  # what user/control sets
-                        self.ems_type_dict[setpnt_name] = 'setpoint'
-                        self.ems_names_master_list.append(setpnt_name)
+                        setpoint_name = 'setpoint_' + ems_name
+                        setattr(self, 'data_' + setpoint_name, [])  # what user/control sets
+                        self.ems_type_dict[setpoint_name] = 'setpoint'
+                        self.ems_names_master_list.append(setpoint_name)
                     self.ems_type_dict[ems_name] = ems_type
                     self.ems_names_master_list.append(ems_name)  # all ems metrics collected
                 self.ems_num_dict[ems_type] = len(ems_tc)  # num of metrics per ems category
@@ -191,7 +191,7 @@ class EmsPy:
             # verify provided weather ToC is accurate/acceptable
             for weather_name, weather_metric in self.tc_weather.items():
                 if weather_metric not in EmsPy.available_weather_metrics:
-                    raise Exception(f'ERROR: {weather_metric} weather metric is misspelled or not provided by'
+                    raise Exception(f'ERROR: [{weather_metric}] weather metric is misspelled or not provided by'
                                     f' EnergyPlusAPI.')
                 if weather_name in self.ems_names_master_list:
                     raise ValueError(f'ERROR: EMS metric user-defined names must be unique, '
@@ -217,7 +217,6 @@ class EmsPy:
                 return timestep
         except ZeroDivisionError:
             pass
-
 
     def _init_reward(self, reward):
         """This updates the reward attributes to the needs set by user."""
@@ -275,12 +274,12 @@ class EmsPy:
                                                    ems_obj_details[2])  # actuator key
             # catch error handling by EMS E+
             if handle == -1:
-                raise Exception(f'ERROR: {str(ems_obj_details)}: The EMS sensor/actuator handle could not be'
+                raise Exception(f'ERROR: [{str(ems_obj_details)}]: The EMS sensor/actuator handle could not be'
                                 ' found. Please consult the .idf and/or your ToC for accuracy')
             else:
                 return handle
         except IndexError:
-            raise IndexError(f'ERROR: {str(ems_obj_details)}: This {ems_type} object does not have all the '
+            raise IndexError(f'ERROR: [{str(ems_obj_details)}]: This [{ems_type}] object does not have all the '
                              f'required fields to get the EMS handle')
 
     def _update_time(self):
@@ -373,7 +372,7 @@ class EmsPy:
             rewards = []  # init for multiobj
         for reward_i in reward:
             if type(reward_i) is not float and type(reward_i) is not int:
-                raise TypeError(f'ERROR: Reward returned from the observation function, {reward_i} must be of'
+                raise TypeError(f'ERROR: Reward returned from the observation function, [{reward_i}] must be of'
                                 f' type float or int.')
             else:
                 if self.rewards_multi:
@@ -401,8 +400,8 @@ class EmsPy:
         if hour > 24 or hour < 0:
             raise Exception('ERROR: The hour of the day cannot exceed 24 or be less than 0')
         if zone_ts > self.timestep_per_hour:
-            raise Exception(f'ERROR: The desired timestep, {zone_ts} cannot exceed the subhourly simulation timestep set'
-                            f' for the model, {self.timestep_per_hour}.')
+            raise Exception(f'ERROR: The desired timestep, {zone_ts} cannot exceed the subhourly simulation timestep '
+                            f'set for the model, {self.timestep_per_hour}.')
         single_metric = False
         if len(weather_metrics) is 1:
             single_metric = True
@@ -412,7 +411,7 @@ class EmsPy:
         for weather_name in weather_metrics:
             # input error handling
             if weather_name not in self.tc_weather:
-                raise Exception(f'ERROR: Invalid weather metric ({weather_name}) given. Please see your weather ToC for'
+                raise Exception(f'ERROR: Invalid weather metric [{weather_name}] given. Please see your weather ToC for'
                                 ' available weather metrics.')
 
             weather_metric = self.tc_weather[weather_name]
@@ -449,15 +448,15 @@ class EmsPy:
         if actuator_setpoint_dict is not None:  # in case some 'actuation functions' does not actually act
             for actuator_name, actuator_setpoint in actuator_setpoint_dict.items():
                 if actuator_name not in self.tc_actuator:
-                    raise Exception(f'ERROR: Either this actuator {actuator_name} is not tracked, or misspelled.'
-                                    f'Check your Actuator ToC.')
+                    raise Exception(f'ERROR: Either this actuator [{actuator_name}] is not tracked, or misspelled.'
+                                    f' Check your Actuator ToC.')
                 # actuate and update data tracking
                 actuator_handle = getattr(self, 'handle_actuator_' + actuator_name)
                 self._actuate(actuator_handle, actuator_setpoint)
                 getattr(self, 'data_setpoint_' + actuator_name).append(actuator_setpoint)
         else:
-            print(f'*NOTE: No actuators/values defined for actuation function at calling point {calling_point},'
-                  f' timestep {self.timestep_zone_num_current}')
+            print(f'*NOTE: No actuators/values defined for actuation function at calling point [{calling_point}],'
+                  f' timestep [{self.timestep_zone_num_current}]')
 
     def _enclosing_callback(self, calling_point: str, observation_fxn, actuation_fxn,
                             update_state: bool = False,
@@ -483,6 +482,7 @@ class EmsPy:
             :param state_arg: NOT USED by this API - passed to and used internally by EnergyPlus simulation
             """
             # TODO handle the "ONCE" actions once in a seperate/automatic callback, will issues arise if user wants to use the CP for their own purposes
+
             # init Timestep params ONCE
             if not self.timestep_params_initialized:
                 self._init_timestep()
@@ -503,12 +503,14 @@ class EmsPy:
             self.timestep_zone_num_current = self.api.exchange.zone_time_step_number(state_arg)
 
             # TODO verify this is proper way to prevent sub-timestep callbacks, make seperate function
+            # FAIL with multiple CPs since they share timesteps
             # catch and skip sub-timestep callbacks, when the timestep num is the same as before
             try:
                 if self.timesteps_zone_num[-1] == self.timestep_zone_num_current:
                     # verify with (timestep/hr) * (24 hrs) * (# of days of sim) == data/df length
-                    print('-- Sub-Timestep Callback --')
+                    # print('-- Sub-Timestep Callback --')
                     # return  # skip callback
+                    pass
             except IndexError:
                 pass  # catch first iter when no data available
 
@@ -551,7 +553,7 @@ class EmsPy:
         for calling_key in self.calling_point_actuation_dict:
             # check if user-specified calling point is correct and available
             if calling_key not in self.available_calling_points:
-                raise Exception(f'ERROR: This calling point \'{calling_key}\' is not a valid calling point. Please see'
+                raise Exception(f'ERROR: This calling point [{calling_key}] is not a valid calling point. Please see'
                                 f' the Python API documentation and available calling point list: '
                                 f'EmsPy.available_calling_points class attribute.')
             else:
@@ -574,7 +576,7 @@ class EmsPy:
             ems_metrics, calling_point, update_freq = self.df_custom_dict[df_name]
             self.df_count += 1
             if calling_point not in self.calling_point_actuation_dict:
-                raise Exception(f'ERROR: Invalid Calling Point name \'{calling_point}\'. See your declared available'
+                raise Exception(f'ERROR: Invalid Calling Point name [{calling_point}]. See your declared available'
                                 f' calling points {self.calling_point_actuation_dict.keys()}.')
             # metric names must align with the EMS metric names assigned in var, intvar, meters, actuators, weather ToC
             ems_custom_dict = {'Datetime': [], 'Timestep': []}
@@ -584,7 +586,7 @@ class EmsPy:
                 is_reward = ''
             for metric in ems_metrics:
                 if metric not in self.ems_names_master_list + [is_reward]:
-                    raise Exception(f'ERROR: Incorrect EMS metric name, \'{metric}\', was entered for custom '
+                    raise Exception(f'ERROR: Incorrect EMS metric name, [{metric}], was entered for custom '
                                     f'dataframes.')
                 # create dict to collect data for pandas dataframe
                 if metric == 'rewards' and self.rewards_multi:
@@ -643,16 +645,18 @@ class EmsPy:
 
     def _create_default_dataframes(self):
         """Creates default dataframes for each EMS data list, for each EMS category (and rewards if included in sim)."""
+
         if not self.ems_num_dict:
             return  # no ems dicts created, very unlikely
         for ems_type in self.ems_num_dict:
-            ems_dict = {'Datetime': self.time_x, 'Timestep': self.timesteps_zone_num}  # index columns
+            ems_df_dict = {'Datetime': self.time_x, 'Timestep': self.timesteps_zone_num}  # index columns
             for ems_name in getattr(self, 'tc_' + ems_type):
                 ems_data_list_name = 'data_' + ems_type + '_' + ems_name
-                ems_dict[ems_name] = getattr(self, ems_data_list_name)
+                ems_df_dict[ems_name] = getattr(self, ems_data_list_name)
             # create default df
             df_name = 'df_' + ems_type
-            setattr(self, df_name, pd.DataFrame.from_dict(ems_dict))
+            setattr(self, df_name, pd.DataFrame.from_dict(ems_df_dict))
+        # manage rewards separately, since not standard EMS metrics
         if self.rewards:
             col_names = ['reward']  # single reward
             if self.rewards_multi:
@@ -720,6 +724,7 @@ class BcaEnv(EmsPy):
     def __init__(self, ep_path: str, ep_idf_to_run: str, timesteps: int,
                  tc_vars: dict, tc_intvars: dict, tc_meters: dict, tc_actuator: dict, tc_weather: dict):
         """See EmsPy.__init__() documentation."""
+
         # follow same init procedure as parent class EmsPy
         super().__init__(ep_path, ep_idf_to_run, timesteps, tc_vars, tc_intvars, tc_meters, tc_actuator, tc_weather)
         self.ems_list_get_checked = False
@@ -760,6 +765,7 @@ class BcaEnv(EmsPy):
 
     def _check_ems_metric_input(self, ems_metric):
         """Verifies user-input of EMS metric/type list is valid"""
+
         if ems_metric in self.ems_num_dict:
             raise Exception(f'ERROR: EMS categories can only be called by themselves, please only call one at a '
                             f'time.')
@@ -786,13 +792,14 @@ class BcaEnv(EmsPy):
         each metric.
         :return return_data_list: nested list of data for each EMS metric at each time index specified, or entire list
         """
+
         # handle single val inputs -> convert to list for rest of function
         single_val = False
         single_metric = False
 
         if type(ems_metric_list) is not list:  # assuming single metric
             ems_metric_list = [ems_metric_list]
-            single_metric = False
+            single_metric = True
         if type(time_rev_index) is not list:  # assuming single val
             time_rev_index = [time_rev_index]
             single_val = True
