@@ -128,6 +128,7 @@ class EmsPy:
         self.minutes = []
         self.time_x = []
         # timestep
+        self.timestep_input = timesteps
         self.timesteps_zone_num = []
         self.timestep_zone_num_current = 0  # fluctuate from 1 to # of timesteps/hour
         self.timestep_total_count = 0  # cnt for entire simulation
@@ -203,13 +204,17 @@ class EmsPy:
             self.df_count += 1
 
     def _init_timestep(self) -> int:
-        """This function is used to fetch the timestep input from the IDF model & report basic details."""
+        """This function is used to fetch the timestep input from the IDF model & verify with user input."""
 
         # returns fractional hour, convert to timestep/hr TODO determine robustness of the api.exchange function
         try:
             timestep = int(1 // self.api.exchange.zone_time_step(self.state))
             available_timesteps = [1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60]
             if timestep in available_timesteps:
+                if timestep != self.timestep_input:
+                    raise SystemExit(f'User input timestep [{self.timestep_input}] mins must equal the model timestep '
+                                     f'of [{timestep}] mins. Please check your IDF.\nAvailable timesteps are '
+                                     f'{available_timesteps}')
                 self.timestep_period = 60 // timestep
                 print(f'\n*NOTE: Your simulation timestep period is {self.timestep_period} minutes @ {timestep}'
                       f' timestep(s) an hour.\n')
@@ -482,10 +487,11 @@ class EmsPy:
             :param state_arg: NOT USED by this API - passed to and used internally by EnergyPlus simulation
             """
             # TODO handle the "ONCE" actions once in a seperate/automatic callback, will issues arise if user wants to use the CP for their own purposes
-
-            # init Timestep params ONCE
-            if not self.timestep_params_initialized:
-                self._init_timestep()
+            try:
+                print(f'CP: {calling_point}, TS: {self.timestep_zone_num_current}'
+                      f'\n Date:{self.time_x[-1]}')
+            except:
+                pass
 
             # get EMS handles ONCE
             if not self.got_ems_handles:
@@ -498,6 +504,10 @@ class EmsPy:
             # skip if simulation in warmup
             if self.api.exchange.warmup_flag(state_arg):
                 return
+
+            # init Timestep params ONCE
+            if not self.timestep_params_initialized:
+                self._init_timestep()
 
             # get most recent timestep for update frequency
             self.timestep_zone_num_current = self.api.exchange.zone_time_step_number(state_arg)
@@ -517,6 +527,7 @@ class EmsPy:
             # state update & observation (optionally)
             if update_state and self.timestep_zone_num_current % update_state_freq == 0:
                 # update & append simulation data
+                print('update state & time & observe')
                 self._update_time()  # note timing update is first
                 self._update_ems_and_weather_vals(self.ems_names_master_list)  # update sensor/actuator/weather/ vals
                 # run user-defined agent state update function
@@ -529,6 +540,7 @@ class EmsPy:
 
             # action update
             if actuation_fxn is not None and self.timestep_zone_num_current % update_act_freq == 0:
+                print('update action')
                 self._actuate_from_list(calling_point, actuation_fxn())
 
             # init and update custom dataframes
@@ -601,7 +613,7 @@ class EmsPy:
     def _update_custom_dataframe_dicts(self, calling_point):
         """Updates dataframe data based on desired calling point, timestep frequency, and specific ems vars."""
 
-        # TODO handle redundant data collection when cp and freq are identical to default (may not always be applicable)
+        # TODO handle redundant data collection when cp & freq are identical to default (may not always be applicable)
         if not self.df_custom_dict:
             return  # no custom dicts created
         # iterate through and update all default and user-defined dataframes
