@@ -149,6 +149,8 @@ class EmsPy:
         # simulation data
         self.simulation_success = 1  # 1 fail, 0 success
 
+        print('\n*NOTE: Simulation EmsPy class and instance created!')
+
     def _init_ems_handles_and_data(self):
         """
         Creates and initializes the necessary instance attributes given by the user for the EMS sensors/actuators.
@@ -248,7 +250,7 @@ class EmsPy:
                 for name in ems_tc:
                     handle_inputs = ems_tc[name]
                     setattr(self, 'handle_' + ems_type + '_' + name, self._get_handle(ems_type, handle_inputs))
-        print('*NOTE: Got all EMS handles.')
+        print('\n*NOTE: Got all EMS handles.\n')
 
     def _get_handle(self, ems_type: str, ems_obj_details):
         """
@@ -460,8 +462,8 @@ class EmsPy:
                 self._actuate(actuator_handle, actuator_setpoint)
                 getattr(self, 'data_setpoint_' + actuator_name).append(actuator_setpoint)
         else:
-            print(f'*NOTE: No actuators/values defined for actuation function at calling point [{calling_point}],'
-                  f' timestep [{self.timestep_zone_num_current}]')
+            print(f'\n*NOTE: No actuators/values defined for actuation function at calling point [{calling_point}],'
+                  f' timestep [{self.timestep_zone_num_current}]\n')
 
     def _enclosing_callback(self, calling_point: str, observation_fxn, actuation_fxn,
                             update_state: bool = False,
@@ -551,7 +553,7 @@ class EmsPy:
         """This iterates through the Calling Point Dict{} to set runtime calling points with actuation functions."""
 
         if not self.calling_point_actuation_dict:
-            print('*WARNING: No calling points or callback function initiated. Will just run simulation!')
+            print('\n*WARNING: No calling points or callback function initiated. Will just run simulation!\n')
             return
 
         for calling_key in self.calling_point_actuation_dict:
@@ -641,7 +643,7 @@ class EmsPy:
         """Creates custom dataframes for specifically tracked ems data list, for each ems category."""
 
         if not self.df_custom_dict:
-            print('*NOTE: No custom dataframes created.')
+            print('\n*NOTE: No custom dataframes created.\n')
             return  # no ems dicts created
         for df_name in self.df_custom_dict:
             ems_dict, _, _ = self.df_custom_dict[df_name]
@@ -680,7 +682,7 @@ class EmsPy:
     def _user_input_check(self):
         # TODO create function that checks if all user-input attributes has been specified and add help directions
         if not self.calling_point_actuation_dict:
-            print('*WARNING: No calling points or actuation/observation functions were initialized.')
+            print('\n*WARNING: No calling points or actuation/observation functions were initialized.\n')
         pass
 
     def _new_state(self):
@@ -704,16 +706,16 @@ class EmsPy:
         self._init_calling_points_and_callback_functions()
 
         # RUN SIMULATION
-        print('* * * Running E+ Simulation * * *')
+        print('\n* * * Running E+ Simulation * * *\n')
         self.simulation_success = self.api.runtime.run_energyplus(self.state, ['-w', weather_file, '-d', 'out', self.idf_file])   # cmd line args
         if self.simulation_success != 0:
-            print('* * * Simulation FAILED * * *')
+            print('\n* * * Simulation FAILED * * *\n')
         else:  # simulation successful
-            print('* * * Simulation Done * * *')
+            print('\n* * * Simulation Done * * *\n')
             # create default and custom ems pandas df's after simulation complete
             self._create_default_dataframes()
             self._create_custom_dataframes()
-            print('* * * DF Creation Done * * *')
+            print('\n* * * DF Creation Done * * *\n')
 
 
 class BcaEnv(EmsPy):
@@ -759,7 +761,7 @@ class BcaEnv(EmsPy):
         """
 
         if update_act_freq > update_state_freq:
-            print(f'*WARNING: it is unusual to have your action update more frequent than your state update')
+            print(f'\n*WARNING: it is unusual to have your action update more frequent than your state update\n')
         if calling_point in self.calling_point_actuation_dict:
             raise Exception(
                 f'ERROR: You have overwritten the calling point \'{calling_point}\'. Keep calling points unique.')
@@ -837,7 +839,7 @@ class BcaEnv(EmsPy):
                             else:
                                 return_data_indexed.append(data_indexed)
                         except IndexError:
-                            print('*NOTE: Not enough simulation time elapsed to collect data at specified index.')
+                            print('\n*NOTE: Not enough simulation time elapsed to collect data at specified index.\n')
                     # no unnecessarily nested lists
                     if single_metric:
                         return return_data_indexed
