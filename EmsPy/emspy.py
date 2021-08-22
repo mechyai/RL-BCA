@@ -487,6 +487,7 @@ class EmsPy:
             :param state_arg: NOT USED by this API - passed to and used internally by EnergyPlus simulation
             """
             # TODO handle the "ONCE" actions once in a seperate/automatic callback, will issues arise if user wants to use the CP for their own purposes
+            # debug print
             try:
                 print(f'CP: {calling_point}, TS: {self.timestep_zone_num_current}'
                       f'\n Date:{self.time_x[-1]}')
