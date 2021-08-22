@@ -486,13 +486,6 @@ class EmsPy:
 
             :param state_arg: NOT USED by this API - passed to and used internally by EnergyPlus simulation
             """
-            # TODO handle the "ONCE" actions once in a seperate/automatic callback, will issues arise if user wants to use the CP for their own purposes
-            # debug print
-            try:
-                print(f'CP: {calling_point}, TS: {self.timestep_zone_num_current}'
-                      f'\n Date:{self.time_x[-1]}')
-            except:
-                pass
 
             # get EMS handles ONCE
             if not self.got_ems_handles:
@@ -520,7 +513,7 @@ class EmsPy:
                 if self.timesteps_zone_num[-1] == self.timestep_zone_num_current:
                     # verify with (timestep/hr) * (24 hrs) * (# of days of sim) == data/df length
                     # print('-- Sub-Timestep Callback --')
-                    # return  # skip callback
+                    return  # skip callback
                     pass
             except IndexError:
                 pass  # catch first iter when no data available
@@ -528,7 +521,6 @@ class EmsPy:
             # state update & observation (optionally)
             if update_state and self.timestep_zone_num_current % update_state_freq == 0:
                 # update & append simulation data
-                print('update state & time & observe')
                 self._update_time()  # note timing update is first
                 self._update_ems_and_weather_vals(self.ems_names_master_list)  # update sensor/actuator/weather/ vals
                 # run user-defined agent state update function
@@ -541,7 +533,6 @@ class EmsPy:
 
             # action update
             if actuation_fxn is not None and self.timestep_zone_num_current % update_act_freq == 0:
-                print('update action')
                 self._actuate_from_list(calling_point, actuation_fxn())
 
             # init and update custom dataframes
