@@ -19,10 +19,14 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="pulled timestep info from running simulation automatically, no more user input">
+    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="improved print statements">
+      <change afterPath="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_People/BEM_5z_Unitary_base_people.osm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_People/in_modified_ppl_test.idf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/ceube.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/ceube.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EmsPy/emspy.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/emspy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_Sched/model_sched_debug.py" beforeDir="false" afterPath="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_Sched/model_sched_debug.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_People/model_ppl_debug.py" beforeDir="false" afterPath="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_People/model_ppl_debug.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_Sched/People_Sched_Control_Test/eplusout.edd" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +43,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="getState_takeAction" />
+        <entry key="$PROJECT_DIR$" value="callback_solve" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -74,30 +78,33 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="TEXT&#10;Python" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_Sched/Sched_Control_Test" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_People" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\BEM_Custom\Base_People" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\BEM_Custom\Base_Sched\Sched_Control_Test" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\BEM_Custom\Base_Sched" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\ModelRunTests" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\EmsPy" />
-      <recent name="A:\Files\PycharmProjects\RL-BCA\ModelRunTests\small_office_tests" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\BEM_Custom\Base_People" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\BEM_Custom\Base_Sched\Sched_Control_Test" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\epresults" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\EmsPy" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples" />
-      <recent name="A:\Files\PycharmProjects\RL-BCA\EmsPy\Testscripts" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.model_sched_debug">
+  <component name="RunManager" selected="Python.model_ppl_debug">
     <configuration name="epsql" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/epresults" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -116,12 +123,33 @@
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/EmsPy" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/EmsPy/model_debugger.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="model_ppl_debug" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="RL-BCA" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_People" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_People/model_ppl_debug.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -140,27 +168,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_Sched/model_sched_debug.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="true" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="scratch" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="RL-BCA" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -192,17 +199,17 @@
     </configuration>
     <list>
       <item itemvalue="Python.model_debugger" />
-      <item itemvalue="Python.scratch" />
       <item itemvalue="Python.scratch_1" />
       <item itemvalue="Python.epsql" />
       <item itemvalue="Python.model_sched_debug" />
+      <item itemvalue="Python.model_ppl_debug" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.model_ppl_debug" />
         <item itemvalue="Python.model_sched_debug" />
-        <item itemvalue="Python.model_debugger" />
-        <item itemvalue="Python.epsql" />
-        <item itemvalue="Python.epsql" />
+        <item itemvalue="Python.model_ppl_debug" />
+        <item itemvalue="Python.model_sched_debug" />
         <item itemvalue="Python.epsql" />
       </list>
     </recent_temporary>
@@ -218,55 +225,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1620762811392</updated>
-    </task>
-    <task id="LOCAL-00036" summary="updated weather functions and Readme, now working on lists -&gt; dicts">
-      <created>1623351514042</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1623351514042</updated>
-    </task>
-    <task id="LOCAL-00037" summary="changed attribute lists to dicts for entire class">
-      <created>1623356666599</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1623356666599</updated>
-    </task>
-    <task id="LOCAL-00038" summary="up to date readme, changed how weather and ems data updates, added BcaEnv methods, compressed redundancy, fixed timesteps">
-      <created>1623382430000</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1623382430000</updated>
-    </task>
-    <task id="LOCAL-00039" summary="smalling naming update">
-      <created>1623383221234</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1623383221234</updated>
-    </task>
-    <task id="LOCAL-00040" summary="update, create test class for actuation fxn">
-      <created>1623383721369</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1623383721369</updated>
-    </task>
-    <task id="LOCAL-00041" summary="add note about custom class in script">
-      <created>1623384052780</created>
-      <option name="number" value="00041" />
-      <option name="presentableId" value="LOCAL-00041" />
-      <option name="project" value="LOCAL" />
-      <updated>1623384052780</updated>
-    </task>
-    <task id="LOCAL-00042" summary="added timestep verify, tested custom dataframes">
-      <created>1623422995596</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1623422995596</updated>
     </task>
     <task id="LOCAL-00043" summary="added timestep verify, tested custom dataframes">
       <created>1623436859944</created>
@@ -562,7 +520,56 @@
       <option name="project" value="LOCAL" />
       <updated>1629321595058</updated>
     </task>
-    <option name="localTasksCounter" value="85" />
+    <task id="LOCAL-00085" summary="fixed timestep init with ZeroDivError">
+      <created>1629333891576</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1629333891577</updated>
+    </task>
+    <task id="LOCAL-00086" summary="emspy, stable but issues with lag and timesteps, etc">
+      <created>1629386313401</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1629386313402</updated>
+    </task>
+    <task id="LOCAL-00087" summary="added timestep input verification">
+      <created>1629465860457</created>
+      <option name="number" value="00087" />
+      <option name="presentableId" value="LOCAL-00087" />
+      <option name="project" value="LOCAL" />
+      <updated>1629465860457</updated>
+    </task>
+    <task id="LOCAL-00088" summary="added print statements">
+      <created>1629670218834</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1629670218835</updated>
+    </task>
+    <task id="LOCAL-00089" summary="deleted callback print statements">
+      <created>1629670878586</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1629670878586</updated>
+    </task>
+    <task id="LOCAL-00090" summary="debug update">
+      <created>1629670890915</created>
+      <option name="number" value="00090" />
+      <option name="presentableId" value="LOCAL-00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1629670890915</updated>
+    </task>
+    <task id="LOCAL-00091" summary="improved print statements">
+      <created>1629671489676</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1629671489676</updated>
+    </task>
+    <option name="localTasksCounter" value="92" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -578,13 +585,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixing timestep method finally, added attribute update helper function" />
-    <MESSAGE value="minor bug fixed, model debugger running, changed get_ems_data and other related" />
-    <MESSAGE value="added ems input redundancy error handling" />
-    <MESSAGE value="added clarification to user output statements" />
-    <MESSAGE value="fixed default pandas df creation" />
-    <MESSAGE value="fixed single val weather update" />
-    <MESSAGE value="create all_df for get df method, fixed timstep total count" />
     <MESSAGE value="fixed double actuator update" />
     <MESSAGE value="v1 of model plotter" />
     <MESSAGE value="various idfs and plots" />
@@ -603,7 +603,14 @@
     <MESSAGE value="reenabled redundant callback catch" />
     <MESSAGE value="rearange calling point order, changed simulation success attribute and dependent post-sim functions" />
     <MESSAGE value="pulled timestep info from running simulation automatically, no more user input" />
-    <option name="LAST_COMMIT_MESSAGE" value="pulled timestep info from running simulation automatically, no more user input" />
+    <MESSAGE value="fixed timestep init with ZeroDivError" />
+    <MESSAGE value="emspy, stable but issues with lag and timesteps, etc" />
+    <MESSAGE value="added timestep input verification" />
+    <MESSAGE value="added print statements" />
+    <MESSAGE value="deleted callback print statements" />
+    <MESSAGE value="debug update" />
+    <MESSAGE value="improved print statements" />
+    <option name="LAST_COMMIT_MESSAGE" value="improved print statements" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

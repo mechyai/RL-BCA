@@ -706,16 +706,16 @@ class EmsPy:
         self._init_calling_points_and_callback_functions()
 
         # RUN SIMULATION
-        print('\n* * * Running E+ Simulation * * *\n')
+        print('\n* * * Running E+ Simulation * * *')
         self.simulation_success = self.api.runtime.run_energyplus(self.state, ['-w', weather_file, '-d', 'out', self.idf_file])   # cmd line args
         if self.simulation_success != 0:
             print('\n* * * Simulation FAILED * * *\n')
         else:  # simulation successful
-            print('\n* * * Simulation Done * * *\n')
+            print('\n* * * Simulation Done * * *')
             # create default and custom ems pandas df's after simulation complete
             self._create_default_dataframes()
             self._create_custom_dataframes()
-            print('\n* * * DF Creation Done * * *\n')
+            print('* * * DF Creation Done * * *')
 
 
 class BcaEnv(EmsPy):
