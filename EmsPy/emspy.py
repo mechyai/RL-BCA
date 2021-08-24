@@ -344,6 +344,7 @@ class EmsPy:
 
     def _update_ems_and_weather_vals(self, ems_metrics_list: list):
         """Fetches and updates given sensor/actuator/weather values to data lists/dicts from running simulation."""
+
         # TODO how to handle user-specified TIMING updates separate from state, right now they are joint
         # specific data exchange API function calls
         datax = self.api.exchange
@@ -702,7 +703,7 @@ class EmsPy:
 
         # check valid input by user
         self._user_input_check()
-
+        # create callback function(s) and link with calling point(s)
         self._init_calling_points_and_callback_functions()
 
         # RUN SIMULATION

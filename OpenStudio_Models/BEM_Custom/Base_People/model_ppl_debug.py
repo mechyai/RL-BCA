@@ -59,7 +59,7 @@ class Agent:
         pass
 
     def act(self):
-        return {'ppl_sched': 0.5}
+        return {'ppl_cnt': 0.5}
 
 
 # create building energy simulation obj
