@@ -582,15 +582,26 @@ class EmsPy:
     def _post_process_data(self):
         """Handles various cleanup of data after the simulation has ran, necessary for certain features"""
 
-        # (1) remove data of unused actuators
-        for actuator_name in self.tc_actuator:
+        # (1) remove data of unused actuators, if applicable
+        if self.tc_actuator:
             unused_actuators = []
-            if actuator_name not in self._actuators_used_set:
-                print(f"*NOTE: The actuator [{actuator_name}] was not used by EMS to actuator. Their EMS tracked "
-                      f"null data attributes will be removed.")
-                # remove their data attributes
-                delattr(self, 'data_actuator_' + actuator_name)
-                unused_actuators.append(actuator_name)
+            for actuator_name in self.tc_actuator:
+                if actuator_name not in self._actuators_used_set:
+                    print(f"*NOTE: The actuator [{actuator_name}] was not used by EMS to actuator. Their EMS tracked "
+                          f"null data attributes will be removed.")
+                    # remove their data attributes
+                    delattr(self, 'data_actuator_' + actuator_name)
+                    unused_actuators.append(actuator_name)
+            # update EMS number dictionary - relates to default DF creation,
+            original_num = self.ems_num_dict['actuator']
+            unused_num = len(unused_actuators)
+            updated_num = original_num - unused_num
+            if updated_num == 0:  # last actuator left
+                self.ems_num_dict.pop('actuator')
+                print('*NOTE: No EMS actuators were used, all have been removed from your simulation object.')
+            else:
+                self.ems_num_dict['actuator'] = updated_num
+                print(f'*NOTE: [{updated_num}] of [{original_num}] actuators were used in this simulation.')
 
     def _init_custom_dataframe_dict(self):
         """Initializes custom EMS metric dataframes attributes at specific calling points & frequencies."""
