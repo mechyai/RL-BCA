@@ -598,7 +598,8 @@ class EmsPy:
             updated_num = original_num - unused_num
             if updated_num == 0:  # last actuator left
                 self.ems_num_dict.pop('actuator')
-                print('*NOTE: No EMS actuators were used, all have been removed from your simulation object.')
+                print(f'*NOTE: No EMS actuators of [{original_num}] were used, all have been removed from your '
+                      f'simulation object.')
             else:
                 self.ems_num_dict['actuator'] = updated_num
                 print(f'*NOTE: [{updated_num}] of [{original_num}] actuators were used in this simulation.')

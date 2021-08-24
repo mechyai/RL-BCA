@@ -19,10 +19,11 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="added files">
+    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="added extra print statemens, handled empty df creation">
+      <change afterPath="$PROJECT_DIR$/OpenStudio_Models/BEM_EmsPy_Debug/BEM_5z_Unitary_base_debug.osm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OpenStudio_Models/BEM_EmsPy_Debug/in.idf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EmsPy/emspy.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/emspy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_People/model_ppl_debug.py" beforeDir="false" afterPath="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_People/model_ppl_debug.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +40,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="callback_solve" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -75,16 +76,16 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="TEXT&#10;Python" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_People" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/OpenStudio_Models/BEM_EmsPy_Debug" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\BEM_EmsPy_Debug" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\BEM_Custom\Base_People" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\BEM_Custom\Base_Sched\Sched_Control_Test" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\BEM_Custom\Base_Sched" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\ModelRunTests" />
-      <recent name="A:\Files\PycharmProjects\RL-BCA\EmsPy" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\BEM_Custom\Base_People" />
@@ -94,7 +95,7 @@
       <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.model_ppl_debug">
+  <component name="RunManager" selected="Python.model_debug">
     <configuration name="epsql" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -116,19 +117,16 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="model_debugger" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="model_debug" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/EmsPy" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/OpenStudio_Models/BEM_EmsPy_Debug" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/EmsPy/model_debugger.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/OpenStudio_Models/BEM_EmsPy_Debug/model_debug.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -201,19 +199,19 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.epsql" />
-      <item itemvalue="Python.model_debugger" />
-      <item itemvalue="Python.model_ppl_debug" />
-      <item itemvalue="Python.model_sched_debug" />
       <item itemvalue="Python.scratch_1" />
+      <item itemvalue="Python.epsql" />
+      <item itemvalue="Python.model_sched_debug" />
+      <item itemvalue="Python.model_ppl_debug" />
+      <item itemvalue="Python.model_debug" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.model_debug" />
         <item itemvalue="Python.model_ppl_debug" />
         <item itemvalue="Python.model_sched_debug" />
         <item itemvalue="Python.model_ppl_debug" />
         <item itemvalue="Python.model_sched_debug" />
-        <item itemvalue="Python.epsql" />
       </list>
     </recent_temporary>
   </component>
@@ -228,27 +226,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1620762811392</updated>
-    </task>
-    <task id="LOCAL-00044" summary="update get_ems_data to handle single metric or list">
-      <created>1624553176449</created>
-      <option name="number" value="00044" />
-      <option name="presentableId" value="LOCAL-00044" />
-      <option name="project" value="LOCAL" />
-      <updated>1624553176449</updated>
-    </task>
-    <task id="LOCAL-00045" summary="update timestep error handling">
-      <created>1624554255776</created>
-      <option name="number" value="00045" />
-      <option name="presentableId" value="LOCAL-00045" />
-      <option name="project" value="LOCAL" />
-      <updated>1624554255776</updated>
-    </task>
-    <task id="LOCAL-00046" summary="updated documentation, actuation function inputs">
-      <created>1624555431780</created>
-      <option name="number" value="00046" />
-      <option name="presentableId" value="LOCAL-00046" />
-      <option name="project" value="LOCAL" />
-      <updated>1624555431780</updated>
     </task>
     <task id="LOCAL-00047" summary="updated documentation, actuation function inputs, made major changes to get ems data">
       <created>1624557915164</created>
@@ -572,7 +549,28 @@
       <option name="project" value="LOCAL" />
       <updated>1629811661283</updated>
     </task>
-    <option name="localTasksCounter" value="93" />
+    <task id="LOCAL-00093" summary="minor changes, branching">
+      <created>1629813010459</created>
+      <option name="number" value="00093" />
+      <option name="presentableId" value="LOCAL-00093" />
+      <option name="project" value="LOCAL" />
+      <updated>1629813010459</updated>
+    </task>
+    <task id="LOCAL-00094" summary="remove unused actuator attributes, added post process function">
+      <created>1629823357235</created>
+      <option name="number" value="00094" />
+      <option name="presentableId" value="LOCAL-00094" />
+      <option name="project" value="LOCAL" />
+      <updated>1629823357235</updated>
+    </task>
+    <task id="LOCAL-00095" summary="added extra print statemens, handled empty df creation">
+      <created>1629825279221</created>
+      <option name="number" value="00095" />
+      <option name="presentableId" value="LOCAL-00095" />
+      <option name="project" value="LOCAL" />
+      <updated>1629825279221</updated>
+    </task>
+    <option name="localTasksCounter" value="96" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -588,9 +586,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="v1 of model plotter" />
-    <MESSAGE value="various idfs and plots" />
-    <MESSAGE value="fixed actuator setpoints, all working" />
     <MESSAGE value="added simple scalar reward tracker to sim" />
     <MESSAGE value="fixed single and multi reward tracking attributes" />
     <MESSAGE value="reward df not working" />
@@ -613,7 +608,10 @@
     <MESSAGE value="debug update" />
     <MESSAGE value="improved print statements" />
     <MESSAGE value="repair and update print" />
-    <option name="LAST_COMMIT_MESSAGE" value="repair and update print" />
+    <MESSAGE value="minor changes, branching" />
+    <MESSAGE value="remove unused actuator attributes, added post process function" />
+    <MESSAGE value="added extra print statemens, handled empty df creation" />
+    <option name="LAST_COMMIT_MESSAGE" value="added extra print statemens, handled empty df creation" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
