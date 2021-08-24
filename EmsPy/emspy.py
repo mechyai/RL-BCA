@@ -706,7 +706,7 @@ class EmsPy:
         self._init_calling_points_and_callback_functions()
 
         # RUN SIMULATION
-        print('\n* * * Running E+ Simulation * * *')
+        print('\n* * * Running E+ Simulation * * *\n')
         self.simulation_success = self.api.runtime.run_energyplus(self.state, ['-w', weather_file, '-d', 'out', self.idf_file])   # cmd line args
         if self.simulation_success != 0:
             print('\n* * * Simulation FAILED * * *\n')

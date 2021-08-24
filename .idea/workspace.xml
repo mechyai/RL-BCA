@@ -19,14 +19,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="improved print statements">
-      <change afterPath="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_People/BEM_5z_Unitary_base_people.osm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_People/in_modified_ppl_test.idf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/ceube.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/ceube.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="added files">
       <change beforePath="$PROJECT_DIR$/EmsPy/emspy.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/emspy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_People/model_ppl_debug.py" beforeDir="false" afterPath="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_People/model_ppl_debug.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpenStudio_Models/BEM_Custom/Base_Sched/People_Sched_Control_Test/eplusout.edd" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
