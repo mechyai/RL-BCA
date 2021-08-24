@@ -147,6 +147,7 @@ class EmsPy:
         self.rewards_cnt = None
 
         # simulation data
+        self._actuators_used_set = set()  # keep track of what EMS actuators are actually actuated
         self.simulation_success = 1  # 1 fail, 0 success
 
         print('\n*NOTE: Simulation EmsPy class and instance created!')
@@ -435,7 +436,7 @@ class EmsPy:
             return weather_data
 
     def _actuate(self, actuator_handle: str, actuator_val):
-        """ Sets value of a specific actuator in running simulator, or relinquishes control back to EnergyPlus."""
+        """Sets value of a specific actuator in running simulation, or relinquishes control back to EnergyPlus."""
 
         # use None to relinquish control
         # TODO should I handle out-of-range actuator values??? (can this be managed with auto internal var lookup?)
@@ -451,7 +452,8 @@ class EmsPy:
         CAUTION: Actuation functions written by user must return an actuator_name(key)-value pair dictionary
 
         :param calling_point: only used for error output message to user
-        :param actuator_setpoint_dict: dict of actuator name keys (str) & associated setpoint val
+        :param actuator_setpoint_dict: dict of actuator name keys (str) & associated setpoint val. A setpoint of None
+        returns control back to EnergyPlus from EMS
         """
         if actuator_setpoint_dict is not None:  # in case some 'actuation functions' does not actually act
             for actuator_name, actuator_setpoint in actuator_setpoint_dict.items():
@@ -461,6 +463,8 @@ class EmsPy:
                 # actuate and update data tracking
                 actuator_handle = getattr(self, 'handle_actuator_' + actuator_name)
                 self._actuate(actuator_handle, actuator_setpoint)
+                self._actuators_used_set.add(actuator_name)  # to keep track of what actuators from TC are actually used
+                # update SETPOINT value of actuators
                 getattr(self, 'data_setpoint_' + actuator_name).append(actuator_setpoint)
         else:
             print(f'\n*NOTE: No actuators/values defined for actuation function at calling point [{calling_point}],'
@@ -485,7 +489,7 @@ class EmsPy:
 
         def _callback_function(state_arg):
             """
-            The main callback passed to the running EnergyPlus simulation, this commands the interaction.
+            The callback function passed to the running EnergyPlus simulation, this commands the runtime interaction.
 
             :param state_arg: NOT USED by this API - passed to and used internally by EnergyPlus simulation
             """
@@ -502,7 +506,7 @@ class EmsPy:
             if self.api.exchange.warmup_flag(state_arg):
                 return
 
-            # init Timestep params ONCE
+            # init Timestep params ONCE, after warmup and EMS handles
             if not self.timestep_params_initialized:
                 self._init_timestep()
 
@@ -575,6 +579,19 @@ class EmsPy:
                                                                                             update_state_freq,
                                                                                             update_act_freq))
 
+    def _post_process_data(self):
+        """Handles various cleanup of data after the simulation has ran, necessary for certain features"""
+
+        # (1) remove data of unused actuators
+        for actuator_name in self.tc_actuator:
+            unused_actuators = []
+            if actuator_name not in self._actuators_used_set:
+                print(f"*NOTE: The actuator [{actuator_name}] was not used by EMS to actuator. Their EMS tracked "
+                      f"null data attributes will be removed.")
+                # remove their data attributes
+                delattr(self, 'data_actuator_' + actuator_name)
+                unused_actuators.append(actuator_name)
+
     def _init_custom_dataframe_dict(self):
         """Initializes custom EMS metric dataframes attributes at specific calling points & frequencies."""
 
@@ -644,7 +661,7 @@ class EmsPy:
         """Creates custom dataframes for specifically tracked ems data list, for each ems category."""
 
         if not self.df_custom_dict:
-            print('\n*NOTE: No custom dataframes created.\n')
+            print('*NOTE: No custom dataframes created.')
             return  # no ems dicts created
         for df_name in self.df_custom_dict:
             ems_dict, _, _ = self.df_custom_dict[df_name]
@@ -659,7 +676,10 @@ class EmsPy:
             ems_df_dict = {'Datetime': self.time_x, 'Timestep': self.timesteps_zone_num}  # index columns
             for ems_name in getattr(self, 'tc_' + ems_type):
                 ems_data_list_name = 'data_' + ems_type + '_' + ems_name
-                ems_df_dict[ems_name] = getattr(self, ems_data_list_name)
+                try:
+                    ems_df_dict[ems_name] = getattr(self, ems_data_list_name)
+                except AttributeError:
+                    pass  # ignore unused actuators
             # create default df
             df_name = 'df_' + ems_type
             setattr(self, df_name, pd.DataFrame.from_dict(ems_df_dict))
@@ -678,24 +698,29 @@ class EmsPy:
 
     def get_ems_type(self, ems_metric: str):
         """ Returns EMS (var, intvar, meter, actuator, weather) or time type string for a given ems metric variable."""
+
         return self.ems_type_dict[ems_metric]  # used to create attribute var names 'data_' + type
 
     def _user_input_check(self):
         # TODO create function that checks if all user-input attributes has been specified and add help directions
+
         if not self.calling_point_actuation_dict:
             print('\n*WARNING: No calling points or actuation/observation functions were initialized.\n')
         pass
 
     def _new_state(self):
         """Creates & returns a new state instance that's required to pass into EnergyPlus Runtime API function calls."""
+
         return self.api.state_manager.new_state()
 
     def reset_state(self):
         """Resets the state instance of a simulation per EnergyPlus State API documentation."""
+
         self.api.state_manager.reset_state(self.state)
 
     def delete_state(self):
         """Deletes the existing state instance."""
+
         self.api.state_manager.delete_state(self.state)
 
     def run_simulation(self, weather_file: str):
@@ -711,8 +736,10 @@ class EmsPy:
         self.simulation_success = self.api.runtime.run_energyplus(self.state, ['-w', weather_file, '-d', 'out', self.idf_file])   # cmd line args
         if self.simulation_success != 0:
             print('\n* * * Simulation FAILED * * *\n')
-        else:  # simulation successful
+        # simulation successful
+        else:
             print('\n* * * Simulation Done * * *')
+            self._post_process_data()
             # create default and custom ems pandas df's after simulation complete
             self._create_default_dataframes()
             self._create_custom_dataframes()
@@ -762,7 +789,7 @@ class BcaEnv(EmsPy):
         """
 
         if update_act_freq > update_state_freq:
-            print(f'\n*WARNING: it is unusual to have your action update more frequent than your state update\n')
+            print(f'\n*WARNING: It is unusual to have your action update more frequent than your state update\n')
         if calling_point in self.calling_point_actuation_dict:
             raise Exception(
                 f'ERROR: You have overwritten the calling point \'{calling_point}\'. Keep calling points unique.')
@@ -860,7 +887,7 @@ class BcaEnv(EmsPy):
 
         return self._get_weather(weather_metrics, when, hour, zone_ts)
 
-    def update_ems_data(self, ems_metric_list: list, return_data: bool) -> list:
+    def update_ems_data(self, ems_metric_list: list, return_data: bool):
         """
         This takes desired EMS metric(s) (or type) to update from the sim (and opt return val) at calliing point.
 
