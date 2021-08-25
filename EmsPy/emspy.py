@@ -500,9 +500,8 @@ class EmsPy:
                 if not self.api.exchange.api_data_fully_ready(state_arg):
                     return
                 self._set_ems_handles()
-                self.got_ems_handles = True
 
-            # skip if simulation in warmup
+            # skip if simulation in WARMUP
             if self.api.exchange.warmup_flag(state_arg):
                 return
 
@@ -612,25 +611,30 @@ class EmsPy:
             ems_metrics, calling_point, update_freq = self.df_custom_dict[df_name]
             self.df_count += 1
             if calling_point not in self.calling_point_actuation_dict:
-                raise Exception(f'ERROR: Invalid Calling Point name [{calling_point}]. See your declared available'
+                raise Exception(f'ERROR: Invalid Calling Point name [{calling_point}].\nSee your declared available'
                                 f' calling points {self.calling_point_actuation_dict.keys()}.')
             # metric names must align with the EMS metric names assigned in var, intvar, meters, actuators, weather ToC
             ems_custom_dict = {'Datetime': [], 'Timestep': []}
+            # handle reward tracking
             if self.rewards:
                 is_reward = 'rewards'
             else:
                 is_reward = ''
             for metric in ems_metrics:
+                # verify proper input
                 if metric not in self.ems_names_master_list + [is_reward]:
                     raise Exception(f'ERROR: Incorrect EMS metric name, [{metric}], was entered for custom '
-                                    f'dataframes.')
+                             f'dataframes.')
+                # unused actuators
+                if metric in self.tc_actuator and metric not in self._actuators_used_set:
+                    raise Exception('ERROR: The EMS actuator [{metric}] was not by user and has no data to track.')
                 # create dict to collect data for pandas dataframe
-                if metric == 'rewards' and self.rewards_multi:
+                if metric == 'rewards' and self.rewards_multi:  # multiple reward
                     for i in range(self.rewards_cnt):
-                        metric = 'reward' + str(i + 1)
+                        metric = 'reward' + str(i + 1)  # reward#, 1-n
                         ems_custom_dict[metric] = []
                 else:
-                    ems_custom_dict[metric] = []  # single reward
+                    ems_custom_dict[metric] = []  # single reward, all else EMS
             # update custom df tracking list
             self.df_custom_dict[df_name][0] = ems_custom_dict
 
