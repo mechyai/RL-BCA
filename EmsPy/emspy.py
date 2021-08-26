@@ -375,10 +375,12 @@ class EmsPy:
     def _update_reward(self, reward):
         """ Updates attributes related to the reward. Works for single-obj(scalar) and multi-obj(vector) reward fxns."""
 
-        if not self.rewards_multi:
-            reward = [reward]  # need to make single val iterable
+        # handle single vs multi reward together
+        if self.rewards_multi:
+            rewards = []  # init for multi
         else:
-            rewards = []  # init for multiobj
+            reward = [reward]  # need to make single val iterable
+
         for reward_i in reward:
             if type(reward_i) is not float and type(reward_i) is not int:
                 raise TypeError(f'ERROR: Reward returned from the observation function, [{reward_i}] must be of'
