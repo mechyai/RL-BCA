@@ -219,6 +219,7 @@ class EmsPy:
                                      f'of [{timestep}] mins. Please check your IDF.\nAvailable timesteps are '
                                      f'{available_timesteps}')
                 self.timestep_period = 60 // timestep
+                self.timestep_per_hour = timestep
                 print(f'\n*NOTE: Your simulation timestep period is {self.timestep_period} minutes @ {timestep}'
                       f' timestep(s) an hour.\n')
                 self.timestep_params_initialized = True
@@ -337,7 +338,7 @@ class EmsPy:
             # verify new timestep if current & previous timestep num and datetime are different
             self.timestep_total_count += 1
 
-    def _update_ems_attributes(self, ems_type: str, ems_name: str, data_val: float):
+    def _update_ems_data_attributes(self, ems_type: str, ems_name: str, data_val: float):
         """Helper function to update EMS attributes with current values."""
 
         getattr(self, 'data_' + ems_type + '_' + ems_name).append(data_val)
@@ -370,7 +371,7 @@ class EmsPy:
                 data_i = ems_datax_func[ems_type](self.state, getattr(self, 'handle_' + ems_type + '_' + ems_name))
 
             # store data in obj attributes
-            self._update_ems_attributes(ems_type, ems_name, data_i)
+            self._update_ems_data_attributes(ems_type, ems_name, data_i)
 
     def _update_reward(self, reward):
         """ Updates attributes related to the reward. Works for single-obj(scalar) and multi-obj(vector) reward fxns."""
@@ -411,8 +412,8 @@ class EmsPy:
         if hour > 24 or hour < 0:
             raise Exception('ERROR: The hour of the day cannot exceed 24 or be less than 0')
         if zone_ts > self.timestep_per_hour:
-            raise Exception(f'ERROR: The desired timestep, {zone_ts} cannot exceed the subhourly simulation timestep '
-                            f'set for the model, {self.timestep_per_hour}.')
+            raise Exception(f'ERROR: The desired weather forecast timestep, [{zone_ts}] cannot exceed the subhourly'
+                            f' simulation timestep set for the model, [{self.timestep_per_hour}].')
         single_metric = False
         if len(weather_metrics) is 1:
             single_metric = True
