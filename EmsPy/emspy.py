@@ -211,14 +211,16 @@ class EmsPy:
     def _init_timestep(self) -> int:
         """This function is used to fetch the timestep input from the IDF model & verify with user input."""
 
-        # returns fractional hour, convert to timestep/hr TODO determine robustness of the api.exchange function
+        # returns fractional hour, convert to timestep/hr
         try:
+            # TODO determine robustness of the api.exchange function - IT IS NOT (20 defaults to 60 etc)
             timestep = int(1 // self.api.exchange.zone_time_step(self.state))
             available_timesteps = [1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60]
             if timestep in available_timesteps:
                 if timestep != self.timestep_input:
-                    raise SystemExit(f'User input timestep [{self.timestep_input}] mins must equal the model timestep '
-                                     f'of [{timestep}] mins. Please check your IDF.\nAvailable timesteps are '
+                    # TODO add traceback
+                    raise SystemExit(f'User input timestep [{self.timestep_input}] must equal the model timestep '
+                                     f'of [{timestep}]. Please check your IDF.\nAvailable timesteps are '
                                      f'{available_timesteps}')
                 self.timestep_period = 60 // timestep
                 self.timestep_per_hour = timestep
@@ -564,36 +566,6 @@ class EmsPy:
 
         return _callback_function
 
-    def _create_default_dataframes(self):
-        """Creates default dataframes for each EMS data list, for each EMS category (and rewards if included in sim)."""
-
-        if not self.ems_num_dict:
-            return  # no ems dicts created, very unlikely
-        for ems_type in self.ems_num_dict:
-            ems_df_dict = {'Datetime': self.time_x, 'Timestep': self.timesteps_zone_num,
-                           'Calling Point': self.callback_calling_points}  # index columns
-            for ems_name in getattr(self, 'tc_' + ems_type):
-                ems_data_list_name = 'data_' + ems_type + '_' + ems_name
-                try:
-                    ems_df_dict[ems_name] = getattr(self, ems_data_list_name)
-                except AttributeError:
-                    pass  # ignore unused actuators
-            # create default df
-            df_name = 'df_' + ems_type
-            setattr(self, df_name, pd.DataFrame.from_dict(ems_df_dict))
-        # manage rewards separately, since not standard EMS metrics
-        if self.rewards:
-            col_names = ['reward']  # single reward
-            if self.rewards_multi:
-                col_names = []
-                for n in range(self.rewards_cnt):
-                    col_names.append('reward' + str(n + 1))
-            self.df_reward = pd.DataFrame(self.rewards, columns=col_names)
-            # self.df_reward = self.df_reward.dropna()  # drop NA vals # TODO figure out why these are here at the start
-            # add times to df
-            self.df_reward['Datetime'] = self.time_x
-            self.df_reward['Timestep'] = self.timesteps_zone_num
-
     def _init_calling_points_and_callback_functions(self):
         """This iterates through the Calling Point Dict{} to set runtime calling points with actuation functions."""
 
@@ -621,6 +593,38 @@ class EmsPy:
                       f'       Actuation: [{actuation_msg}], Observation: [{observation_msg}], '
                       f'State Update: [{update_state}], State Update Freq: [{update_state_freq}], '
                       f'Action Update Freq: [{update_act_freq}]')
+
+    def _create_default_dataframes(self):
+        """Creates default dataframes for each EMS data list, for each EMS category (and rewards if included in sim)."""
+
+        if not self.ems_num_dict:
+            return  # no ems dicts created, very unlikely
+        for ems_type in self.ems_num_dict:
+            ems_df_dict = {'Datetime': self.time_x, 'Timestep': self.timesteps_zone_num,
+                           'Calling Point': self.callback_calling_points}  # index columns
+            for ems_name in getattr(self, 'tc_' + ems_type):
+                ems_data_list_name = 'data_' + ems_type + '_' + ems_name
+                try:
+                    ems_df_dict[ems_name] = getattr(self, ems_data_list_name)
+                except AttributeError:
+                    pass  # ignore unused actuators
+            # create default df
+            df_name = 'df_' + ems_type
+            setattr(self, df_name, pd.DataFrame.from_dict(ems_df_dict))
+
+        # manage rewards separately, since not standard EMS metrics
+        if self.rewards:
+            col_names = ['reward']  # single reward
+            if self.rewards_multi:
+                col_names = []
+                for n in range(self.rewards_cnt):
+                    col_names.append('reward' + str(n + 1))
+            self.df_reward = pd.DataFrame(self.rewards, columns=col_names)
+            # self.df_reward = self.df_reward.dropna()  # drop NA vals # TODO figure out why these are here at the start
+            # add times to df  # TODO issue with multi obj reward
+            self.df_reward['Datetime'] = self.time_x
+            self.df_reward['Timestep'] = self.timesteps_zone_num
+            self.df_reward['Calling Point'] = self.callback_calling_points
 
     def _init_custom_dataframe_dict(self):
         """Initializes custom EMS metric dataframes attributes at specific calling points & frequencies."""
@@ -1010,7 +1014,7 @@ class BcaEnv(EmsPy):
                 if all_df.empty:
                     all_df = df.copy(deep=True)
                 else:
-                    all_df = pd.merge(all_df, df, on=['Datetime', 'Timestep'])  # TODO causes issue
+                    all_df = pd.merge(all_df, df, on=['Datetime', 'Timestep', 'Calling Point'])  # TODO causes issue
                 if df_name in df_names:
                     df_names.remove(df_name)
 
