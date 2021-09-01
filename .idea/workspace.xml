@@ -19,11 +19,16 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="added extra print statemens, handled empty df creation">
-      <change afterPath="$PROJECT_DIR$/OpenStudio_Models/BEM_EmsPy_Debug/BEM_5z_Unitary_base_debug.osm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OpenStudio_Models/BEM_EmsPy_Debug/in.idf" afterDir="false" />
+    <list default="true" id="b6262910-e2a3-4cdc-b113-1b4cb4268db5" name="Default Changelist" comment="try except implemented timestep issue with DD weather">
+      <change afterPath="$PROJECT_DIR$/OpenStudio_Models/BEM_EmsPy_Debug/BEM_5z_Unitary_base_rl.osm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OpenStudio_Models/BEM_EmsPy_Debug/CJE_Model_Modifications.idf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OpenStudio_Models/BEM_EmsPy_Debug/SQL Data/RL_Base_No_Control.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OpenStudio_Models/BEM_EmsPy_Debug/rl_in.idf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OpenStudio_Models/BEM_EmsPy_Debug/rl_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/ceube.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/ceube.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EmsPy/emspy.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmsPy/emspy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenStudio_Models/BEM_EmsPy_Debug/model_debug.py" beforeDir="false" afterPath="$PROJECT_DIR$/OpenStudio_Models/BEM_EmsPy_Debug/model_debug.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,16 +81,16 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="TEXT&#10;Python" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/OpenStudio_Models/BEM_EmsPy_Debug" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/OpenStudio_Models/BEM_EmsPy_Debug/SQL Data" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\BEM_EmsPy_Debug\SQL Data" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\BEM_EmsPy_Debug" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\BEM_Custom\Base_People" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\BEM_Custom\Base_Sched\Sched_Control_Test" />
       <recent name="A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\BEM_Custom\Base_Sched" />
-      <recent name="A:\Files\PycharmProjects\RL-BCA\ModelRunTests" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="A:\Files\PycharmProjects\RL-BCA\OpenStudio_Models\BEM_Custom\Base_People" />
@@ -95,7 +100,7 @@
       <recent name="A:\Files\PycharmProjects\RL-BCA\EnergyPlus-PythonAPI-Examples" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.model_debug">
+  <component name="RunManager" selected="Python.rl_model">
     <configuration name="epsql" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -177,19 +182,16 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="scratch_1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="rl_model" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="RL-BCA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/OpenStudio_Models/BEM_EmsPy_Debug" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch_1.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/OpenStudio_Models/BEM_EmsPy_Debug/rl_model.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -199,19 +201,19 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.scratch_1" />
       <item itemvalue="Python.epsql" />
       <item itemvalue="Python.model_sched_debug" />
       <item itemvalue="Python.model_ppl_debug" />
       <item itemvalue="Python.model_debug" />
+      <item itemvalue="Python.rl_model" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.rl_model" />
+        <item itemvalue="Python.rl_model" />
+        <item itemvalue="Python.rl_model" />
         <item itemvalue="Python.model_debug" />
-        <item itemvalue="Python.model_ppl_debug" />
-        <item itemvalue="Python.model_sched_debug" />
-        <item itemvalue="Python.model_ppl_debug" />
-        <item itemvalue="Python.model_sched_debug" />
+        <item itemvalue="Python.model_debug" />
       </list>
     </recent_temporary>
   </component>
@@ -226,41 +228,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1620762811392</updated>
-    </task>
-    <task id="LOCAL-00047" summary="updated documentation, actuation function inputs, made major changes to get ems data">
-      <created>1624557915164</created>
-      <option name="number" value="00047" />
-      <option name="presentableId" value="LOCAL-00047" />
-      <option name="project" value="LOCAL" />
-      <updated>1624557915164</updated>
-    </task>
-    <task id="LOCAL-00048" summary="updated error handling to custom dataframes, updated available callback list and function, added timestep data list">
-      <created>1624570333225</created>
-      <option name="number" value="00048" />
-      <option name="presentableId" value="LOCAL-00048" />
-      <option name="project" value="LOCAL" />
-      <updated>1624570333225</updated>
-    </task>
-    <task id="LOCAL-00049" summary="added observation fxn alongside actuation function for making custom callbacks - fits MDP RL framework">
-      <created>1624571663074</created>
-      <option name="number" value="00049" />
-      <option name="presentableId" value="LOCAL-00049" />
-      <option name="project" value="LOCAL" />
-      <updated>1624571663074</updated>
-    </task>
-    <task id="LOCAL-00050" summary="added observation fxn alongside actuation function for making custom callbacks - fits MDP RL framework">
-      <created>1625106299269</created>
-      <option name="number" value="00050" />
-      <option name="presentableId" value="LOCAL-00050" />
-      <option name="project" value="LOCAL" />
-      <updated>1625106299271</updated>
-    </task>
-    <task id="LOCAL-00051" summary="folder rearagnement">
-      <created>1625106402271</created>
-      <option name="number" value="00051" />
-      <option name="presentableId" value="LOCAL-00051" />
-      <option name="project" value="LOCAL" />
-      <updated>1625106402271</updated>
     </task>
     <task id="LOCAL-00052" summary="folder rearagnement">
       <created>1625106417782</created>
@@ -570,8 +537,46 @@
       <option name="project" value="LOCAL" />
       <updated>1629825279221</updated>
     </task>
-    <option name="localTasksCounter" value="96" />
+    <task id="LOCAL-00096" summary="rebasing">
+      <created>1629908606405</created>
+      <option name="number" value="00096" />
+      <option name="presentableId" value="LOCAL-00096" />
+      <option name="project" value="LOCAL" />
+      <updated>1629908606406</updated>
+    </task>
+    <task id="LOCAL-00097" summary="fixed get_ems_data, input verification errors removed">
+      <created>1629913042798</created>
+      <option name="number" value="00097" />
+      <option name="presentableId" value="LOCAL-00097" />
+      <option name="project" value="LOCAL" />
+      <updated>1629913042798</updated>
+    </task>
+    <task id="LOCAL-00098" summary="updated _update_reward">
+      <created>1629986589794</created>
+      <option name="number" value="00098" />
+      <option name="presentableId" value="LOCAL-00098" />
+      <option name="project" value="LOCAL" />
+      <updated>1629986589794</updated>
+    </task>
+    <task id="LOCAL-00099" summary="fixed get weather fxn with timestep num">
+      <created>1629988612483</created>
+      <option name="number" value="00099" />
+      <option name="presentableId" value="LOCAL-00099" />
+      <option name="project" value="LOCAL" />
+      <updated>1629988612483</updated>
+    </task>
+    <task id="LOCAL-00100" summary="try except implemented timestep issue with DD weather">
+      <created>1630340350693</created>
+      <option name="number" value="00100" />
+      <option name="presentableId" value="LOCAL-00100" />
+      <option name="project" value="LOCAL" />
+      <updated>1630340350693</updated>
+    </task>
+    <option name="localTasksCounter" value="101" />
     <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.sql" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -586,11 +591,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="added simple scalar reward tracker to sim" />
-    <MESSAGE value="fixed single and multi reward tracking attributes" />
-    <MESSAGE value="reward df not working" />
-    <MESSAGE value="finally fixed custom dfs with reward, not ideal robustness" />
-    <MESSAGE value="updated init timestep to fetch from idf" />
     <MESSAGE value="updated actuator setpoint name, got rid of timestep as obj input. no longer fetch timestep" />
     <MESSAGE value="simulation success check added" />
     <MESSAGE value="added various files and models" />
@@ -611,7 +611,12 @@
     <MESSAGE value="minor changes, branching" />
     <MESSAGE value="remove unused actuator attributes, added post process function" />
     <MESSAGE value="added extra print statemens, handled empty df creation" />
-    <option name="LAST_COMMIT_MESSAGE" value="added extra print statemens, handled empty df creation" />
+    <MESSAGE value="rebasing" />
+    <MESSAGE value="fixed get_ems_data, input verification errors removed" />
+    <MESSAGE value="updated _update_reward" />
+    <MESSAGE value="fixed get weather fxn with timestep num" />
+    <MESSAGE value="try except implemented timestep issue with DD weather" />
+    <option name="LAST_COMMIT_MESSAGE" value="try except implemented timestep issue with DD weather" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -635,6 +640,21 @@
           <url>file://$PROJECT_DIR$/EnergyPlus-PythonAPI-Examples/api-example-copies/PyEMS_CJE/PyEMS_CJE.py</url>
           <line>91</line>
           <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EmsPy/emspy.py</url>
+          <line>344</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EmsPy/emspy.py</url>
+          <line>350</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EmsPy/emspy.py</url>
+          <line>500</line>
+          <option name="timeStamp" value="14" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

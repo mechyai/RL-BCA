@@ -41,13 +41,16 @@ actuators_tc = {
     'ppl_sched': ['Schedule:Constant', 'Schedule Value', 'People Const Sched'],
 }
 weather_tc = {
+    'sun_up': 'sun_is_up',
+    'raining': 'is_raining'
 }
 
 timesteps = 6
 # create calling point with actuation function
-calling_point1 = 'callback_after_predictor_after_hvac_managers'  # system timestep
-# calling_point = 'callback_end_system_timestep_after_hvac_reporting'  # HVAC iteration loop
-calling_point = 'callback_begin_zone_timestep_before_init_heat_balance'
+cp1 = 'callback_begin_zone_timestep_before_init_heat_balance'
+cp2 = 'callback_after_predictor_after_hvac_managers'  # system timestep
+# cp3 = 'callback_end_system_timestep_after_hvac_reporting'  # HVAC iteration loop
+
 
 # create building energy simulation obj
 sim = emspy.BcaEnv(ep_path, ep_idf_to_run, timesteps, vars_tc, int_vars_tc, meters_tc, actuators_tc, weather_tc)
@@ -75,10 +78,11 @@ class Agent:
 
 agent = Agent()
 
-# sim.set_calling_point_and_callback_function(calling_point, agent.observe1, agent.act, True, 1, 1)
-sim.set_calling_point_and_callback_function(calling_point1, agent.observe2, None, True, 1, 1)
+sim.set_calling_point_and_callback_function(cp1, None, None, True, 1, 1)
+sim.set_calling_point_and_callback_function(cp2, agent.observe1, agent.act, True, 1, 1)
+# sim.set_calling_point_and_callback_function(calling_point1, agent.observe2, None, True, 1, 1)
 
-# sim.init_custom_dataframe_dict('custom_df', calling_point, 1, ['z0_cool_sp', 'setpoint_z0_cool_sp'])  # actuator lag
+# sim.init_custom_dataframe_dict('custom_df', calling_point, 1, ['ppl_sched'])  # actuator lag
 
 # RUN
 sim.run_env(ep_weather_path)

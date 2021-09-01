@@ -1,0 +1,55 @@
+! ************************* CJE *************************
+
+! CJE: Output all available EMS Actuators
+
+Output:EnergyManagementSystem,
+    Verbose,        ! Actuator Availability Dictionary Reporting
+    Verbose,        ! Internal Variable Availability Dictionary Reporting
+    ErrorsOnly;     ! EnergyPlus Runtime Language Debug Output Level
+
+
+! CJE: Create Reward schedule tracker
+! From .edd: (after object creation)
+!   - EnergyManagementSystem:Actuator Available,REWARD TRACKER,Schedule:Constant,Schedule Value,[ ]
+
+Schedule:Constant,
+  Reward Tracker,                       !- Name
+  Any Number,                           !- Schedule Type Limits Name (* use previously defined limits)
+  0;                                    !- Hourly Value
+
+
+! CJE: cooling/heating zone actuator setpoints and schedule tracker (could actuate schedule connected to HVAC setpoint???)
+! From .edd:
+!   - EnergyManagementSystem:Actuator Available,PERIMETER_ZN_1 ZN,Zone Temperature Control,Heating Setpoint,[C]
+!   - EnergyManagementSystem:Actuator Available,PERIMETER_ZN_1 ZN,Zone Temperature Control,Cooling Setpoint,[C]
+
+Schedule:Constant,
+  Cooling Setpoint Tracker,                       !- Name
+  Any Number,                           !- Schedule Type Limits Name (* use previously defined limits)
+  0;                                    !- Hourly Value
+
+Schedule:Constant,
+  Heating Setpoint Tracker,                       !- Name
+  Any Number,                           !- Schedule Type Limits Name (* use previously defined limits)
+  0;                                    !- Hourly Value
+
+EnergyManagementSystem:Actuator,
+  Zn1_Cooling_SP,               !- Name
+  Perimeter_ZN_1 ZN,            !- Actuated Component Unique Name
+  Zone Temperature Control,     !- Actuated Component Type
+  Cooling Setpoint;             !- Actuated Component Control Type
+
+EnergyManagementSystem:Actuator,
+  Zn1_Heating_SP,               !- Name
+  Perimeter_ZN_1 ZN,            !- Actuated Component Unique Name
+  Zone Temperature Control,     !- Actuated Component Type
+  Heating Setpoint;             !- Actuated Component Control Type
+
+
+! CJE: manual objects not created in OpenStudio
+
+! Output:Variable,*,Site Outdoor Air Relative Humidity,hourly; !- Zone Average [%]
+Output:Variable,
+  *,                                        !- Key Value
+  Site Outdoor Air Relative Humidity,       !- Variable Name
+  Hourly;                                   !- Reporting Frequency
