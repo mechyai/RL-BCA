@@ -1,4 +1,7 @@
  # RL-BCA (Work In Progress...)
+
+# Please redirect yourself to RL-EmsPy https://github.com/mechyai/RL-EmsPy, which is the updated and better maintained version of this. I was having trouble with version control on this repo so I have simply started a new, cleaner, more organized one as RL-EmsPy.
+
 ### This repository is for Reinforcement Learning (RL) algorithm development and testing of BCAs (Building Control Agent) in EnergyPlus (E+) building energy simulator using Python Energy Management System (EMS) API with a <ins>meta-class wrapper, *EmsPy*</ins>.
 
 *This repo was constructed by someone with little experience with EnergyPlus and software/programming, but wanted to 
